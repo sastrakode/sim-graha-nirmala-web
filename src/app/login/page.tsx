@@ -1,5 +1,9 @@
 import LoginForm from "@/components/simgn/login-form"
-import { Button } from "@/components/ui/button"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Login - SIMGN"
+}
 
 export default function Login() {
   return (
