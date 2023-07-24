@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input"
 
 const formSchema = z.object({
-  email: z.string().min(1, "Email harus diisi").email(),
+  email: z.string().min(1, "Email harus diisi").email("Email tidak valid"),
   password: z.string().min(1, "Kata Sandi harus diisi")
 })
 
@@ -59,7 +59,7 @@ export default function LoginForm() {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input type="password" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
