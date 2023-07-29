@@ -1,5 +1,6 @@
 import { db } from "@/server/db"
-import { Role, Staff } from "@/server/db/schema"
+import { Role, Staff, _Staff } from "@/server/db/schema"
+import { StaffResponse, toStaffResponse } from "@/server/models/responses/staff"
 import { comparePassword } from "@/server/security/password"
 import { generateToken } from "@/server/security/token"
 import { defineHandler } from "@/server/web/handler"
@@ -12,6 +13,11 @@ const Param = z.object({
   email: z.string().email(),
   password: z.string().min(8),
 })
+
+type Result = {
+  token: string
+  staff: StaffResponse
+}
 
 export const POST = defineHandler(async (req) => {
   const param = await bindJson(req, Param)
@@ -33,5 +39,10 @@ export const POST = defineHandler(async (req) => {
     role: role.code,
   })
 
-  return sendData(200, { token })
+  const result: Result = {
+    token: token,
+    staff: toStaffResponse(staff)!,
+  }
+
+  return sendData(200, result)
 })
