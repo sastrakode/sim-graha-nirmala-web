@@ -1,9 +1,9 @@
 import { db } from "@/server/db"
 import { House, _InsertHouse } from "@/server/db/schema"
 import { toHouseResponse } from "@/server/models/responses/house"
-import { defineHandler } from "@/server/utils/web/handler"
-import { bindJson } from "@/server/utils/web/request"
-import { sendData, sendErrors } from "@/server/utils/web/response"
+import { defineHandler } from "@/server/web/handler"
+import { bindJson } from "@/server/web/request"
+import { sendData, sendErrors } from "@/server/web/response"
 import { eq } from "drizzle-orm"
 import { z } from "zod"
 

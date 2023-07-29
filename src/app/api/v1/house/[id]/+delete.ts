@@ -1,7 +1,7 @@
 import { db } from "@/server/db"
 import { House } from "@/server/db/schema"
-import { defineHandler } from "@/server/utils/web/handler"
-import { sendErrors, sendNoContent } from "@/server/utils/web/response"
+import { defineHandler } from "@/server/web/handler"
+import { sendErrors, sendNoContent } from "@/server/web/response"
 import { eq } from "drizzle-orm"
 
 export const DELETE = defineHandler(
