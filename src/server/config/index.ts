@@ -12,6 +12,10 @@ type Config = {
     pass: string
     name: string
   }
+  jwt: {
+    secret: string
+    expiresIn: string
+  }
 }
 
 const e = process.env
@@ -23,5 +27,9 @@ export const config: Config = {
     user: e.DB_USER!,
     pass: e.DB_PASS!,
     name: e.DB_NAME!,
+  },
+  jwt: {
+    secret: e.JWT_SECRET!,
+    expiresIn: e.JWT_EXPIRES_IN!,
   },
 }

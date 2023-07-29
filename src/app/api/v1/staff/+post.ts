@@ -19,7 +19,7 @@ const Param = z.object({
   name: z.string(),
   email: z.string().email(),
   phone: z.string(),
-  password: z.string(),
+  password: z.string().min(8),
 })
 
 export const POST = defineHandler(async (req) => {
