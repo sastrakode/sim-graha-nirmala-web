@@ -1,6 +1,7 @@
 import { db } from "@/server/db"
 import { Role } from "@/server/db/schema"
 import { toRoleResponse } from "@/server/models/responses/role"
+import { useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
 import { bindJson } from "@/server/web/request"
 import { sendData, sendErrors } from "@/server/web/response"
@@ -14,6 +15,8 @@ const Param = z.object({
 
 export const PUT = defineHandler(
   async (req, { params }: { params: { id: number } }) => {
+    useAuth("admin")
+
     let param = await bindJson(req, Param)
     let role = await db.query.Role.findFirst({
       where: eq(Role.id, params.id),

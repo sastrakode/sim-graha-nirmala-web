@@ -1,6 +1,7 @@
 import { db } from "@/server/db"
 import { House, _InsertHouse } from "@/server/db/schema"
 import { toHouseResponse } from "@/server/models/responses/house"
+import { useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
 import { bindJson } from "@/server/web/request"
 import { sendData, sendErrors } from "@/server/web/response"
@@ -12,11 +13,13 @@ const Param = z.object({
 })
 
 export const POST = defineHandler(async (req) => {
+  useAuth("admin")
+
   const param = await bindJson(req, Param)
-  let isHouseExist = await db.query.House.findFirst({
+  let houseExist = await db.query.House.findFirst({
     where: eq(House.code, param.code),
   })
-  if (isHouseExist) return sendErrors(409, "House already exist")
+  if (houseExist) return sendErrors(409, "House already exist")
 
   let house: _InsertHouse = {
     code: param.code,

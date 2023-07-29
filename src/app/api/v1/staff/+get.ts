@@ -5,6 +5,8 @@ import { defineHandler } from "@/server/web/handler"
 import { sendData } from "@/server/web/response"
 
 export const GET = defineHandler(async () => {
+  useAuth("admin")
+
   const staffs = await db.query.Staff.findMany()
   return sendData(200, staffs.map(toStaffResponse))
 })

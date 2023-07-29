@@ -1,6 +1,7 @@
 import { db } from "@/server/db"
 import { House } from "@/server/db/schema"
 import { toHouseResponse } from "@/server/models/responses/house"
+import { useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
 import { bindJson } from "@/server/web/request"
 import { sendData, sendErrors } from "@/server/web/response"
@@ -13,6 +14,8 @@ const Param = z.object({
 
 export const PUT = defineHandler(
   async (req, { params }: { params: { id: number } }) => {
+    useAuth("admin")
+
     let param = await bindJson(req, Param)
     let house = await db.query.House.findFirst({
       where: eq(House.id, params.id),
