@@ -41,9 +41,7 @@
         "house_code_unique": {
           "name": "house_code_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "code"
-          ]
+          "columns": ["code"]
         }
       }
     }
