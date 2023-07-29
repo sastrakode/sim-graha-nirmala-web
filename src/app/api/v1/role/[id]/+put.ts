@@ -1,6 +1,6 @@
 import { db } from "@/server/db"
-import { House } from "@/server/db/schema"
-import { toHouseResponse } from "@/server/models/responses/house"
+import { Role } from "@/server/db/schema"
+import { toRoleResponse } from "@/server/models/responses/role"
 import { useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
 import { bindJson } from "@/server/web/request"
@@ -10,6 +10,7 @@ import { z } from "zod"
 
 const Param = z.object({
   code: z.string(),
+  name: z.string(),
 })
 
 export const PUT = defineHandler(
@@ -17,15 +18,16 @@ export const PUT = defineHandler(
     useAuth("admin")
 
     let param = await bindJson(req, Param)
-    let house = await db.query.House.findFirst({
-      where: eq(House.id, params.id),
+    let role = await db.query.Role.findFirst({
+      where: eq(Role.id, params.id),
     })
-    if (!house) return sendErrors(404, "House not found")
+    if (!role) return sendErrors(404, "Role not found")
 
-    house.code = param.code
-    house.updatedAt = new Date()
+    role.code = param.code
+    role.name = param.name
+    role.updatedAt = new Date()
 
-    await db.update(House).set(house).where(eq(House.id, params.id))
-    return sendData(200, toHouseResponse(house))
+    await db.update(Role).set(role).where(eq(Role.id, params.id))
+    return sendData(200, toRoleResponse(role))
   }
 )

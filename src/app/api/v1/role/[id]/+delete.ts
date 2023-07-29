@@ -1,5 +1,5 @@
 import { db } from "@/server/db"
-import { House } from "@/server/db/schema"
+import { Role } from "@/server/db/schema"
 import { useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
 import { sendErrors, sendNoContent } from "@/server/web/response"
@@ -9,12 +9,12 @@ export const DELETE = defineHandler(
   async (req, { params }: { params: { id: number } }) => {
     useAuth("admin")
 
-    let house = await db.query.House.findFirst({
-      where: eq(House.id, params.id),
+    let role = await db.query.Role.findFirst({
+      where: eq(Role.id, params.id),
     })
-    if (!house) return sendErrors(404, "House not found")
+    if (!role) return sendErrors(404, "Role not found")
 
-    await db.delete(House).where(eq(House.id, params.id))
+    await db.delete(Role).where(eq(Role.id, params.id))
     return sendNoContent()
   }
 )

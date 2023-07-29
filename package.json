@@ -19,12 +19,14 @@
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.14",
+    "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "dotenv": "^16.3.1",
     "drizzle-orm": "^0.27.2",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.12",
+    "jsonwebtoken": "^9.0.1",
     "lucide-react": "^0.263.0",
     "next": "13.4.12",
     "postcss": "8.4.27",
@@ -39,6 +41,8 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/jsonwebtoken": "^9.0.2",
     "drizzle-kit": "^0.19.12"
   }
 }
