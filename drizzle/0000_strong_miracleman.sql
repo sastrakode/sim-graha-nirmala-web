@@ -5,4 +5,3 @@ CREATE TABLE IF NOT EXISTS "house" (
     "updated_at" timestamp with time zone,
     CONSTRAINT "house_code_unique" UNIQUE ("code")
 );
-
