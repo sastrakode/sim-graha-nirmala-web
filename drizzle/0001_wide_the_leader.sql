@@ -32,4 +32,3 @@ EXCEPTION
         NULL;
 END
 $$;
-
