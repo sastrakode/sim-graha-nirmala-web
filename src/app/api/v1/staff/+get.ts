@@ -1,5 +1,6 @@
 import { db } from "@/server/db"
 import { toStaffResponse } from "@/server/models/responses/staff"
+import { useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
 import { sendData } from "@/server/web/response"
 
