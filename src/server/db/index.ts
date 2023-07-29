@@ -5,7 +5,7 @@ import postgres from "postgres"
 import * as schema from "./schema"
 import { config } from "../config"
 
-const maxOpenConnections = os.cpus().length
+const maxOpenConnections = 2 * os.cpus().length
 const maxLifetimeConnections = 30 * 60
 
 const pool = postgres({
