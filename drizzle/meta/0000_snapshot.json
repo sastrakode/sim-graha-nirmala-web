@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "60a8fe66-2bb1-4952-bfb0-13ebfe79a310",
+  "id": "f2c38b38-9e99-4814-a452-9ccbcf4802bd",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "announcement": {
@@ -148,12 +148,6 @@
           "primaryKey": true,
           "notNull": true
         },
-        "billing_id": {
-          "name": "billing_id",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": true
-        },
         "amount": {
           "name": "amount",
           "type": "bigint",
@@ -194,19 +188,6 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "cashflow_billing_id_billing_id_fk": {
-          "name": "cashflow_billing_id_billing_id_fk",
-          "tableFrom": "cashflow",
-          "tableTo": "billing",
-          "columnsFrom": [
-            "billing_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
         "cashflow_cashflow_type_id_cashflow_type_id_fk": {
           "name": "cashflow_cashflow_type_id_cashflow_type_id_fk",
           "tableFrom": "cashflow",
@@ -544,6 +525,18 @@
           "type": "bigint",
           "primaryKey": false,
           "notNull": true
+        },
+        "invoice": {
+          "name": "invoice",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "token": {
+          "name": "token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "mode": {
           "name": "mode",
