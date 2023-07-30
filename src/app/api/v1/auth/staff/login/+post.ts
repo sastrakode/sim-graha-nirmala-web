@@ -1,5 +1,5 @@
 import { db } from "@/server/db"
-import { Role, Staff, _Staff } from "@/server/db/schema"
+import { Role, Staff } from "@/server/db/schema"
 import { StaffResponse, toStaffResponse } from "@/server/models/responses/staff"
 import { comparePassword } from "@/server/security/password"
 import { generateToken } from "@/server/security/token"

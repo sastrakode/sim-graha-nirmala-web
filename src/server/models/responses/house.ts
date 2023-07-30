@@ -1,4 +1,4 @@
-import { _House } from "../../db/schema"
+import { THouse } from "../../db/schema"
 
 export type HouseResponse = {
   id: number
@@ -7,7 +7,7 @@ export type HouseResponse = {
   updated_at: Date | null
 }
 
-export function toHouseResponse(house?: _House): HouseResponse | null {
+export function toHouseResponse(house?: THouse): HouseResponse | null {
   return house
     ? {
         id: house.id,

@@ -1,5 +1,5 @@
 import { db } from "@/server/db"
-import { Role, _InsertHouse, _InsertRole } from "@/server/db/schema"
+import { Role, TInsertRole } from "@/server/db/schema"
 import { toRoleResponse } from "@/server/models/responses/role"
 import { defineHandler } from "@/server/web/handler"
 import { bindJson } from "@/server/web/request"
@@ -19,7 +19,7 @@ export const POST = defineHandler(async (req) => {
   })
   if (roleExist) return sendErrors(409, "Role already exist")
 
-  let role: _InsertRole = {
+  let role: TInsertRole = {
     code: param.code,
     name: param.name,
   }

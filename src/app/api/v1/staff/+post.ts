@@ -1,11 +1,5 @@
 import { db } from "@/server/db"
-import {
-  Role,
-  Staff,
-  _InsertHouse,
-  _InsertRole,
-  _InsertStaff,
-} from "@/server/db/schema"
+import { Role, Staff, TInsertStaff } from "@/server/db/schema"
 import { toStaffResponse } from "@/server/models/responses/staff"
 import { hashPassword } from "@/server/security/password"
 import { defineHandler } from "@/server/web/handler"
@@ -39,7 +33,7 @@ export const POST = defineHandler(async (req) => {
   })
   if (staffExists) return sendErrors(409, "Phone already registered")
 
-  let staff: _InsertStaff = {
+  let staff: TInsertStaff = {
     roleId: param.role_id,
     name: param.name,
     email: param.email,

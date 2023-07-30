@@ -1,11 +1,5 @@
 import { db } from "@/server/db"
-import {
-  Role,
-  Staff,
-  _InsertHouse,
-  _InsertRole,
-  _InsertStaff,
-} from "@/server/db/schema"
+import { Role, Staff } from "@/server/db/schema"
 import { toStaffResponse } from "@/server/models/responses/staff"
 import { useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
