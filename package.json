@@ -8,8 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "db:generate": "drizzle-kit generate:pg",
-    "db:drop": "drizzle-kit drop",
-    "db:push": "drizzle-kit push:pg"
+    "db:drop": "drizzle-kit drop"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.1.1",
