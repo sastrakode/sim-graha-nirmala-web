@@ -52,12 +52,8 @@
           "name": "announcement_author_id_staff_id_fk",
           "tableFrom": "announcement",
           "tableTo": "staff",
-          "columnsFrom": [
-            "author_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["author_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -125,12 +121,8 @@
           "name": "billing_house_id_house_id_fk",
           "tableFrom": "billing",
           "tableTo": "house",
-          "columnsFrom": [
-            "house_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["house_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -192,12 +184,8 @@
           "name": "cashflow_cashflow_type_id_cashflow_type_id_fk",
           "tableFrom": "cashflow",
           "tableTo": "cashflow_type",
-          "columnsFrom": [
-            "cashflow_type_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["cashflow_type_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -242,9 +230,7 @@
         "cashflow_type_name_unique": {
           "name": "cashflow_type_name_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "name"
-          ]
+          "columns": ["name"]
         }
       }
     },
@@ -291,9 +277,7 @@
         "house_code_unique": {
           "name": "house_code_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "code"
-          ]
+          "columns": ["code"]
         }
       }
     },
@@ -363,12 +347,8 @@
           "name": "occupant_house_id_house_id_fk",
           "tableFrom": "occupant",
           "tableTo": "house",
-          "columnsFrom": [
-            "house_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["house_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -378,16 +358,12 @@
         "occupant_email_unique": {
           "name": "occupant_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         },
         "occupant_phone_unique": {
           "name": "occupant_phone_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "phone"
-          ]
+          "columns": ["phone"]
         }
       }
     },
@@ -463,12 +439,8 @@
           "name": "occupant_member_occupant_id_occupant_id_fk",
           "tableFrom": "occupant_member",
           "tableTo": "occupant",
-          "columnsFrom": [
-            "occupant_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["occupant_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -478,23 +450,17 @@
         "occupant_member_email_unique": {
           "name": "occupant_member_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         },
         "occupant_member_phone_unique": {
           "name": "occupant_member_phone_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "phone"
-          ]
+          "columns": ["phone"]
         },
         "occupant_member_identity_number_unique": {
           "name": "occupant_member_identity_number_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "identity_number"
-          ]
+          "columns": ["identity_number"]
         }
       }
     },
@@ -570,12 +536,8 @@
           "name": "payment_billing_id_billing_id_fk",
           "tableFrom": "payment",
           "tableTo": "billing",
-          "columnsFrom": [
-            "billing_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["billing_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -583,12 +545,8 @@
           "name": "payment_payer_id_occupant_id_fk",
           "tableFrom": "payment",
           "tableTo": "occupant",
-          "columnsFrom": [
-            "payer_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["payer_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -657,16 +615,12 @@
         "staff_email_unique": {
           "name": "staff_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         },
         "staff_phone_unique": {
           "name": "staff_phone_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "phone"
-          ]
+          "columns": ["phone"]
         }
       }
     }
