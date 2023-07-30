@@ -9,12 +9,12 @@ export const DELETE = defineHandler(
   async (req, { params }: { params: { id: number } }) => {
     useAuth("admin")
 
-    let staff = await db.query.Staff.findFirst({
+    let staff = await db().query.Staff.findFirst({
       where: eq(Role.id, params.id),
     })
     if (!staff) return sendErrors(404, "Staff not found")
 
-    await db.delete(Staff).where(eq(Staff.id, params.id))
+    await db().delete(Staff).where(eq(Staff.id, params.id))
     return sendNoContent()
   }
 )

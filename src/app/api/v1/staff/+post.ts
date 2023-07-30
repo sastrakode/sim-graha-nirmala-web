@@ -18,17 +18,17 @@ const Param = z.object({
 
 export const POST = defineHandler(async (req) => {
   const param = await bindJson(req, Param)
-  let role = await db.query.Role.findFirst({
+  let role = await db().query.Role.findFirst({
     where: eq(Role.id, param.role_id),
   })
   if (!role) return sendErrors(404, "Role not found")
 
-  let staffExists = await db.query.Staff.findFirst({
+  let staffExists = await db().query.Staff.findFirst({
     where: eq(Staff.email, param.email),
   })
   if (staffExists) return sendErrors(409, "Email already registered")
 
-  staffExists = await db.query.Staff.findFirst({
+  staffExists = await db().query.Staff.findFirst({
     where: eq(Staff.phone, param.phone),
   })
   if (staffExists) return sendErrors(409, "Phone already registered")
@@ -41,6 +41,6 @@ export const POST = defineHandler(async (req) => {
     password: await hashPassword(param.password),
   }
 
-  let [newStaff] = await db.insert(Staff).values(staff).returning()
+  let [newStaff] = await db().insert(Staff).values(staff).returning()
   return sendData(201, toStaffResponse(newStaff))
 })

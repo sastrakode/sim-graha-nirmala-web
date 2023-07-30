@@ -1,5 +1,5 @@
 import os from "os"
-import { drizzle } from "drizzle-orm/postgres-js"
+import { PostgresJsDatabase, drizzle } from "drizzle-orm/postgres-js"
 import { migrate } from "drizzle-orm/postgres-js/migrator"
 import postgres from "postgres"
 import * as schema from "./schema"
@@ -22,10 +22,21 @@ const pool = postgres({
   idle_timeout: maxLifetimeConnections,
 })
 
-export const db = drizzle(pool, { logger: true, schema: schema })
+let connection: PostgresJsDatabase<typeof schema>
 
-await migrate(db, {
-  migrationsFolder: "./drizzle",
-})
+async function setup() {
+  await migrate(connection, {
+    migrationsFolder: "./drizzle",
+  })
 
-await seed()
+  await seed()
+}
+
+export function db() {
+  if (connection) return connection
+
+  connection = drizzle(pool, { logger: true, schema: schema })
+  setup().then(() => console.log("database setup complete"))
+
+  return connection
+}

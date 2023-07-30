@@ -16,7 +16,7 @@ export const POST = defineHandler(async (req) => {
   useAuth("admin")
   const param = await bindJson(req, Param)
 
-  let houseExist = await db.query.House.findFirst({
+  let houseExist = await db().query.House.findFirst({
     where: eq(House.code, param.code),
   })
   if (houseExist) return sendErrors(409, "House already exist")
@@ -25,6 +25,6 @@ export const POST = defineHandler(async (req) => {
     code: param.code,
   }
 
-  let [newHouse] = await db.insert(House).values(house).returning()
+  let [newHouse] = await db().insert(House).values(house).returning()
   return sendData(201, toHouseResponse(newHouse))
 })

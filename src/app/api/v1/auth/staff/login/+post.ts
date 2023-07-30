@@ -21,7 +21,7 @@ type Result = {
 
 export const POST = defineHandler(async (req) => {
   const param = await bindJson(req, Param)
-  let staff = await db.query.Staff.findFirst({
+  let staff = await db().query.Staff.findFirst({
     where: eq(Staff.email, param.email),
   })
   if (!staff) return sendErrors(404, "Staff not found")
@@ -29,7 +29,7 @@ export const POST = defineHandler(async (req) => {
   let match = await comparePassword(param.password, staff.password)
   if (!match) return sendErrors(401, "Password incorrect")
 
-  let role = await db.query.Role.findFirst({
+  let role = await db().query.Role.findFirst({
     where: eq(Role.id, staff.roleId),
   })
   if (!role) return sendErrors(404, "Role not found")

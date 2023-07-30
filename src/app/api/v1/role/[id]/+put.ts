@@ -18,7 +18,7 @@ export const PUT = defineHandler(
     useAuth("admin")
     let param = await bindJson(req, Param)
 
-    let role = await db.query.Role.findFirst({
+    let role = await db().query.Role.findFirst({
       where: eq(Role.id, params.id),
     })
     if (!role) return sendErrors(404, "Role not found")
@@ -27,7 +27,7 @@ export const PUT = defineHandler(
     role.name = param.name
     role.updatedAt = new Date()
 
-    await db.update(Role).set(role).where(eq(Role.id, params.id))
+    await db().update(Role).set(role).where(eq(Role.id, params.id))
     return sendData(200, toRoleResponse(role))
   }
 )

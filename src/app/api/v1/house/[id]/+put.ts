@@ -17,12 +17,12 @@ export const PUT = defineHandler(
     useAuth("admin")
     let param = await bindJson(req, Param)
 
-    let houseExist = await db.query.House.findFirst({
+    let houseExist = await db().query.House.findFirst({
       where: eq(House.code, param.code),
     })
     if (houseExist) return sendErrors(409, "House already exist")
 
-    let house = await db.query.House.findFirst({
+    let house = await db().query.House.findFirst({
       where: eq(House.id, params.id),
     })
     if (!house) return sendErrors(404, "House not found")
@@ -30,7 +30,7 @@ export const PUT = defineHandler(
     house.code = param.code
     house.updatedAt = new Date()
 
-    await db.update(House).set(house).where(eq(House.id, params.id))
+    await db().update(House).set(house).where(eq(House.id, params.id))
     return sendData(200, toHouseResponse(house))
   }
 )

@@ -14,7 +14,7 @@ const Param = z.object({
 
 export const POST = defineHandler(async (req) => {
   const param = await bindJson(req, Param)
-  let roleExist = await db.query.Role.findFirst({
+  let roleExist = await db().query.Role.findFirst({
     where: or(eq(Role.code, param.code), eq(Role.name, param.name)),
   })
   if (roleExist) return sendErrors(409, "Role already exist")
@@ -24,6 +24,6 @@ export const POST = defineHandler(async (req) => {
     name: param.name,
   }
 
-  let [newRole] = await db.insert(Role).values(role).returning()
+  let [newRole] = await db().insert(Role).values(role).returning()
   return sendData(201, toRoleResponse(newRole))
 })
