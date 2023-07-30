@@ -56,7 +56,6 @@ CREATE TABLE IF NOT EXISTS "billing" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "cashflow" (
 	"id" bigserial PRIMARY KEY NOT NULL,
-	"billing_id" bigint NOT NULL,
 	"amount" bigint NOT NULL,
 	"movement" "cashflow_movement" NOT NULL,
 	"cashflow_type_id" bigint NOT NULL,
@@ -117,6 +116,8 @@ CREATE TABLE IF NOT EXISTS "payment" (
 	"billing_id" bigint NOT NULL,
 	"amount" bigint NOT NULL,
 	"payer_id" bigint NOT NULL,
+	"invoice" text,
+	"token" text,
 	"mode" "payment_mode" NOT NULL,
 	"status" "payment_status" NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
@@ -144,12 +145,6 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "billing" ADD CONSTRAINT "billing_house_id_house_id_fk" FOREIGN KEY ("house_id") REFERENCES "house"("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "cashflow" ADD CONSTRAINT "cashflow_billing_id_billing_id_fk" FOREIGN KEY ("billing_id") REFERENCES "billing"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

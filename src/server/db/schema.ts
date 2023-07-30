@@ -127,6 +127,8 @@ export const Payment = pgTable("payment", {
   payerId: bigint("payer_id", { mode: "number" })
     .notNull()
     .references(() => Occupant.id),
+  invoice: text("invoice"),
+  token: text("token"),
   mode: PaymentMode("mode").notNull(),
   status: PaymentStatus("status").notNull(),
   ...Timestamps,
@@ -148,9 +150,6 @@ export const CashflowMovement = pgEnum("cashflow_movement", [
 ])
 export const Cashflow = pgTable("cashflow", {
   id: bigserial("id", { mode: "number" }).primaryKey(),
-  billingId: bigint("billing_id", { mode: "number" })
-    .notNull()
-    .references(() => Billing.id),
   amount: bigint("amount", { mode: "number" }).notNull(),
   movement: CashflowMovement("movement").notNull(),
   cashflowTypeId: bigint("cashflow_type_id", { mode: "number" })
