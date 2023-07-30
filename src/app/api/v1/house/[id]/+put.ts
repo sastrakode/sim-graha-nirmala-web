@@ -10,6 +10,7 @@ import { z } from "zod"
 
 const Param = z.object({
   code: z.string(),
+  address: z.string(),
 })
 
 export const PUT = defineHandler(
@@ -28,6 +29,7 @@ export const PUT = defineHandler(
     if (!house) return sendErrors(404, "House not found")
 
     house.code = param.code
+    house.address = param.address
     house.updatedAt = new Date()
 
     await db().update(House).set(house).where(eq(House.id, params.id))

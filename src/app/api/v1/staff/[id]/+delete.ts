@@ -1,5 +1,5 @@
 import { db } from "@/server/db"
-import { Role, Staff } from "@/server/db/schema"
+import { Staff } from "@/server/db/schema"
 import { useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
 import { sendErrors, sendNoContent } from "@/server/web/response"
@@ -10,7 +10,7 @@ export const DELETE = defineHandler(
     useAuth("admin")
 
     let staff = await db().query.Staff.findFirst({
-      where: eq(Role.id, params.id),
+      where: eq(Staff.id, params.id),
     })
     if (!staff) return sendErrors(404, "Staff not found")
 
