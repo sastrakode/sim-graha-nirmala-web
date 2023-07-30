@@ -16,8 +16,8 @@ const Param = z.object({
 export const PUT = defineHandler(
   async (req, { params }: { params: { id: number } }) => {
     useAuth("admin")
-
     let param = await bindJson(req, Param)
+
     let role = await db.query.Role.findFirst({
       where: eq(Role.id, params.id),
     })
