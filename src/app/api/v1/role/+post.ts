@@ -1,6 +1,7 @@
 import { db } from "@/server/db"
 import { Role, TInsertRole } from "@/server/db/schema"
 import { toRoleResponse } from "@/server/models/responses/role"
+import { useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
 import { bindJson } from "@/server/web/request"
 import { sendData, sendErrors } from "@/server/web/response"
@@ -13,7 +14,9 @@ const Param = z.object({
 })
 
 export const POST = defineHandler(async (req) => {
+  useAuth("admin")
   const param = await bindJson(req, Param)
+
   let roleExist = await db().query.Role.findFirst({
     where: or(eq(Role.code, param.code), eq(Role.name, param.name)),
   })
