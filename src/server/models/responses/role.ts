@@ -1,4 +1,4 @@
-import { _Role } from "../../db/schema"
+import { TRole } from "../../db/schema"
 
 export type RoleResponse = {
   id: number
@@ -8,7 +8,7 @@ export type RoleResponse = {
   updated_at: Date | null
 }
 
-export function toRoleResponse(role?: _Role): RoleResponse | null {
+export function toRoleResponse(role?: TRole): RoleResponse | null {
   return role
     ? {
         id: role.id,

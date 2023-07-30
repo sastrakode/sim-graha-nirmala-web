@@ -1,4 +1,4 @@
-import { _Role, _Staff } from "../../db/schema"
+import { TRole, TStaff } from "../../db/schema"
 
 export type StaffResponse = {
   id: number
@@ -10,7 +10,7 @@ export type StaffResponse = {
   updated_at: Date | null
 }
 
-export function toStaffResponse(staff?: _Staff): StaffResponse | null {
+export function toStaffResponse(staff?: TStaff): StaffResponse | null {
   return staff
     ? {
         id: staff.id,

@@ -4,8 +4,9 @@ import { migrate } from "drizzle-orm/postgres-js/migrator"
 import postgres from "postgres"
 import * as schema from "./schema"
 import { config } from "../config"
+import { seed } from "./seed"
 
-const maxOpenConnections = os.cpus().length
+const maxOpenConnections = 2 * os.cpus().length
 const maxLifetimeConnections = 30 * 60
 
 const pool = postgres({
@@ -26,3 +27,5 @@ export const db = drizzle(pool, { logger: true, schema: schema })
 await migrate(db, {
   migrationsFolder: "./drizzle",
 })
+
+await seed()

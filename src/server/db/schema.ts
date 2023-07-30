@@ -16,8 +16,8 @@ export const House = pgTable("house", {
   updatedAt: timestamp("updated_at", { withTimezone: true }),
 })
 
-export type _House = InferModel<typeof House>
-export type _InsertHouse = InferModel<typeof House, "insert">
+export type THouse = InferModel<typeof House>
+export type TInsertHouse = InferModel<typeof House, "insert">
 
 export const Role = pgTable("role", {
   id: bigserial("id", { mode: "number" }).primaryKey(),
@@ -29,8 +29,8 @@ export const Role = pgTable("role", {
   updatedAt: timestamp("updated_at", { withTimezone: true }),
 })
 
-export type _Role = InferModel<typeof Role>
-export type _InsertRole = InferModel<typeof Role, "insert">
+export type TRole = InferModel<typeof Role>
+export type TInsertRole = InferModel<typeof Role, "insert">
 
 export const Staff = pgTable("staff", {
   id: bigserial("id", { mode: "number" }).primaryKey(),
@@ -47,5 +47,5 @@ export const Staff = pgTable("staff", {
   updatedAt: timestamp("updated_at", { withTimezone: true }),
 })
 
-export type _Staff = InferModel<typeof Staff>
-export type _InsertStaff = InferModel<typeof Staff, "insert">
+export type TStaff = InferModel<typeof Staff>
+export type TInsertStaff = InferModel<typeof Staff, "insert">
