@@ -1,4 +1,4 @@
-export const ROUTE_NAMES = {
+export const routeNames = {
   dashboard: "/dashboard",
   transaction: "/transaction",
   bill: "/bill",

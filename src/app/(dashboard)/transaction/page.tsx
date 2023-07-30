@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: "Transaksi - SIMGN"
 }
 
-export default function Transaction() {
+export default function TransactionPage() {
   return (
     <p>Hi Transaksi</p>
   )
