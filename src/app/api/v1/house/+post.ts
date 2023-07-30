@@ -10,6 +10,7 @@ import { z } from "zod"
 
 const Param = z.object({
   code: z.string(),
+  address: z.string(),
 })
 
 export const POST = defineHandler(async (req) => {
@@ -23,6 +24,7 @@ export const POST = defineHandler(async (req) => {
 
   let house: TInsertHouse = {
     code: param.code,
+    address: param.address,
   }
 
   let [newHouse] = await db().insert(House).values(house).returning()

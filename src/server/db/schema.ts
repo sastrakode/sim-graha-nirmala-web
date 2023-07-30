@@ -2,50 +2,162 @@ import { InferModel } from "drizzle-orm"
 import {
   bigint,
   bigserial,
+  boolean,
+  pgEnum,
   pgTable,
   text,
   timestamp,
 } from "drizzle-orm/pg-core"
 
+const Timestamps = {
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }),
+}
+
+export const StaffRole = pgEnum("staff_role", [
+  "admin",
+  "secretary",
+  "treasurer",
+  "security_guard",
+])
+export const Staff = pgTable("staff", {
+  id: bigserial("id", { mode: "number" }).primaryKey(),
+  role: StaffRole("role").notNull(),
+  name: text("name").notNull(),
+  email: text("email").unique(),
+  phone: text("phone").unique().notNull(),
+  password: text("password").notNull(),
+  ...Timestamps,
+})
+export type TStaff = InferModel<typeof Staff>
+export type TInsertStaff = InferModel<typeof Staff, "insert">
+
+export const Announcement = pgTable("announcement", {
+  id: bigserial("id", { mode: "number" }).primaryKey(),
+  title: text("title").notNull(),
+  content: text("content").notNull(),
+  authorId: bigint("author_id", { mode: "number" })
+    .notNull()
+    .references(() => Staff.id),
+  ...Timestamps,
+})
+export type TAnnouncement = InferModel<typeof Announcement>
+export type TInsertAnnouncement = InferModel<typeof Announcement, "insert">
+
 export const House = pgTable("house", {
   id: bigserial("id", { mode: "number" }).primaryKey(),
   code: text("code").unique().notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .notNull()
-    .defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }),
+  address: text("address").notNull(),
+  ...Timestamps,
 })
-
 export type THouse = InferModel<typeof House>
 export type TInsertHouse = InferModel<typeof House, "insert">
 
-export const Role = pgTable("role", {
+export const OccupantRole = pgEnum("occupant_role", ["owner", "renter"])
+export const Occupant = pgTable("occupant", {
   id: bigserial("id", { mode: "number" }).primaryKey(),
-  code: text("code").unique().notNull(),
-  name: text("name").unique().notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true })
+  role: OccupantRole("role").notNull(),
+  houseId: bigint("house_id", { mode: "number" })
     .notNull()
-    .defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }),
-})
-
-export type TRole = InferModel<typeof Role>
-export type TInsertRole = InferModel<typeof Role, "insert">
-
-export const Staff = pgTable("staff", {
-  id: bigserial("id", { mode: "number" }).primaryKey(),
-  roleId: bigint("role_id", { mode: "number" })
-    .notNull()
-    .references(() => Role.id),
+    .references(() => House.id),
   name: text("name").notNull(),
-  email: text("email").unique().notNull(),
+  email: text("email").unique(),
   phone: text("phone").unique().notNull(),
   password: text("password").notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .notNull()
-    .defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }),
+  ...Timestamps,
 })
+export type TOccupant = InferModel<typeof Occupant>
+export type TInsertOccupant = InferModel<typeof Occupant, "insert">
 
-export type TStaff = InferModel<typeof Staff>
-export type TInsertStaff = InferModel<typeof Staff, "insert">
+export const Gender = pgEnum("gender", ["male", "female"])
+
+export const OccupantMember = pgTable("occupant_member", {
+  id: bigserial("id", { mode: "number" }).primaryKey(),
+  occupantId: bigint("occupant_id", { mode: "number" })
+    .notNull()
+    .references(() => Occupant.id),
+  name: text("name").notNull(),
+  email: text("email").unique(),
+  phone: text("phone").unique().notNull(),
+  identityNumber: text("identity_number").unique().notNull(),
+  birthday: timestamp("birthday").notNull(),
+  gender: Gender("gender").notNull(),
+  ...Timestamps,
+})
+export type TOccupantMember = InferModel<typeof OccupantMember>
+export type TInsertOccupantMember = InferModel<typeof OccupantMember, "insert">
+
+export const Billing = pgTable("billing", {
+  id: bigserial("id", { mode: "number" }).primaryKey(),
+  houseId: bigint("house_id", { mode: "number" })
+    .notNull()
+    .references(() => House.id),
+  period: timestamp("period", { withTimezone: true }).notNull(),
+  amount: bigint("amount", { mode: "number" }).notNull(),
+  isPaid: boolean("is_paid").notNull(),
+  extraCharge: bigint("extra_charge", { mode: "number" }),
+  ...Timestamps,
+})
+export type TBilling = InferModel<typeof Billing>
+export type TInsertBilling = InferModel<typeof Billing, "insert">
+
+export const PaymentMode = pgEnum("payment_mode", ["transfer", "cash"])
+export const PaymentStatus = pgEnum("payment_status", [
+  "pending",
+  "capture",
+  "settlement",
+  "deny",
+  "cancel",
+  "expire",
+  "failure",
+  "refund",
+  "chargeback",
+  "partial_refund",
+  "partial_chargeback",
+  "authorize",
+])
+export const Payment = pgTable("payment", {
+  id: bigserial("id", { mode: "number" }).primaryKey(),
+  billingId: bigint("billing_id", { mode: "number" })
+    .notNull()
+    .references(() => Billing.id),
+  amount: bigint("amount", { mode: "number" }).notNull(),
+  payerId: bigint("payer_id", { mode: "number" })
+    .notNull()
+    .references(() => Occupant.id),
+  mode: PaymentMode("mode").notNull(),
+  status: PaymentStatus("status").notNull(),
+  ...Timestamps,
+})
+export type TPayment = InferModel<typeof Payment>
+export type TInsertPayment = InferModel<typeof Payment, "insert">
+
+export const CashflowType = pgTable("cashflow_type", {
+  id: bigserial("id", { mode: "number" }).primaryKey(),
+  name: text("name").unique().notNull(),
+  ...Timestamps,
+})
+export type TCashflowType = InferModel<typeof CashflowType>
+export type TInsertCashflowType = InferModel<typeof CashflowType, "insert">
+
+export const CashflowMovement = pgEnum("cashflow_movement", [
+  "income",
+  "outcome",
+])
+export const Cashflow = pgTable("cashflow", {
+  id: bigserial("id", { mode: "number" }).primaryKey(),
+  billingId: bigint("billing_id", { mode: "number" })
+    .notNull()
+    .references(() => Billing.id),
+  amount: bigint("amount", { mode: "number" }).notNull(),
+  movement: CashflowMovement("movement").notNull(),
+  cashflowTypeId: bigint("cashflow_type_id", { mode: "number" })
+    .notNull()
+    .references(() => CashflowType.id),
+  description: text("description"),
+  ...Timestamps,
+})
+export type TCashflow = InferModel<typeof Cashflow>
+export type TInsertCashflow = InferModel<typeof Cashflow, "insert">

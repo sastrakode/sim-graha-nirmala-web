@@ -1,7 +1,13 @@
 import { ApiError } from "../models/exceptions/api"
 import { getToken, verifyToken } from "./token"
 
-export type Role = "admin" | "secretary" | "treasurer" | "security_guard"
+export type Role =
+  | "admin"
+  | "secretary"
+  | "treasurer"
+  | "security_guard"
+  | "owner"
+  | "renter"
 
 export function useAuth(...roles: Role[]) {
   const token = getToken()
