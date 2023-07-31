@@ -22,9 +22,9 @@ const pool = postgres({
   idle_timeout: maxLifetimeConnections,
 })
 
-let connection: PostgresJsDatabase<typeof schema>
+export let connection: PostgresJsDatabase<typeof schema>
 
-async function setup() {
+async function setupDb() {
   await migrate(connection, {
     migrationsFolder: "./drizzle",
   })
@@ -36,7 +36,16 @@ export function db() {
   if (connection) return connection
 
   connection = drizzle(pool, { logger: true, schema: schema })
-  setup().then(() => console.log("database setup complete"))
+  setupDb()
+    .then(() => {
+      console.log("database setup success")
+    })
+    .catch((err) => {
+      console.error("database setup failed:", err)
+    })
+    .finally(() => {
+      console.log("database setup complete")
+    })
 
   return connection
 }
