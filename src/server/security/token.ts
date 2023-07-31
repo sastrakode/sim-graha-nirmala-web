@@ -28,8 +28,8 @@ export function verifyToken(token: string) {
   }
 }
 
-export function getToken() {
-  let authorization = headers().get("authorization")
+export function getToken(req: Request) {
+  let authorization = req.headers.get("authorization")
   if (!authorization) {
     throwUnauthorized()
   }

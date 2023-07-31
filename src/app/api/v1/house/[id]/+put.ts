@@ -15,7 +15,7 @@ const Param = z.object({
 
 export const PUT = defineHandler(
   async (req, { params }: { params: { id: number } }) => {
-    useAuth("admin")
+    useAuth(req, "admin")
     let param = await bindJson(req, Param)
 
     let houseExist = await db().query.House.findFirst({
