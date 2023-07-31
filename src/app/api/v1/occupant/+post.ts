@@ -11,7 +11,7 @@ import { z } from "zod"
 
 const Param = z.object({
   role: z.enum(["owner", "renter"]),
-  houseId: z.number(),
+  house_id: z.number(),
   name: z.string(),
   email: z.string().nullable(),
   phone: z.string(),
@@ -23,13 +23,13 @@ export const POST = defineHandler(async (req) => {
   const param = await bindJson(req, Param)
 
   const isHouseExists = await db().query.House.findFirst({
-    where: eq(House.id, param.houseId),
+    where: eq(House.id, param.house_id),
   })
   if (!isHouseExists) return sendErrors(404, "House not found")
 
   const isHouseTaken = await db().query.Occupant.findFirst({
     where: and(
-      eq(Occupant.houseId, param.houseId),
+      eq(Occupant.houseId, param.house_id),
       eq(Occupant.role, param.role)
     ),
   })
@@ -49,7 +49,7 @@ export const POST = defineHandler(async (req) => {
 
   const occupant: TInsertOccupant = {
     role: param.role,
-    houseId: param.houseId,
+    houseId: param.house_id,
     name: param.name,
     email: param.email,
     phone: param.phone,
