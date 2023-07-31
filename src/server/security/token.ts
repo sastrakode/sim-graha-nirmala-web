@@ -9,7 +9,7 @@ type Claim = {
   role: Role
 }
 
-export function generateToken(claim: { sub: string; role: string }) {
+export function generateToken(claim: { sub: string; role: Role }) {
   return jwt.sign(
     {
       sub: claim.sub,
