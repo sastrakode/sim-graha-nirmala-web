@@ -16,16 +16,16 @@ import { Input } from "@/components/ui/input"
 
 const formSchema = z.object({
   email: z.string().min(1, "Email harus diisi").email("Email tidak valid"),
-  password: z.string().min(1, "Kata Sandi harus diisi")
+  password: z.string().min(1, "Kata Sandi harus diisi"),
 })
 
 export default function LoginForm() {
-   // 1. Define your form.
+  // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
-      password: ""
+      password: "",
     },
   })
 
@@ -73,4 +73,3 @@ export default function LoginForm() {
     </Form>
   )
 }
-

@@ -1,11 +1,9 @@
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Profil - SIMGN"
+  title: "Profil - SIMGN",
 }
 
 export default function Profile() {
-  return (
-    <p>Hi Profil</p>
-  )
+  return <p>Hi Profil</p>
 }

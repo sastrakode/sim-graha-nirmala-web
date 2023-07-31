@@ -6,15 +6,17 @@ const OverviewCard = ({
   title,
   total,
   icon,
-  className
+  className,
 }: {
-  title: string,
-  total: number,
+  title: string
+  total: number
   icon: string
   className: string
 }) => {
   return (
-    <div className={`${className} flex items-center gap-[1.125rem] px-4 pt-5 pb-4 rounded-3xl text-white sm:flex-col sm:justify-between sm:items-start sm:w-fit`}>
+    <div
+      className={`${className} flex items-center gap-[1.125rem] px-4 pt-5 pb-4 rounded-3xl text-white sm:flex-col sm:justify-between sm:items-start sm:w-fit`}
+    >
       <div className="">
         <Image src={`/images/${icon}`} alt={title} width={42} height={42} />
       </div>

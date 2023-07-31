@@ -1,5 +1,4 @@
-import { Announcement, Transaction } from "./model";
-
+import { Announcement, Transaction } from "./model"
 
 export const dummyTransactions: Transaction[] = [
   {
@@ -9,8 +8,8 @@ export const dummyTransactions: Transaction[] = [
     amount: 52000,
     flow: "DEBIT",
     cashflow: {
-      title: "Jajan gotong royong"
-    }
+      title: "Jajan gotong royong",
+    },
   },
   {
     id: 1,
@@ -19,15 +18,15 @@ export const dummyTransactions: Transaction[] = [
     amount: 78000,
     flow: "DEBIT",
     cashflow: {
-      title: "Jajan kegiatan rutin olahraga sore"
-    }
+      title: "Jajan kegiatan rutin olahraga sore",
+    },
   },
   {
     id: 2,
     belong_type: "BILLING",
     created_at: "2023-07-30",
     amount: 150000,
-    flow: "CREDIT"
+    flow: "CREDIT",
   },
   {
     id: 3,
@@ -36,8 +35,8 @@ export const dummyTransactions: Transaction[] = [
     amount: 100000,
     flow: "DEBIT",
     cashflow: {
-      title: "Jajan pos ronda"
-    }
+      title: "Jajan pos ronda",
+    },
   },
   {
     id: 4,
@@ -46,8 +45,8 @@ export const dummyTransactions: Transaction[] = [
     amount: 47000,
     flow: "DEBIT",
     cashflow: {
-      title: "Jajan senam Jum'at"
-    }
+      title: "Jajan senam Jum'at",
+    },
   },
 ]
 
@@ -56,12 +55,12 @@ export const dummyAnnouncements: Announcement[] = [
     id: 0,
     title: "Perumahan",
     body: "Alhamdulillah",
-    created_at: "2023-07-30"
+    created_at: "2023-07-30",
   },
   {
     id: 1,
     title: "Perumahan",
     body: "Ujung dunia",
-    created_at: "2023-07-30"
-  }
+    created_at: "2023-07-30",
+  },
 ]
