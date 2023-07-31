@@ -10,7 +10,6 @@ import { eq } from "drizzle-orm"
 import { z } from "zod"
 
 const Param = z.object({
-  role_id: z.number(),
   name: z.string(),
   email: z.string().email().nullable(),
   phone: z.string(),
