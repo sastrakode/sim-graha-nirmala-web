@@ -1,0 +1,61 @@
+import { db } from "@/server/db"
+import { House, Occupant, TInsertOccupant } from "@/server/db/schema"
+import { toOccupantResponse } from "@/server/models/responses/occupant"
+import { useAuth } from "@/server/security/auth"
+import { hashPassword } from "@/server/security/password"
+import { defineHandler } from "@/server/web/handler"
+import { bindJson } from "@/server/web/request"
+import { sendData, sendErrors } from "@/server/web/response"
+import { and, eq } from "drizzle-orm"
+import { z } from "zod"
+
+const Param = z.object({
+  role: z.enum(["owner", "renter"]),
+  houseId: z.number(),
+  name: z.string(),
+  email: z.string().nullable(),
+  phone: z.string(),
+  password: z.string().min(8),
+})
+
+export const POST = defineHandler(async (req) => {
+  useAuth("admin")
+  const param = await bindJson(req, Param)
+
+  const isHouseExists = await db().query.House.findFirst({
+    where: eq(House.id, param.houseId),
+  })
+  if (!isHouseExists) return sendErrors(404, "House not found")
+
+  const isHouseTaken = await db().query.Occupant.findFirst({
+    where: and(
+      eq(Occupant.houseId, param.houseId),
+      eq(Occupant.role, param.role)
+    ),
+  })
+  if (isHouseTaken) return sendErrors(409, "House already taken")
+
+  if (param.email) {
+    let occupantExists = await db().query.Staff.findFirst({
+      where: eq(Occupant.email, param.email),
+    })
+    if (occupantExists) return sendErrors(409, "Email already registered")
+  }
+
+  let occupantExists = await db().query.Staff.findFirst({
+    where: eq(Occupant.phone, param.phone),
+  })
+  if (occupantExists) return sendErrors(409, "Phone already registered")
+
+  const occupant: TInsertOccupant = {
+    role: param.role,
+    houseId: param.houseId,
+    name: param.name,
+    email: param.email,
+    phone: param.phone,
+    password: await hashPassword(param.password),
+  }
+
+  let [newOccupant] = await db().insert(Occupant).values(occupant).returning()
+  return sendData(201, toOccupantResponse(newOccupant))
+})
