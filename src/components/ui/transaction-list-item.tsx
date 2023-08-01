@@ -32,9 +32,7 @@ const TransactionListItem = ({
           />
         </div>
         <div className="ml-4">
-          <p className="txt-b2 md:text-lead text-primary">
-            {title[belongType]}
-          </p>
+          <p className="txt-b2 md:txt-lead text-primary">{title[belongType]}</p>
           <p className="text-xs">{dateFormat(date, true)}</p>
         </div>
       </div>

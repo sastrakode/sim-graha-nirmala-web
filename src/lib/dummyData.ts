@@ -1,4 +1,4 @@
-import { Announcement, Transaction } from "./model"
+import { Announcement, Transaction, TransactionSummary } from "./model"
 
 export const dummyTransactions: Transaction[] = [
   {
@@ -64,3 +64,9 @@ export const dummyAnnouncements: Announcement[] = [
     created_at: "2023-07-30",
   },
 ]
+
+export const dummyTransactionSummary: TransactionSummary = {
+  total: 32_080_000,
+  credit: 60_000_000,
+  debit: 27_920_000,
+}

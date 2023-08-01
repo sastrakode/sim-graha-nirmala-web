@@ -30,19 +30,19 @@ export const POST = defineHandler(async (req) => {
   const isHouseTaken = await db().query.Occupant.findFirst({
     where: and(
       eq(Occupant.houseId, param.house_id),
-      eq(Occupant.role, param.role)
+      eq(Occupant.role, param.role),
     ),
   })
   if (isHouseTaken) return sendErrors(409, "House already taken")
 
   if (param.email) {
-    let occupantExists = await db().query.Staff.findFirst({
+    let occupantExists = await db().query.Occupant.findFirst({
       where: eq(Occupant.email, param.email),
     })
     if (occupantExists) return sendErrors(409, "Email already registered")
   }
 
-  let occupantExists = await db().query.Staff.findFirst({
+  let occupantExists = await db().query.Occupant.findFirst({
     where: eq(Occupant.phone, param.phone),
   })
   if (occupantExists) return sendErrors(409, "Phone already registered")

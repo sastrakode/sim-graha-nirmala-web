@@ -31,7 +31,7 @@ export const POST = defineHandler(async (req) => {
 
   let isCorrectPassword = await comparePassword(
     param.password,
-    occupant.password
+    occupant.password,
   )
   if (!isCorrectPassword) return sendErrors(401, "Password incorrect")
 
