@@ -34,20 +34,37 @@ export const Staff = pgTable("staff", {
 export type TStaff = InferModel<typeof Staff>
 export type TInsertStaff = InferModel<typeof Staff, "insert">
 
+export const AnnouncementCategory = pgTable("announcement_category", {
+  id: bigserial("id", { mode: "number" }).primaryKey(),
+  name: text("name").unique().notNull(),
+  ...Timestamps,
+})
+export type TAnnouncementCategory = InferModel<typeof AnnouncementCategory>
+export type TInsertAnnouncementCategory = InferModel<
+  typeof AnnouncementCategory,
+  "insert"
+>
+
 export const Announcement = pgTable("announcement", {
   id: bigserial("id", { mode: "number" }).primaryKey(),
   title: text("title").notNull(),
   content: text("content").notNull(),
+  announcementCategoryId: bigint("announcement_category_id", { mode: "number" })
+    .notNull()
+    .references(() => AnnouncementCategory.id),
   authorId: bigint("author_id", { mode: "number" })
     .notNull()
     .references(() => Staff.id),
   ...Timestamps,
 })
 export const announcementRelations = relations(Announcement, ({ one }) => ({
+  announcementCategory: one(AnnouncementCategory, {
+    fields: [Announcement.announcementCategoryId],
+    references: [AnnouncementCategory.id],
+  }),
   author: one(Staff, {
     fields: [Announcement.authorId],
     references: [Staff.id],
-    relationName: "author",
   }),
 }))
 export type TAnnouncement = InferModel<typeof Announcement>

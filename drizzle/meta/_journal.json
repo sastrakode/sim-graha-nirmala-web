@@ -8,6 +8,13 @@
       "when": 1690744842804,
       "tag": "0000_ancient_nighthawk",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1691774376717,
+      "tag": "0001_flaky_golden_guardian",
+      "breakpoints": true
     }
   ]
 }

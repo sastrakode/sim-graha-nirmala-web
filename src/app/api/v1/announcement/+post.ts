@@ -10,6 +10,7 @@ import { z } from "zod"
 const Param = z.object({
   title: z.string(),
   content: z.string(),
+  announcement_category_id: z.number(),
 })
 
 export const POST = defineHandler(async (req) => {
@@ -20,6 +21,7 @@ export const POST = defineHandler(async (req) => {
   const announcement: TInsertAnnouncement = {
     title: param.title,
     content: param.content,
+    announcementCategoryId: param.announcement_category_id,
     authorId: staff.id,
   }
 
