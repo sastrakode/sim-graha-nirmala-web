@@ -1,4 +1,4 @@
-import { InferModel } from "drizzle-orm"
+import { InferModel, relations } from "drizzle-orm"
 import {
   bigint,
   bigserial,
@@ -43,6 +43,13 @@ export const Announcement = pgTable("announcement", {
     .references(() => Staff.id),
   ...Timestamps,
 })
+export const announcementRelations = relations(Announcement, ({ one }) => ({
+  author: one(Staff, {
+    fields: [Announcement.authorId],
+    references: [Staff.id],
+    relationName: "author",
+  }),
+}))
 export type TAnnouncement = InferModel<typeof Announcement>
 export type TInsertAnnouncement = InferModel<typeof Announcement, "insert">
 
