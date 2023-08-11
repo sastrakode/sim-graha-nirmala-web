@@ -20,4 +20,3 @@ EXCEPTION
         NULL;
 END
 $$;
-
