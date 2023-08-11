@@ -8,6 +8,7 @@ import { eq } from "drizzle-orm"
 export const GET = defineHandler(async () => {
   const announcements = await db().query.Announcement.findMany({
     with: {
+      announcementCategory: true,
       author: true,
     },
   })
