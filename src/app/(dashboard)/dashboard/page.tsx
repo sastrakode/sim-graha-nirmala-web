@@ -1,5 +1,6 @@
 import { Metadata } from "next"
 import Link from "next/link"
+import { cookies } from "next/headers"
 
 import OverviewCard from "@/components/ui/overview-card"
 import TransactionListItem from "@/components/ui/transaction-list-item"
@@ -7,6 +8,7 @@ import { dummyAnnouncements, dummyTransactions } from "@/lib/dummyData"
 import { Announcement, Transaction } from "@/lib/model"
 import { Button } from "@/components/ui/button"
 import AnnouncementBox from "@/components/ui/announcement-box"
+import api from "@/lib/api"
 
 export const metadata: Metadata = {
   title: "Dashboard - SIMGN",

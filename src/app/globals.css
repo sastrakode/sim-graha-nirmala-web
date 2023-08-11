@@ -116,7 +116,7 @@
 }
 
 @layer components {
-  .text-lead {
+  .txt-lead {
     @apply text-sm font-bold;
   }
 

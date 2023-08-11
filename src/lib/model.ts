@@ -38,3 +38,20 @@ export interface Announcement {
   title?: string
   updated_at?: string
 }
+
+export interface Occupant {
+  id?: number
+  name?: string
+  role?: string
+  createdAt?: Date
+  updatedAt?: Date
+  houseId?: number
+  email?: string
+  phone?: string
+}
+
+export interface TransactionSummary {
+  total?: number
+  credit?: number
+  debit?: number
+}

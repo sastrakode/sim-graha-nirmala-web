@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Login - SIMGN",
 }
 
-export default function Login() {
+export default function LoginPage() {
   return (
     <div className="flex flex-col justify-center items-center px-6 h-screen bg-primary">
       <h2 className="text-center text-white">SIM Graha Nirmala</h2>

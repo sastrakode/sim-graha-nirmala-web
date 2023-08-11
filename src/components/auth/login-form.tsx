@@ -13,27 +13,39 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { occupantLogin } from "@/lib/api"
+import { useRouter } from "next/navigation"
+import { getCookies, setCookie } from "cookies-next"
 
 const formSchema = z.object({
-  email: z.string().min(1, "Email harus diisi").email("Email tidak valid"),
+  phone: z.string().min(1, "No. Telepon harus diisi"),
   password: z.string().min(1, "Kata Sandi harus diisi"),
 })
 
 export default function LoginForm() {
-  // 1. Define your form.
+  const router = useRouter()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      phone: "",
       password: "",
     },
   })
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const res = await occupantLogin(values)
+      const data = res.data
+
+      if (data.token) {
+        setCookie("token", data.token)
+        setCookie("userId", data.occupant.id)
+        console.log(getCookies())
+        router.replace("/dashboard")
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -41,12 +53,12 @@ export default function LoginForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="email"
+          name="phone"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>No. Telepon</FormLabel>
               <FormControl>
-                <Input placeholder="johndoe@email.com" {...field} />
+                <Input {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -66,7 +78,6 @@ export default function LoginForm() {
           )}
         />
         <div className="flex justify-center">
-          {/* Button Masih jadi putih */}
           <Button type="submit">Login</Button>
         </div>
       </form>

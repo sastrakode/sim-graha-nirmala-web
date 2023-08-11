@@ -1,6 +1,6 @@
 export const routeNames = {
   dashboard: "/dashboard",
-  transaction: "/transaction",
-  bill: "/bill",
-  profile: "/profile",
+  transaction: "/dashboard/transaction",
+  bill: "/dashboard/bill",
+  profile: "/dashboard/profile",
 }
