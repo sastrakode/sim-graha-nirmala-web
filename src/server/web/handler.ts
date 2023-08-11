@@ -39,14 +39,17 @@ interface TransactionHandler<T = any> {
 
 export function defineTransactionHandler(handler: TransactionHandler) {
   return async (req: NextRequest, event: { params: any }) => {
-    try {
-      return await db().transaction(async (tx) => await handler(tx, req, event))
-    } catch (error) {
-      if (error instanceof ApiError) {
-        return sendErrors(error.code, error.errors)
-      }
+    return await db().transaction(async (tx) => {
+      try {
+        return await handler(tx, req, event)
+      } catch (error) {
+        tx.rollback()
+        if (error instanceof ApiError) {
+          return sendErrors(error.code, error.errors)
+        }
 
-      return sendErrorServer()
-    }
+        return sendErrorServer()
+      }
+    })
   }
 }
