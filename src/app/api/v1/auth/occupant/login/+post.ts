@@ -14,7 +14,7 @@ import { z } from "zod"
 
 const Param = z.object({
   phone: z.string(),
-  password: z.string().min(8),
+  password: z.string(),
 })
 
 type Result = {
