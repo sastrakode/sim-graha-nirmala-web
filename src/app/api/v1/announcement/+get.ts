@@ -17,6 +17,7 @@ export const GET = defineHandler(async () => {
     200,
     announcements.map((announcement) =>
       toAnnouncementResponse(announcement, {
+        announcementCategory: announcement.announcementCategory,
         author: announcement.author,
       }),
     ),
