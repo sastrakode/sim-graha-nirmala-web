@@ -1,6 +1,5 @@
 import { Metadata } from "next"
 import Link from "next/link"
-import { cookies } from "next/headers"
 
 import OverviewCard from "@/components/ui/overview-card"
 import TransactionListItem from "@/components/ui/transaction-list-item"
@@ -8,7 +7,6 @@ import { dummyAnnouncements, dummyTransactions } from "@/lib/dummyData"
 import { Announcement, Transaction } from "@/lib/model"
 import { Button } from "@/components/ui/button"
 import AnnouncementBox from "@/components/ui/announcement-box"
-import api from "@/lib/api"
 
 export const metadata: Metadata = {
   title: "Dashboard - SIMGN",
@@ -20,7 +18,7 @@ export default function DashboardPage() {
   const announcements: Announcement[] = dummyAnnouncements
 
   return (
-    <div className="flex flex-col gap-[1.125rem] lg:flex-row lg:gap-8">
+    <div className="flex flex-col gap-[1.125rem] m-6 lg:flex-row lg:gap-8">
       <div className="basis-1/2">
         <section className="">
           <h6>Overview</h6>
@@ -91,7 +89,7 @@ export default function DashboardPage() {
             )}
           </div>
           <div className="flex justify-center mt-8">
-            <Link href="/transaction">
+            <Link href="/dashboard/transaction">
               <Button variant="outline" size="sm">
                 LIHAT SEMUA
               </Button>

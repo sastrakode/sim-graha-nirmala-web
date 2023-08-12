@@ -3,6 +3,9 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { useForm } from "react-hook-form"
+import { useRouter } from "next/navigation"
+import { setCookie } from "cookies-next"
+
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -13,9 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { occupantLogin } from "@/lib/api"
-import { useRouter } from "next/navigation"
-import { getCookies, setCookie } from "cookies-next"
+import { fetchErrorString, occupantLogin } from "@/lib/api"
 
 const formSchema = z.object({
   phone: z.string().min(1, "No. Telepon harus diisi"),
@@ -33,18 +34,29 @@ export default function LoginForm() {
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      const res = await occupantLogin(values)
-      const data = res.data
-
-      if (data.token) {
-        setCookie("token", data.token)
-        setCookie("userId", data.occupant.id)
-        console.log(getCookies())
-        router.replace("/dashboard")
+    const res = await occupantLogin(values)
+    if (fetchErrorString in res) {
+      if (res.errors[0].includes("Phone")) {
+        form.setError("phone", {
+          type: "manual",
+          message: "No. Hp tidak terdaftar",
+        })
+      } else if (res.errors[0].includes("Password")) {
+        form.setError("password", {
+          type: "manual",
+          message: "Password salah",
+        })
       }
-    } catch (error) {
-      console.log(error)
+
+      return
+    }
+
+    if (res.token) {
+      setCookie("token", res.token)
+      setCookie("userId", res.occupant.id)
+      setCookie("houseId", res.occupant.houseId)
+
+      router.replace("/dashboard")
     }
   }
 

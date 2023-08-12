@@ -21,28 +21,28 @@ const TransactionListItem = ({
   }
 
   return (
-    <div className="flex items-center flex-wrap">
-      <div className="flex mr-auto items-center">
-        <div className="rounded-full p-4 aspect-square flex items-center shadow-md">
-          <Image
-            src="/images/money.svg"
-            alt="Transaksi"
-            width={27}
-            height={16}
-          />
-        </div>
-        <div className="ml-4">
-          <p className="txt-b2 md:txt-lead text-primary">{title[belongType]}</p>
-          <p className="text-xs">{dateFormat(date, true)}</p>
+    <div className="flex sm:items-center gap-4">
+      <div className="rounded-full h-[1.875rem] p-1 sm:p-2 flex items-center shadow-simgn sm:h-[2.6875rem]">
+        <div className="relative w-[1.375rem] h-[0.6875rem] sm:w-[1.6875rem] sm:h-4">
+          <Image src="/images/money.svg" alt="Transaksi" fill={true} />
         </div>
       </div>
-      <div
-        className={
-          `txt-b2 flex justify-end min-w-[135px] md:min-w-[165px]` +
-          (flow === "CREDIT" ? " text-success" : " text-destructive")
-        }
-      >
-        <h6>{(flow === "DEBIT" ? "- " : "+ ") + `${numberFormat(amount)}`}</h6>
+      <div className="flex justify-between grow flex-wrap">
+        <div className="">
+          <p className="txt-tiny sm:txt-lead text-primary">
+            {title[belongType]}
+          </p>
+          <p className="text-[0.5rem] sm:text-xs text-gray-400">
+            {dateFormat(date, true)}
+          </p>
+        </div>
+        <p
+          className={`justify-self-end text-[0.625rem] sm:text-base font-bold ${
+            flow === "CREDIT" ? " text-success" : " text-destructive"
+          }`}
+        >
+          {(flow === "DEBIT" ? "- " : "+ ") + `${numberFormat(amount)}`}
+        </p>
       </div>
     </div>
   )

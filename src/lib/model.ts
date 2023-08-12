@@ -55,3 +55,35 @@ export interface TransactionSummary {
   credit?: number
   debit?: number
 }
+
+export interface Bill {
+  id?: number
+  status?: string
+  created_at?: string
+  updated_at?: string
+  amount?: number
+}
+
+export interface Occupant {
+  id?: number
+  name?: string
+  role?: string
+  created_at?: Date
+  updated_at?: Date
+  houseId?: number
+  email?: string
+  phone?: string
+}
+
+export interface OccupantLogin {
+  token: string
+  occupant: Occupant
+}
+
+export interface House {
+  id?: number
+  code?: string
+  address?: string
+  created_at?: Date
+  updated_at?: Date
+}

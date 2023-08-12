@@ -2,8 +2,9 @@ import { Metadata } from "next"
 
 import TransactionSummaryCard from "@/components/ui/transaction-summary-card"
 
-import { dummyTransactionSummary } from "@/lib/dummyData"
-import { numberFormat } from "@/lib/utils"
+import { dummyTransactionSummary, dummyTransactions } from "@/lib/dummyData"
+import { Transaction } from "@/lib/model"
+import TransactionTable from "@/components/ui/transaction-table"
 
 export const metadata: Metadata = {
   title: "Transaksi - SIMGN",
@@ -11,10 +12,14 @@ export const metadata: Metadata = {
 
 export default function TransactionPage() {
   const transactionSummary = dummyTransactionSummary
+  const transactions: Transaction[] = dummyTransactions
 
   return (
-    <div className="">
+    <div className="m-6">
       <TransactionSummaryCard transactionSummary={transactionSummary} />
+      <div className="bg-white mt-8 rounded-3xl">
+        <TransactionTable transactions={transactions} />
+      </div>
     </div>
   )
 }

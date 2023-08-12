@@ -1,4 +1,4 @@
-import { Announcement, Transaction, TransactionSummary } from "./model"
+import { Announcement, Bill, Transaction, TransactionSummary } from "./model"
 
 export const dummyTransactions: Transaction[] = [
   {
@@ -70,3 +70,12 @@ export const dummyTransactionSummary: TransactionSummary = {
   credit: 60_000_000,
   debit: 27_920_000,
 }
+
+export const dummyBillHistory: Bill[] = [
+  {
+    id: 1,
+    status: "SETTLEMENT",
+    created_at: "2023-07-30",
+    amount: 150_000,
+  },
+]
