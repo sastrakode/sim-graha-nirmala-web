@@ -1,8 +1,8 @@
 const pageName: { [key: string]: string } = {
-  "/dashboard": "Dashboard",
-  "/dashboard/transaction": "Transaksi",
-  "/dashboard/bill": "Tagihan",
-  "/dashboard/profile": "Profil",
+  "/app/dashboard": "Dashboard",
+  "/app/transaction": "Transaksi",
+  "/app/bill": "Tagihan",
+  "/app/profile": "Profil",
 }
 
 const Navbar = ({ currentRoute }: { currentRoute: string }) => {

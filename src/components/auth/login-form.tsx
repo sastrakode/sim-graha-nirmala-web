@@ -67,7 +67,7 @@ export default function LoginForm({ role }: { role: LoginRole }) {
       if ("occupant" in res) {
         setCookie("userId", res.occupant.id)
         setCookie("houseId", res.occupant.houseId)
-        router.replace("/dashboard")
+        router.replace("/app/dashboard")
       } else {
         setCookie("userId", res.staff.id)
         router.replace("/admin")
