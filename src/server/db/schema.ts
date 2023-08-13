@@ -166,6 +166,9 @@ export const CashflowMovement = pgEnum("cashflow_movement", [
 ])
 export const Cashflow = pgTable("cashflow", {
   id: bigserial("id", { mode: "number" }).primaryKey(),
+  authorId: bigint("author_id", { mode: "number" })
+    .notNull()
+    .references(() => Staff.id),
   amount: bigint("amount", { mode: "number" }).notNull(),
   movement: CashflowMovement("movement").notNull(),
   title: text("title").notNull(),
