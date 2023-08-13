@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken"
 import { config } from "../config"
-import { Role, throwUnauthorized } from "./auth"
-import { headers } from "next/headers"
+import { Role, RoleType, throwUnauthorized } from "./auth"
 
 type Claim = {
   sub: string
@@ -9,14 +8,19 @@ type Claim = {
   role: Role
 }
 
-export function generateToken(claim: { sub: string; role: Role }) {
+export function generateToken(claim: {
+  sub: string
+  role: Role
+  roleType: RoleType
+}) {
   return jwt.sign(
     {
       sub: claim.sub,
       role: claim.role,
+      role_type: claim.roleType,
     },
     config.jwt.secret,
-    { expiresIn: config.jwt.expiresIn }
+    { expiresIn: config.jwt.expiresIn },
   )
 }
 

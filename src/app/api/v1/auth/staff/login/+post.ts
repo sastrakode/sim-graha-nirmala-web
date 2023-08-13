@@ -32,6 +32,7 @@ export const POST = defineHandler(async (req) => {
   let token = generateToken({
     sub: staff.id.toString(),
     role: staff.role,
+    roleType: "staff",
   })
 
   const result: Result = {
