@@ -1,4 +1,5 @@
 import { db } from "@/server/db"
+import { useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
 import { sendData } from "@/server/web/response"
 import { sql } from "drizzle-orm"
@@ -7,7 +8,7 @@ type Response = {
   total_income: number
   total_outcome: number
   total: number
-  cashflows: {
+  transactions: {
     title: string
     created_at: Date
     amount: number
@@ -15,7 +16,9 @@ type Response = {
   }[]
 }
 
-export const GET = defineHandler(async () => {
+export const GET = defineHandler(async (req) => {
+  useAuth(req)
+
   const results = await db().execute(
     sql`
     SELECT
@@ -43,7 +46,7 @@ export const GET = defineHandler(async () => {
     total_income: 0,
     total_outcome: 0,
     total: 0,
-    cashflows: [],
+    transactions: [],
   }
 
   results.forEach((result) => {
@@ -53,7 +56,7 @@ export const GET = defineHandler(async () => {
       response.total_outcome += parseInt(result.amount as string)
     }
 
-    response.cashflows.push({
+    response.transactions.push({
       title: result.title as string,
       created_at: result.created_at as Date,
       amount: parseInt(result.amount as string),
