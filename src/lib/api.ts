@@ -2,8 +2,8 @@ import { getCookie } from "cookies-next"
 import { House, Occupant, OccupantLogin, StaffLogin } from "./model"
 import { AnnouncementResponse } from "@/server/models/responses/announcement"
 
-const baseURL = "http://localhost:3000/api/v1"
 const isServer = typeof window === "undefined"
+const baseURL = isServer ? "http://127.0.0.1:3000/api/v1" : "/api/v1"
 
 const getToken = async () => {
   let token: string
