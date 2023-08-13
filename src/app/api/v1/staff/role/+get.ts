@@ -4,15 +4,15 @@ import { defineHandler } from "@/server/web/handler"
 import { sendData } from "@/server/web/response"
 import { sql } from "drizzle-orm"
 
-type Result = string[]
+type Response = string[]
 
 export const GET = defineHandler(async (req) => {
   useAuth(req, "admin")
 
   const roles = await db().execute(
-    sql`SELECT unnest(enum_range(NULL::staff_role))`
+    sql`SELECT unnest(enum_range(NULL::staff_role)) AS staff_role`,
   )
-  const result: Result = roles.map((r) => r.unnest as string)
+  const response: Response = roles.map((r) => r.staff_role as string)
 
-  return sendData(200, result)
+  return sendData(200, response)
 })
