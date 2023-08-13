@@ -8,7 +8,7 @@ type Response = {
   total_outcome: number
   total: number
   cashflows: {
-    name: string
+    title: string
     created_at: Date
     amount: number
     movement: string
@@ -19,14 +19,12 @@ export const GET = defineHandler(async () => {
   const results = await db().execute(
     sql`
     SELECT
-        cashflow_type.name,
+        cashflow.title,
         cashflow.created_at,
         cashflow.amount,
         cashflow.movement
     FROM
         cashflow
-    INNER JOIN
-        cashflow_type on cashflow_type.id = cashflow.cashflow_type_id
     UNION
     SELECT
         'Pembayaran iuran',
@@ -56,7 +54,7 @@ export const GET = defineHandler(async () => {
     }
 
     response.cashflows.push({
-      name: result.name as string,
+      title: result.title as string,
       created_at: result.created_at as Date,
       amount: parseInt(result.amount as string),
       movement: result.movement as string,

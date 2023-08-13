@@ -160,14 +160,6 @@ export const Payment = pgTable("payment", {
 export type TPayment = InferModel<typeof Payment>
 export type TInsertPayment = InferModel<typeof Payment, "insert">
 
-export const CashflowType = pgTable("cashflow_type", {
-  id: bigserial("id", { mode: "number" }).primaryKey(),
-  name: text("name").unique().notNull(),
-  ...Timestamps,
-})
-export type TCashflowType = InferModel<typeof CashflowType>
-export type TInsertCashflowType = InferModel<typeof CashflowType, "insert">
-
 export const CashflowMovement = pgEnum("cashflow_movement", [
   "income",
   "outcome",
@@ -176,9 +168,7 @@ export const Cashflow = pgTable("cashflow", {
   id: bigserial("id", { mode: "number" }).primaryKey(),
   amount: bigint("amount", { mode: "number" }).notNull(),
   movement: CashflowMovement("movement").notNull(),
-  cashflowTypeId: bigint("cashflow_type_id", { mode: "number" })
-    .notNull()
-    .references(() => CashflowType.id),
+  title: text("title").notNull(),
   description: text("description"),
   ...Timestamps,
 })
