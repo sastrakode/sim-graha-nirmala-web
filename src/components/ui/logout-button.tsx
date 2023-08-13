@@ -5,7 +5,7 @@ import { Button } from "./button"
 
 import { deleteCookie } from "cookies-next"
 
-export default function LogoutButton() {
+export default function LogoutButton({ ...props }) {
   const router = useRouter()
 
   const handleLogout = () => {
@@ -16,7 +16,7 @@ export default function LogoutButton() {
   }
 
   return (
-    <Button variant={"destructive"} onClick={handleLogout}>
+    <Button variant={"destructive"} onClick={handleLogout} {...props}>
       Keluar
     </Button>
   )
