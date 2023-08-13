@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { fetchErrorString, occupantLogin } from "@/lib/api"
+import { occupantLogin } from "@/lib/api"
 
 const formSchema = z.object({
   phone: z.string().min(1, "No. Telepon harus diisi"),
@@ -34,14 +34,14 @@ export default function LoginForm() {
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const res = await occupantLogin(values)
-    if (fetchErrorString in res) {
-      if (res.errors[0].includes("Phone")) {
+    const [res, errors] = await occupantLogin(values)
+    if (errors) {
+      if (errors[0].includes("Phone")) {
         form.setError("phone", {
           type: "manual",
           message: "No. Hp tidak terdaftar",
         })
-      } else if (res.errors[0].includes("Password")) {
+      } else if (errors[0].includes("Password")) {
         form.setError("password", {
           type: "manual",
           message: "Password salah",

@@ -7,7 +7,7 @@ const Sidebar = ({ currentRoute }: { currentRoute: string }) => {
   return (
     <div className="fixed z-10 bg-primary w-[15.5rem] text-center h-screen py-6 px-[1.15rem] hidden lg:block">
       <h3 className="text-white">SIMGN</h3>
-      <div className="h-[3px] w-full bg-slate-400 my-6" />
+      <div className="h-[3px] bg-slate-400 my-6" />
 
       <div className="flex flex-col h-full space-y-3 text-white">
         <NavItem

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { fetchErrorString, getHouse, getOccupant } from "@/lib/api"
+import { getHouse, getOccupant } from "@/lib/api"
 import { MailIcon, Phone } from "lucide-react"
 import { Metadata } from "next"
 import { cookies } from "next/headers"
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "Profil - SIMGN",
 }
 
-export default async function Profile() {
+export default async function ProfilePage() {
   const userId = cookies().get("userId")?.value || "-1"
   const houseId = cookies().get("houseId")?.value || "-1"
 
@@ -18,12 +18,12 @@ export default async function Profile() {
     renter: "Penyewa",
   }
 
-  const [occupant, house] = await Promise.all([
+  const [[occupant, occupantErr], [house, houseErr]] = await Promise.all([
     getOccupant(userId),
     getHouse(houseId),
   ])
 
-  if (fetchErrorString in occupant || fetchErrorString in house) {
+  if (occupantErr || houseErr) {
     throw new Error("Something went wrong")
   }
 
@@ -52,7 +52,7 @@ export default async function Profile() {
               Ubah
             </Button>
           </div>
-          <div className="h-[2px] w-full bg-gray-200 mt-3 mb-5" />
+          <div className="h-[2px] bg-gray-200 mt-3 mb-5" />
           <div className="flex flex-col gap-4">
             <div className="flex justify-between">
               <div className="flex gap-4">
@@ -95,7 +95,7 @@ export default async function Profile() {
               Ubah
             </Button>
           </div>
-          <div className="h-[2px] w-full bg-gray-200 mt-3 mb-5" />
+          <div className="h-[2px] bg-gray-200 mt-3 mb-5" />
           <div className="flex flex-col gap-4">
             <div className="flex justify-between">
               <div className="flex gap-4">

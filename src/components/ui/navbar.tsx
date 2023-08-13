@@ -1,7 +1,3 @@
-import { Button } from "./button"
-import Link from "next/link"
-import LogoutButton from "./logout-button"
-
 const pageName: { [key: string]: string } = {
   "/dashboard": "Dashboard",
   "/dashboard/transaction": "Transaksi",
@@ -11,9 +7,8 @@ const pageName: { [key: string]: string } = {
 
 const Navbar = ({ currentRoute }: { currentRoute: string }) => {
   return (
-    <nav className="flex shadow-md bg-white sticky top-0 w-full justify-between items-center p-6">
+    <nav className="flex shadow-md bg-white sticky top-0 justify-between items-center p-6 z-50">
       <h4 className="text-primary">{pageName[currentRoute]}</h4>
-      <LogoutButton />
     </nav>
   )
 }

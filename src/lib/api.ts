@@ -1,14 +1,9 @@
 import { getCookie } from "cookies-next"
 import { House, Occupant, OccupantLogin } from "./model"
+import { AnnouncementResponse } from "@/server/models/responses/announcement"
 
 const baseURL = "http://localhost:3000/api/v1"
 const isServer = typeof window === "undefined"
-
-export const fetchErrorString = "errors"
-
-interface FetchError {
-  errors: string[]
-}
 
 const getToken = async () => {
   let token: string
@@ -21,10 +16,12 @@ const getToken = async () => {
   return token
 }
 
+type FetchError = string[] | null
+
 async function handleFetch<T>(
   url: string,
   requestOptions?: RequestInit,
-): Promise<T | FetchError> {
+): Promise<[T, FetchError]> {
   try {
     const res = await fetch(url, requestOptions)
 
@@ -32,20 +29,20 @@ async function handleFetch<T>(
 
     // Sometimes we need errors fields (example: login)
     if (!res.ok) {
-      if (resJson.errors) return { errors: resJson.errors }
+      if (resJson.errors) return [null as T, resJson.errors]
       else {
         throw new Error("Something went wrong")
       }
     }
 
-    return resJson.data
+    return [resJson.data, null]
   } catch (error) {
     throw new Error("Something went wrong")
   }
 }
 
 export async function occupantLogin(body: {}): Promise<
-  OccupantLogin | FetchError
+  [OccupantLogin, FetchError]
 > {
   const res = await handleFetch<OccupantLogin>(
     `${baseURL}/auth/occupant/login`,
@@ -58,12 +55,12 @@ export async function occupantLogin(body: {}): Promise<
   return res
 }
 
-export async function getHouse(id: string): Promise<House | FetchError> {
+export async function getHouse(id: string): Promise<[House, FetchError]> {
   const res = await handleFetch<House>(`${baseURL}/house/${id}`)
   return res
 }
 
-export async function getOccupant(id: string): Promise<Occupant | FetchError> {
+export async function getOccupant(id: string): Promise<[Occupant, FetchError]> {
   const token = await getToken()
 
   const res = await handleFetch<Occupant>(`${baseURL}/occupant/${id}`, {
@@ -71,6 +68,16 @@ export async function getOccupant(id: string): Promise<Occupant | FetchError> {
       Authorization: token,
     },
   })
+
+  return res
+}
+
+export async function getAnnouncements(): Promise<
+  [AnnouncementResponse[], FetchError]
+> {
+  const res = await handleFetch<AnnouncementResponse[]>(
+    `${baseURL}/announcement`,
+  )
 
   return res
 }

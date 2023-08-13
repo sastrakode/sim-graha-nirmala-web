@@ -1,8 +1,8 @@
 import { Loader } from "lucide-react"
 
-export default function Loading() {
+export default function DorPage() {
   return (
-    <div className="h-full flex flex-col justify-center items-center animate-pulse">
+    <div className="h-[calc(100vh-80px)] flex flex-col justify-center items-center">
       <Loader className="animate-spin" />
       <p className="text-sm font-medium">Memuat...</p>
     </div>

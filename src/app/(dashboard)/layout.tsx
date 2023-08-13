@@ -13,12 +13,12 @@ export default function DashboardLayout({
   const currentRoute = usePathname()
 
   return (
-    <div className="h-full">
+    <>
       <Sidebar currentRoute={currentRoute} />
-      <div className="flex flex-col lg:ml-[15.5rem] h-full">
+      <div className="flex flex-col lg:ml-[15.5rem]">
         <Navbar currentRoute={currentRoute} />
-        <main className="h-full">{children}</main>
+        <main>{children}</main>
       </div>
-    </div>
+    </>
   )
 }
