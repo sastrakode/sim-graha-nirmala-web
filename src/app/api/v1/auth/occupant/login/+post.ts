@@ -17,7 +17,7 @@ const Param = z.object({
   password: z.string(),
 })
 
-type Result = {
+type Response = {
   token: string
   occupant: OccupantResponse
 }
@@ -41,10 +41,10 @@ export const POST = defineHandler(async (req) => {
     roleType: "occupant",
   })
 
-  const result: Result = {
+  const response: Response = {
     token: token,
     occupant: toOccupantResponse(occupant)!,
   }
 
-  return sendData(200, result)
+  return sendData(200, response)
 })

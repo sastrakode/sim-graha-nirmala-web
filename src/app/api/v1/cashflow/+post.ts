@@ -1,5 +1,6 @@
 import { db } from "@/server/db"
 import { Cashflow, TInsertCashflow } from "@/server/db/schema"
+import { toCashflowResponse } from "@/server/models/responses/cashflow"
 import { getCurrentStaff, useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
 import { bindJson } from "@/server/web/request"
@@ -10,7 +11,7 @@ const Param = z.object({
   title: z.string(),
   amount: z.number(),
   movement: z.enum(["income", "outcome"]),
-  description: z.string().nullable(),
+  description: z.string().optional().nullable(),
 })
 
 export const POST = defineHandler(async (req) => {
@@ -27,5 +28,5 @@ export const POST = defineHandler(async (req) => {
   }
 
   const [newCashflow] = await db().insert(Cashflow).values(cashflow).returning()
-  return sendData(201, newCashflow)
+  return sendData(201, toCashflowResponse(newCashflow))
 })
