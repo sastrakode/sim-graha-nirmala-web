@@ -9,4 +9,3 @@ DROP TABLE "cashflow_type";
 
 --> statement-breakpoint ALTER TABLE "cashflow"
     DROP COLUMN IF EXISTS "cashflow_type_id";
-
