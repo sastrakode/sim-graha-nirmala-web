@@ -16,14 +16,17 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { occupantLogin } from "@/lib/api"
+import { FetchError, occupantLogin, staffLogin } from "@/lib/api"
+import { OccupantLogin, StaffLogin } from "@/lib/model"
 
 const formSchema = z.object({
   phone: z.string().min(1, "No. Telepon harus diisi"),
   password: z.string().min(1, "Kata Sandi harus diisi"),
 })
 
-export default function LoginForm() {
+type LoginRole = "occupant" | "staff"
+
+export default function LoginForm({ role }: { role: LoginRole }) {
   const router = useRouter()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -34,7 +37,15 @@ export default function LoginForm() {
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const [res, errors] = await occupantLogin(values)
+    let result: [OccupantLogin | StaffLogin, FetchError]
+    if (role === "occupant") {
+      result = await occupantLogin(values)
+    } else {
+      result = await staffLogin(values)
+    }
+
+    const [res, errors] = result
+
     if (errors) {
       if (errors[0].includes("Phone")) {
         form.setError("phone", {
@@ -53,10 +64,14 @@ export default function LoginForm() {
 
     if (res.token) {
       setCookie("token", res.token)
-      setCookie("userId", res.occupant.id)
-      setCookie("houseId", res.occupant.houseId)
-
-      router.replace("/dashboard")
+      if ("occupant" in res) {
+        setCookie("userId", res.occupant.id)
+        setCookie("houseId", res.occupant.houseId)
+        router.replace("/dashboard")
+      } else {
+        setCookie("userId", res.staff.id)
+        router.replace("/admin")
+      }
     }
   }
 

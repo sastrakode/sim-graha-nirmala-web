@@ -1,3 +1,5 @@
+import { StaffResponse } from "@/server/models/responses/staff"
+
 export interface Billing {
   account_id?: number
   amount?: number
@@ -86,4 +88,9 @@ export interface House {
   address?: string
   created_at?: Date
   updated_at?: Date
+}
+
+export interface StaffLogin {
+  token: string
+  staff: StaffResponse
 }

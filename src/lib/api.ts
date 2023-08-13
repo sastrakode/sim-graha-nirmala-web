@@ -1,5 +1,5 @@
 import { getCookie } from "cookies-next"
-import { House, Occupant, OccupantLogin } from "./model"
+import { House, Occupant, OccupantLogin, StaffLogin } from "./model"
 import { AnnouncementResponse } from "@/server/models/responses/announcement"
 
 const baseURL = "http://localhost:3000/api/v1"
@@ -16,7 +16,7 @@ const getToken = async () => {
   return token
 }
 
-type FetchError = string[] | null
+export type FetchError = string[] | null
 
 async function handleFetch<T>(
   url: string,
@@ -51,6 +51,15 @@ export async function occupantLogin(body: {}): Promise<
       body: JSON.stringify(body),
     },
   )
+
+  return res
+}
+
+export async function staffLogin(body: {}): Promise<[StaffLogin, FetchError]> {
+  const res = await handleFetch<StaffLogin>(`${baseURL}/auth/staff/login`, {
+    method: "POST",
+    body: JSON.stringify(body),
+  })
 
   return res
 }

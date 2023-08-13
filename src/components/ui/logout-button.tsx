@@ -11,6 +11,7 @@ export default function LogoutButton() {
   const handleLogout = () => {
     deleteCookie("token")
     deleteCookie("userId")
+    deleteCookie("houseId")
     router.replace("/login")
   }
 
