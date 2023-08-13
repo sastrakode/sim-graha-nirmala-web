@@ -1,3 +1,4 @@
+import { POST } from "./+post"
 import { GET } from "./+get"
 
-export { GET }
+export { POST, GET }
