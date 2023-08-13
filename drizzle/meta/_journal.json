@@ -15,6 +15,13 @@
       "when": 1691774376717,
       "tag": "0001_flaky_golden_guardian",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1691940245978,
+      "tag": "0002_glamorous_spitfire",
+      "breakpoints": true
     }
   ]
 }
