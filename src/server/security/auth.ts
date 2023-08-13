@@ -14,6 +14,8 @@ export type Role =
   | "owner"
   | "renter"
 
+export type RoleType = "staff" | "occupant"
+
 export function useAuth(req: Request, ...roles: Role[]) {
   const token = getToken(req)
   const claim = verifyToken(token)
