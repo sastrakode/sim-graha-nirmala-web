@@ -19,14 +19,10 @@ export type RoleType = "staff" | "occupant"
 export function useAuth(req: Request, ...roles: Role[]) {
   const token = getToken(req)
   const claim = verifyToken(token)
+  req.headers.set(claimSubHeader, claim.sub)
 
   if (roles.length === 0) return
-  for (const role of roles) {
-    if (claim.role === role) {
-      req.headers.set(claimSubHeader, claim.sub)
-      return
-    }
-  }
+  for (const role of roles) if (claim.role === role) return
 
   throwUnauthorized()
 }
