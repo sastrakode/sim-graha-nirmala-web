@@ -10,17 +10,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      {currentRoute.includes("login") ? (
+      <Sidebar currentRoute={currentRoute} />
+      <div className="flex flex-col lg:ml-[15.5rem]">
+        <Navbar currentRoute={currentRoute} />
         <main>{children}</main>
-      ) : (
-        <>
-          <Sidebar currentRoute={currentRoute} />
-          <div className="flex flex-col lg:ml-[15.5rem]">
-            <Navbar currentRoute={currentRoute} />
-            <main>{children}</main>
-          </div>
-        </>
-      )}
+      </div>
     </>
   )
 }

@@ -12,7 +12,7 @@ export default function LogoutButton({ ...props }) {
     deleteCookie("token")
     deleteCookie("userId")
     deleteCookie("houseId")
-    router.replace("/app/login")
+    router.replace("/login")
   }
 
   return (
