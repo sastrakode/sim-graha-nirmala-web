@@ -4,3 +4,8 @@ export const routeNames = {
   bill: "/app/bill",
   profile: "/app/profile",
 }
+
+export const role: { [key: string]: string } = {
+  owner: "Pemilik",
+  renter: "Penyewa",
+}

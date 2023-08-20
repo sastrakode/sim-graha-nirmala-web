@@ -69,6 +69,11 @@ export async function getHouse(id: string): Promise<[House, FetchError]> {
   return res
 }
 
+export async function getHouses(): Promise<[House[], FetchError]> {
+  const res = await handleFetch<House[]>(`${baseURL}/house`)
+  return res
+}
+
 export async function getOccupant(id: string): Promise<[Occupant, FetchError]> {
   const token = await getToken()
 
@@ -78,6 +83,17 @@ export async function getOccupant(id: string): Promise<[Occupant, FetchError]> {
     },
   })
 
+  return res
+}
+
+export async function getOccupants(): Promise<[Occupant[], FetchError]> {
+  const token = await getToken()
+
+  const res = await handleFetch<Occupant[]>(`${baseURL}/occupant`, {
+    headers: {
+      Authorization: token,
+    },
+  })
   return res
 }
 

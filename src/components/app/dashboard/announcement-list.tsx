@@ -1,5 +1,5 @@
 import { getAnnouncements } from "@/lib/api"
-import AnnouncementBox from "../ui/announcement-box"
+import AnnouncementBox from "../../ui/announcement-box"
 
 export default async function AnnouncementList() {
   const [announcements, err] = await getAnnouncements()

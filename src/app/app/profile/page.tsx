@@ -1,9 +1,11 @@
-import { Button } from "@/components/ui/button"
-import { getHouse, getOccupant } from "@/lib/api"
 import { MailIcon, Phone } from "lucide-react"
 import { Metadata } from "next"
 import { cookies } from "next/headers"
 import Image from "next/image"
+
+import { Button } from "@/components/ui/button"
+import { getHouse, getOccupant } from "@/lib/api"
+import { role } from "@/lib/constants"
 
 export const metadata: Metadata = {
   title: "Profil - SIMGN",
@@ -12,11 +14,6 @@ export const metadata: Metadata = {
 export default async function ProfilePage() {
   const userId = cookies().get("userId")?.value || "-1"
   const houseId = cookies().get("houseId")?.value || "-1"
-
-  const role: { [key: string]: string } = {
-    owner: "Pemilik",
-    renter: "Penyewa",
-  }
 
   const [[occupant, occupantErr], [house, houseErr]] = await Promise.all([
     getOccupant(userId),

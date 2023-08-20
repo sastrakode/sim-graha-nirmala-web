@@ -41,17 +41,6 @@ export interface Announcement {
   updated_at?: string
 }
 
-export interface Occupant {
-  id?: number
-  name?: string
-  role?: string
-  createdAt?: Date
-  updatedAt?: Date
-  houseId?: number
-  email?: string
-  phone?: string
-}
-
 export interface TransactionSummary {
   total?: number
   credit?: number
@@ -67,9 +56,9 @@ export interface Bill {
 }
 
 export interface Occupant {
-  id?: number
+  id: number
   name?: string
-  role?: string
+  role: string
   created_at?: Date
   updated_at?: Date
   houseId?: number
@@ -83,7 +72,7 @@ export interface OccupantLogin {
 }
 
 export interface House {
-  id?: number
+  id: number
   code?: string
   address?: string
   created_at?: Date
