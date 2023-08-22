@@ -1,9 +1,11 @@
+import { revalidationTag } from "@/lib/constants"
 import { db } from "@/server/db"
 import { House } from "@/server/db/schema"
 import { useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
 import { sendErrors, sendNoContent } from "@/server/web/response"
 import { eq } from "drizzle-orm"
+import { revalidateTag } from "next/cache"
 
 export const DELETE = defineHandler(
   async (req, { params }: { params: { id: number } }) => {
@@ -15,6 +17,7 @@ export const DELETE = defineHandler(
     if (!house) return sendErrors(404, "House not found")
 
     await db().delete(House).where(eq(House.id, params.id))
+    revalidateTag(revalidationTag.getHouses)
     return sendNoContent()
-  }
+  },
 )
