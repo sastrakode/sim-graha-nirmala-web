@@ -37,7 +37,7 @@ export default function OccupantTable({
               <TableCell>{occupant.id}</TableCell>
               <TableCell>{occupant.name}</TableCell>
               <TableCell>
-                {houses.find((house) => house.id == occupant.houseId)?.code}
+                {houses.find((house) => house.id == occupant.house_id)?.code}
               </TableCell>
               <TableCell>{occupant.phone ?? "-"}</TableCell>
               <TableCell>{occupant.email ?? "-"}</TableCell>

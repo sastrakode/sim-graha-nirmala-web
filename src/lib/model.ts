@@ -61,7 +61,7 @@ export interface Occupant {
   role: string
   created_at?: Date
   updated_at?: Date
-  houseId?: number
+  house_id?: number
   email?: string
   phone?: string
 }

@@ -43,7 +43,7 @@ export function OccupantForm({
 
   if (occupant) {
     defaultValues = {
-      house_id: occupant.houseId?.toString(),
+      house_id: occupant.house_id?.toString(),
       name: occupant.name,
       phone: occupant.phone,
       email: occupant.email ?? "",
@@ -71,7 +71,7 @@ export function OccupantForm({
               <FormLabel>Rumah</FormLabel>
               <Select
                 onValueChange={field.onChange}
-                defaultValue={occupant?.houseId?.toString()}
+                defaultValue={occupant?.house_id?.toString()}
               >
                 <FormControl>
                   <SelectTrigger>
