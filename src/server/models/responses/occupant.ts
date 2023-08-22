@@ -1,4 +1,4 @@
-import { TOccupant, TOwner, TRenter } from "@/server/db/schema"
+import { TOccupant } from "@/server/db/schema"
 
 export type OccupantResponse = {
   id: number
@@ -12,7 +12,7 @@ export type OccupantResponse = {
 }
 
 export function toOccupantResponse(
-  occupant?: TOccupant | TOwner | TRenter | null,
+  occupant?: TOccupant,
 ): OccupantResponse | null {
   return occupant
     ? {

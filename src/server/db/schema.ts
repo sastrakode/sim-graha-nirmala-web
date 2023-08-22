@@ -96,12 +96,6 @@ export const Occupant = pgTable("occupant", {
 export type TOccupant = InferModel<typeof Occupant>
 export type TInsertOccupant = InferModel<typeof Occupant, "insert">
 
-export const Owner = alias(Occupant, "owner")
-export type TOwner = InferModel<typeof Owner>
-
-export const Renter = alias(Occupant, "renter")
-export type TRenter = InferModel<typeof Renter>
-
 export const Gender = pgEnum("gender", ["male", "female"])
 
 export const OccupantMember = pgTable("occupant_member", {
