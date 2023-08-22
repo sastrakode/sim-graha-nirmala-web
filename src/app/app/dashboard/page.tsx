@@ -91,7 +91,7 @@ export default function DashboardPage() {
           )}
         </div>
         <div className="flex justify-center mt-8">
-          <Link href="/dashboard/transaction">
+          <Link href="/app/transaction">
             <Button variant="outline" size="sm">
               LIHAT SEMUA
             </Button>

@@ -3,6 +3,7 @@ import {
   ArrowLeftRight,
   Receipt,
   UserSquare2,
+  Plus,
 } from "lucide-react"
 
 export const Icons = {
@@ -10,6 +11,7 @@ export const Icons = {
   ArrowLeftRight,
   Receipt,
   UserSquare2,
+  Plus,
 }
 
 export default Icons

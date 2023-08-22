@@ -7,34 +7,29 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { role } from "@/lib/constants"
-import { StaffResponse } from "@/server/models/responses/staff"
+import { House } from "@/lib/model"
 import Link from "next/link"
 
-export default function StaffTable({ staffs }: { staffs: StaffResponse[] }) {
+export default function HouseTable({ houses }: { houses: House[] }) {
   return (
     <Table>
       <TableHeader>
         <TableRow>
           <TableHead>ID</TableHead>
-          <TableHead>Nama</TableHead>
-          <TableHead>No. Telp</TableHead>
-          <TableHead>Email</TableHead>
-          <TableHead>Tipe</TableHead>
+          <TableHead>Kode</TableHead>
+          <TableHead>Alamat</TableHead>
           <TableHead>Aksi</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {staffs.length > 0 &&
-          staffs.map((staff) => (
-            <TableRow key={staff.id}>
-              <TableCell>{staff.id}</TableCell>
-              <TableCell>{staff.name}</TableCell>
-              <TableCell>{staff.phone}</TableCell>
-              <TableCell>{staff.email ?? "-"}</TableCell>
-              <TableCell>{role[staff.role]}</TableCell>
+        {houses.length > 0 &&
+          houses.map((house) => (
+            <TableRow key={house.id}>
+              <TableCell>{house.id}</TableCell>
+              <TableCell>{house.code}</TableCell>
+              <TableCell>{house.address}</TableCell>
               <TableCell>
-                <Link href={`/admin/account/staff/edit/${staff.id}`}>
+                <Link href={`/admin/house/edit/${house.id}`}>
                   <Button className="mr-1" variant="outline" size="sm">
                     Edit
                   </Button>

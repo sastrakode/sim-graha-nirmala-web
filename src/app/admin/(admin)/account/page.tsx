@@ -1,14 +1,16 @@
 import OccupantTable from "@/components/admin/account/occupant-table"
+import StaffTable from "@/components/admin/account/staff-table"
+import { Button } from "@/components/ui/button"
+import Icons from "@/components/ui/icons"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { getHouses, getOccupants } from "@/lib/api"
+import { getHouses, getOccupants, getStaffs } from "@/lib/api"
+import Link from "next/link"
 
 export default async function AdminAccountPage() {
-  const [[occupants, occupantsErr], [houses, housesErr]] = await Promise.all([
-    getOccupants(),
-    getHouses(),
-  ])
+  const [[occupants, occupantsErr], [houses, housesErr], [staffs, staffsErr]] =
+    await Promise.all([getOccupants(), getHouses(), getStaffs()])
 
-  if (occupantsErr || housesErr) {
+  if (occupantsErr || housesErr || staffsErr) {
     throw new Error("Something went wrong")
   }
 
@@ -20,9 +22,30 @@ export default async function AdminAccountPage() {
           <TabsTrigger value="staff">Staf</TabsTrigger>
         </TabsList>
         <TabsContent value="occupant">
+          <div className="flex w-full justify-between items-center">
+            <h4 className="text-primary">Tabel Penghuni</h4>
+            <Button asChild>
+              <Link href="/admin/account/occupant/add">
+                <Icons.Plus size={20} className="mr-1" />
+                Tambah penghuni
+              </Link>
+            </Button>
+          </div>
+
           <OccupantTable occupants={occupants} houses={houses} />
         </TabsContent>
-        <TabsContent value="staff">Change your password here.</TabsContent>
+        <TabsContent value="staff">
+          <div className="flex w-full justify-between items-center">
+            <h4 className="text-primary">Tabel Staf</h4>
+            <Button asChild>
+              <Link href="/admin/account/occupant/add">
+                <Icons.Plus size={20} className="mr-1" />
+                Tambah staf
+              </Link>
+            </Button>
+          </div>
+          <StaffTable staffs={staffs} />
+        </TabsContent>
       </Tabs>
     </div>
   )

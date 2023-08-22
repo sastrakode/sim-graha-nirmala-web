@@ -1,4 +1,5 @@
+import { GET } from "./+get"
 import { DELETE } from "./+delete"
 import { PUT } from "./+put"
 
-export { PUT, DELETE }
+export { GET, PUT, DELETE }
