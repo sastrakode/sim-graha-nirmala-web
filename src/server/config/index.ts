@@ -16,6 +16,10 @@ type Config = {
     secret: string
     expiresIn: string
   }
+  midtrans: {
+    clientKey: string
+    serverKey: string
+  }
 }
 
 const e = process.env
@@ -31,5 +35,9 @@ export const config: Config = {
   jwt: {
     secret: e.JWT_SECRET!,
     expiresIn: e.JWT_EXPIRES_IN!,
+  },
+  midtrans: {
+    clientKey: e.MIDTRANS_CLIENT_KEY!,
+    serverKey: e.MIDTRANS_SERVER_KEY!,
   },
 }
