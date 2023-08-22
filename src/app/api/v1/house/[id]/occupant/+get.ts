@@ -14,7 +14,7 @@ type Response = {
 }
 
 export const GET = defineHandler(
-  async (req, { params }: { params: { id: number } }) => {
+  async (_, { params }: { params: { id: number } }) => {
     const house = await db().query.House.findFirst({
       where: eq(House.id, params.id),
     })

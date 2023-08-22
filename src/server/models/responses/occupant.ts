@@ -1,29 +1,29 @@
-import { TOccupant } from "@/server/db/schema"
+import { TOccupant, TOwner, TRenter } from "@/server/db/schema"
 
 export type OccupantResponse = {
   id: number
   name: string
   role: string
-  createdAt: Date
-  updatedAt: Date | null
-  houseId: number
+  created_at: Date
+  updated_at: Date | null
+  house_id: number
   email: string | null
   phone: string
 }
 
 export function toOccupantResponse(
-  occupant?: TOccupant
+  occupant?: TOccupant | TOwner | TRenter | null,
 ): OccupantResponse | null {
   return occupant
     ? {
         id: occupant.id,
         role: occupant.role,
         name: occupant.name,
-        houseId: occupant.houseId,
+        house_id: occupant.houseId,
         email: occupant.email,
         phone: occupant.phone,
-        createdAt: occupant.createdAt,
-        updatedAt: occupant.updatedAt,
+        created_at: occupant.createdAt,
+        updated_at: occupant.updatedAt,
       }
     : null
 }
