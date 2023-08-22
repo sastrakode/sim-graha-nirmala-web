@@ -1,5 +1,5 @@
-import BillHistoryTable from "@/components/ui/bill-history-table"
-import BillTable from "@/components/ui/bill-table"
+import BillHistoryTable from "@/components/app/bill/bill-history-table"
+import BillTable from "@/components/app/bill/bill-table"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {

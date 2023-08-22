@@ -1,4 +1,4 @@
-import Icons from "../icons"
+import Icons from "./icons"
 import LogoutButton from "./logout-button"
 import NavItem from "./nav-item"
 

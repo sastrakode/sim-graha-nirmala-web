@@ -1,12 +1,12 @@
 import { Metadata } from "next"
 import Link from "next/link"
 
-import OverviewCard from "@/components/ui/overview-card"
-import TransactionListItem from "@/components/ui/transaction-list-item"
+import OverviewCard from "@/components/app/dashboard/overview-card"
+import TransactionListItem from "@/components/app/transaction/transaction-list-item"
 import { dummyTransactions } from "@/lib/dummyData"
 import { Transaction } from "@/lib/model"
 import { Button } from "@/components/ui/button"
-import AnnouncementList from "@/components/dashboard/announcement-list"
+import AnnouncementList from "@/components/app/dashboard/announcement-list"
 
 export const metadata: Metadata = {
   title: "Dashboard - SIMGN",

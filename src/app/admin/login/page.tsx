@@ -1,8 +1,8 @@
-import LoginForm from "@/components/auth/login-form"
+import LoginForm from "@/components/ui/login-form"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Login - SIMGN",
+  title: "Admin Login - SIMGN",
 }
 
 export default function AdminLoginPage() {

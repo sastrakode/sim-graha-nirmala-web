@@ -1,10 +1,10 @@
 import { Metadata } from "next"
 
-import TransactionSummaryCard from "@/components/ui/transaction-summary-card"
+import TransactionSummaryCard from "@/components/app/transaction/transaction-summary-card"
 
 import { dummyTransactionSummary, dummyTransactions } from "@/lib/dummyData"
 import { Transaction } from "@/lib/model"
-import TransactionTable from "@/components/ui/transaction-table"
+import TransactionTable from "@/components/app/transaction/transaction-table"
 
 export const metadata: Metadata = {
   title: "Transaksi - SIMGN",

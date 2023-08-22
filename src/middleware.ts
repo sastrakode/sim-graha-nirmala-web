@@ -4,7 +4,7 @@ import parseJwt from "./lib/utils"
 
 export function middleware(req: NextRequest) {
   if (
-    req.nextUrl.pathname.startsWith("/app/login") ||
+    req.nextUrl.pathname.startsWith("/login") ||
     req.nextUrl.pathname.startsWith("/admin/login")
   ) {
     let token = req.cookies.get("token")?.value
@@ -35,11 +35,11 @@ export function middleware(req: NextRequest) {
           return NextResponse.redirect(new URL("/admin", req.url))
       } catch (error) {
         req.cookies.delete(token)
-        NextResponse.redirect(new URL("/app/login", req.url))
+        NextResponse.redirect(new URL("/login", req.url))
       }
     }
 
-    return NextResponse.redirect(new URL("/app/login", req.url))
+    return NextResponse.redirect(new URL("/login", req.url))
   }
 
   if (req.nextUrl.pathname.startsWith("/admin")) {
