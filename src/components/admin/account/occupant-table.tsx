@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/table"
 import { role } from "@/lib/constants"
 import { House, Occupant } from "@/lib/model"
-import Link from "next/link"
 
 export default function OccupantTable({
   occupants,
@@ -44,11 +43,11 @@ export default function OccupantTable({
               <TableCell>{occupant.email ?? "-"}</TableCell>
               <TableCell>{role[occupant.role]}</TableCell>
               <TableCell>
-                <Link href={`/admin/account/occupant/edit/${occupant.id}`}>
+                <a href={`/admin/account/occupant/edit/${occupant.id}`}>
                   <Button className="mr-1" variant="outline" size="sm">
                     Edit
                   </Button>
-                </Link>
+                </a>
                 <Button variant="destructive" size="sm">
                   Hapus
                 </Button>

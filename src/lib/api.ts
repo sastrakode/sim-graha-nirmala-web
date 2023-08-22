@@ -3,7 +3,6 @@ import { House, Occupant, OccupantLogin, StaffLogin } from "./model"
 import { AnnouncementResponse } from "@/server/models/responses/announcement"
 import { StaffResponse } from "@/server/models/responses/staff"
 import { AnnouncementCategoryResponse } from "@/server/models/responses/announcement-category"
-import { revalidationTag } from "./constants"
 
 const isServer = typeof window === "undefined"
 const baseURL = isServer ? "http://127.0.0.1:3000/api/v1" : "/api/v1"
@@ -73,9 +72,7 @@ export async function getHouse(id: string): Promise<[House, FetchError]> {
 }
 
 export async function getHouses(): Promise<[House[], FetchError]> {
-  const res = await handleFetch<House[]>(`${baseURL}/house`, {
-    next: { tags: [revalidationTag.getHouses] },
-  })
+  const res = await handleFetch<House[]>(`${baseURL}/house`)
   return res
 }
 

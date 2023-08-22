@@ -8,7 +8,6 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { House } from "@/lib/model"
-import Link from "next/link"
 
 export default function HouseTable({ houses }: { houses: House[] }) {
   return (
@@ -29,11 +28,11 @@ export default function HouseTable({ houses }: { houses: House[] }) {
               <TableCell>{house.code}</TableCell>
               <TableCell>{house.address}</TableCell>
               <TableCell>
-                <Link href={`/admin/house/edit/${house.id}`}>
+                <a href={`/admin/house/edit/${house.id}`}>
                   <Button className="mr-1" variant="outline" size="sm">
                     Edit
                   </Button>
-                </Link>
+                </a>
                 <Button variant="destructive" size="sm">
                   Hapus
                 </Button>

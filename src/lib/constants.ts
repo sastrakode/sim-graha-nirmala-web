@@ -37,7 +37,3 @@ export const occupantRoleTypes: readonly {
   { key: "owner", name: "Pemilik" },
   { key: "renter", name: "Penyewa" },
 ]
-
-export const revalidationTag = {
-  getHouses: "getHouses",
-} as const

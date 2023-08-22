@@ -8,7 +8,6 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { AnnouncementResponse } from "@/server/models/responses/announcement"
-import Link from "next/link"
 
 export default function AnnouncementTable({
   announcements,
@@ -37,11 +36,11 @@ export default function AnnouncementTable({
               <TableCell>{announcement.content}</TableCell>
               <TableCell>{announcement.author?.name}</TableCell>
               <TableCell className="flex gap-1">
-                <Link href={`/admin/announcement/edit/${announcement.id}`}>
+                <a href={`/admin/announcement/edit/${announcement.id}`}>
                   <Button variant="outline" size="sm">
                     Edit
                   </Button>
-                </Link>
+                </a>
                 <Button variant="destructive" size="sm">
                   Hapus
                 </Button>

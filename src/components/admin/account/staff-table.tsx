@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/table"
 import { role } from "@/lib/constants"
 import { StaffResponse } from "@/server/models/responses/staff"
-import Link from "next/link"
 
 export default function StaffTable({ staffs }: { staffs: StaffResponse[] }) {
   return (
@@ -34,11 +33,11 @@ export default function StaffTable({ staffs }: { staffs: StaffResponse[] }) {
               <TableCell>{staff.email ?? "-"}</TableCell>
               <TableCell>{role[staff.role]}</TableCell>
               <TableCell>
-                <Link href={`/admin/account/staff/edit/${staff.id}`}>
+                <a href={`/admin/account/staff/edit/${staff.id}`}>
                   <Button className="mr-1" variant="outline" size="sm">
                     Edit
                   </Button>
-                </Link>
+                </a>
                 <Button variant="destructive" size="sm">
                   Hapus
                 </Button>

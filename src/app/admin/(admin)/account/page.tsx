@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button"
 import Icons from "@/components/ui/icons"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { getHouses, getOccupants, getStaffs } from "@/lib/api"
-import Link from "next/link"
 
 export default async function AdminAccountPage() {
   const [[occupants, occupantsErr], [houses, housesErr], [staffs, staffsErr]] =
@@ -25,10 +24,10 @@ export default async function AdminAccountPage() {
           <div className="flex w-full justify-between items-center">
             <h4 className="text-primary">Tabel Penghuni</h4>
             <Button asChild>
-              <Link href="/admin/account/occupant/add">
+              <a href="/admin/account/occupant/add">
                 <Icons.Plus size={20} className="mr-1" />
                 Tambah penghuni
-              </Link>
+              </a>
             </Button>
           </div>
 
@@ -38,10 +37,10 @@ export default async function AdminAccountPage() {
           <div className="flex w-full justify-between items-center">
             <h4 className="text-primary">Tabel Staf</h4>
             <Button asChild>
-              <Link href="/admin/account/occupant/add">
+              <a href="/admin/account/occupant/add">
                 <Icons.Plus size={20} className="mr-1" />
                 Tambah staf
-              </Link>
+              </a>
             </Button>
           </div>
           <StaffTable staffs={staffs} />

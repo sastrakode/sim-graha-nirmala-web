@@ -1,5 +1,4 @@
 import { Metadata } from "next"
-import Link from "next/link"
 
 import OverviewCard from "@/components/app/dashboard/overview-card"
 import TransactionListItem from "@/components/app/transaction/transaction-list-item"
@@ -91,11 +90,9 @@ export default function DashboardPage() {
           )}
         </div>
         <div className="flex justify-center mt-8">
-          <Link href="/app/transaction">
-            <Button variant="outline" size="sm">
-              LIHAT SEMUA
-            </Button>
-          </Link>
+          <Button variant="outline" size="sm" asChild>
+            <a href="/app/transaction">LIHAT SEMUA</a>
+          </Button>
         </div>
       </section>
     </div>
