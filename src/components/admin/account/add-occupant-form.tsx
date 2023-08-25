@@ -69,9 +69,8 @@ export function AddOccupantForm({ houses }: { houses: HouseResponse[] }) {
   }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-    // await postOccupant(values)
-    // router.replace("/admin/account")
+    await postOccupant(values)
+    router.push("/admin/account")
   }
 
   return (
