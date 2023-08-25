@@ -87,7 +87,7 @@ export function EditOccupantForm({
               <Select
                 onValueChange={(value) => {
                   onChangeRoleType(value as occupantRoleType)
-                  return field.onChange
+                  return field.onChange(value)
                 }}
                 defaultValue={occupant.role}
               >

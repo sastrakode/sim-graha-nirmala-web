@@ -69,8 +69,9 @@ export function AddOccupantForm({ houses }: { houses: HouseResponse[] }) {
   }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await postOccupant(values)
-    router.replace("/admin/account")
+    console.log(values)
+    // await postOccupant(values)
+    // router.replace("/admin/account")
   }
 
   return (
@@ -85,7 +86,7 @@ export function AddOccupantForm({ houses }: { houses: HouseResponse[] }) {
               <Select
                 onValueChange={(value) => {
                   onChangeRoleType(value as occupantRoleType)
-                  return field.onChange
+                  return field.onChange(value)
                 }}
                 defaultValue={occupantRoleTypes[0].key}
               >
