@@ -29,10 +29,10 @@ import { postAnnouncement, putAnnouncement } from "@/lib/api"
 import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
-  title: z.string(),
-  content: z.string(),
-  announcement_category_id: z.string(),
-  author_id: z.string(),
+  title: z.string().nonempty("Judul harus diisi"),
+  content: z.string().nonempty("Konten harus diisi"),
+  announcement_category_id: z.string().nonempty("Kategori harus diisi"),
+  author_id: z.string().nonempty("Penulis harus diisi"),
 })
 
 export function AnnouncementForm({
@@ -46,23 +46,12 @@ export function AnnouncementForm({
 }) {
   const router = useRouter()
 
-  let defaultValues:
-    | {
-        title: string
-        content: string
-        announcement_category_id: string
-        author_id: string
-      }
-    | undefined
-
-  if (announcement) {
-    defaultValues = {
-      title: announcement.title,
-      content: announcement.content,
-      announcement_category_id:
-        announcement.announcement_category_id.toString(),
-      author_id: announcement.author_id.toString(),
-    }
+  const defaultValues = {
+    title: announcement?.title ?? "",
+    content: announcement?.content ?? "",
+    announcement_category_id:
+      announcement?.announcement_category_id.toString() ?? "",
+    author_id: announcement?.author_id.toString() ?? "",
   }
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -77,7 +66,7 @@ export function AnnouncementForm({
       await postAnnouncement(values)
     }
 
-    router.replace("/admin/announcement")
+    router.push("/admin/announcement")
   }
 
   return (

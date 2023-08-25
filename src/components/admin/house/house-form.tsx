@@ -19,25 +19,16 @@ import { useRouter } from "next/navigation"
 import { HouseResponse } from "@/server/models/responses/house"
 
 const formSchema = z.object({
-  code: z.string(),
-  address: z.string(),
+  code: z.string().nonempty("Kode harus diisi"),
+  address: z.string().nonempty("Alamat harus diisi"),
 })
 
 export function HouseForm({ house }: { house?: HouseResponse }) {
   const router = useRouter()
 
-  let defaultValues:
-    | {
-        code?: string
-        address?: string
-      }
-    | undefined
-
-  if (house) {
-    defaultValues = {
-      code: house.code,
-      address: house.address,
-    }
+  const defaultValues = {
+    code: house?.code ?? "",
+    address: house?.address ?? "",
   }
 
   const form = useForm<z.infer<typeof formSchema>>({

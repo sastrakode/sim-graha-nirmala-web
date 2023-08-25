@@ -58,6 +58,7 @@ export function AddOccupantForm({ houses }: { houses: HouseResponse[] }) {
       house_id: -1,
       name: "",
       phone: "",
+      email: "",
       password: "",
       confirmPassword: "",
     },
@@ -82,9 +83,10 @@ export function AddOccupantForm({ houses }: { houses: HouseResponse[] }) {
             <FormItem>
               <FormLabel>Tipe</FormLabel>
               <Select
-                onValueChange={(value) =>
-                  field.onChange(onChangeRoleType(value as occupantRoleType))
-                }
+                onValueChange={(value) => {
+                  onChangeRoleType(value as occupantRoleType)
+                  return field.onChange
+                }}
                 defaultValue={occupantRoleTypes[0].key}
               >
                 <FormControl>
@@ -139,7 +141,7 @@ export function AddOccupantForm({ houses }: { houses: HouseResponse[] }) {
                   {...field}
                   onBlur={(e) => {
                     field.onChange(e.target.value.trim())
-                    field.onBlur()
+                    return field.onBlur
                   }}
                 />
               </FormControl>
@@ -158,7 +160,7 @@ export function AddOccupantForm({ houses }: { houses: HouseResponse[] }) {
                   {...field}
                   onBlur={(e) => {
                     field.onChange(normalizePhone(e.target.value))
-                    field.onBlur()
+                    return field.onBlur
                   }}
                 />
               </FormControl>

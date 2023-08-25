@@ -85,9 +85,10 @@ export function EditOccupantForm({
             <FormItem>
               <FormLabel>Tipe</FormLabel>
               <Select
-                onValueChange={(value) =>
-                  field.onChange(onChangeRoleType(value as occupantRoleType))
-                }
+                onValueChange={(value) => {
+                  onChangeRoleType(value as occupantRoleType)
+                  return field.onChange
+                }}
                 defaultValue={occupant.role}
               >
                 <FormControl>
