@@ -46,8 +46,6 @@ export function AnnouncementForm({
   announcementCategories: AnnouncementCategoryResponse[]
   authors: StaffResponse[]
 }) {
-  const router = useRouter()
-
   const defaultValues = {
     title: announcement?.title ?? "",
     content: announcement?.content ?? "",
@@ -67,7 +65,7 @@ export function AnnouncementForm({
       await postAnnouncement(values)
     }
 
-    router.push("/admin/announcement")
+    window.location.assign("/admin/announcement")
   }
 
   return (

@@ -25,13 +25,10 @@ import { staffRoleTypes } from "@/lib/constants"
 import { addStaffFormSchema } from "@/lib/schema"
 import { normalizePhone } from "@/lib/utils"
 import { postStaff } from "@/lib/api"
-import { useRouter } from "next/router"
 
 const formSchema = addStaffFormSchema
 
 export function AddStaffForm() {
-  const router = useRouter()
-
   const form = useForm<z.infer<typeof formSchema>>({
     mode: "onTouched",
     resolver: zodResolver(formSchema),
@@ -47,7 +44,7 @@ export function AddStaffForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     await postStaff(values)
-    router.replace("/admin/account")
+    window.location.assign("/admin/account")
   }
 
   return (
