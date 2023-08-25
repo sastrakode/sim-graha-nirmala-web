@@ -130,7 +130,7 @@ export function AnnouncementForm({
         />
         <FormField
           control={form.control}
-          name="announcement_category_id"
+          name="author_id"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Penulis</FormLabel>
