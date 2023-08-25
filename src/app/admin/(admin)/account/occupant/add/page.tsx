@@ -1,4 +1,4 @@
-import { OccupantForm } from "@/components/admin/account/occupant-form"
+import { AddOccupantForm } from "@/components/admin/account/add-occupant-form"
 import { getHouses } from "@/lib/api"
 
 export default async function AddOcuppantPage() {
@@ -10,7 +10,7 @@ export default async function AddOcuppantPage() {
 
   return (
     <div className="my-6 ml-6 mr-[50%]">
-      <OccupantForm houses={houses} />
+      <AddOccupantForm houses={houses} />
     </div>
   )
 }

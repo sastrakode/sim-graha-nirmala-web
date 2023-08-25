@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
-import parseJwt from "./lib/utils"
+import { parseJwt } from "./lib/utils"
 
 export function middleware(req: NextRequest) {
   if (

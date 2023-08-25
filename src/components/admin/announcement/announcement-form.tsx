@@ -25,6 +25,8 @@ import { AnnouncementResponse } from "@/server/models/responses/announcement"
 import { AnnouncementCategoryResponse } from "@/server/models/responses/announcement-category"
 import { StaffResponse } from "@/server/models/responses/staff"
 import { Textarea } from "@/components/ui/textarea"
+import { postAnnouncement, putAnnouncement } from "@/lib/api"
+import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
   title: z.string(),
@@ -42,6 +44,8 @@ export function AnnouncementForm({
   announcementCategories: AnnouncementCategoryResponse[]
   authors: StaffResponse[]
 }) {
+  const router = useRouter()
+
   let defaultValues:
     | {
         title: string
@@ -67,7 +71,13 @@ export function AnnouncementForm({
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+    if (announcement) {
+      await putAnnouncement(announcement.id.toString(), values)
+    } else {
+      await postAnnouncement(values)
+    }
+
+    router.replace("/admin/announcement")
   }
 
   return (

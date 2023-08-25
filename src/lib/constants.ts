@@ -20,8 +20,14 @@ export const role: { [key: string]: string } = {
   security_guard: "Security",
 }
 
+export type staffRoleType =
+  | "admin"
+  | "secretary"
+  | "treasurer"
+  | "security_guard"
+
 export const staffRoleTypes: readonly {
-  key: string
+  key: staffRoleType
   name: string
 }[] = [
   { key: "admin", name: "Admin" },
@@ -30,8 +36,10 @@ export const staffRoleTypes: readonly {
   { key: "security_guard", name: "Security" },
 ]
 
+export type occupantRoleType = "owner" | "renter"
+
 export const occupantRoleTypes: readonly {
-  key: string
+  key: occupantRoleType
   name: string
 }[] = [
   { key: "owner", name: "Pemilik" },

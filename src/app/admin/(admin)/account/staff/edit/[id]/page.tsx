@@ -1,4 +1,4 @@
-import { StaffForm } from "@/components/admin/account/staff-form"
+import { EditStaffForm } from "@/components/admin/account/edit-staff-form"
 import { getStaff } from "@/lib/api"
 
 export default async function EditStaffPage({
@@ -14,7 +14,7 @@ export default async function EditStaffPage({
 
   return (
     <div className="my-6 ml-6 mr-[50%]">
-      <StaffForm staff={staff} />
+      <EditStaffForm staff={staff} />
     </div>
   )
 }

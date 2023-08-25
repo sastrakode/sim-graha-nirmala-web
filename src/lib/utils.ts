@@ -49,7 +49,7 @@ export function dateFormat(dateObj: Date, isTimeDetail = false): string {
   return s
 }
 
-export default function parseJwt(token: string) {
+export function parseJwt(token: string) {
   var base64Url = token.split(".")[1]
   var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/")
   var jsonPayload = decodeURIComponent(
@@ -62,4 +62,14 @@ export default function parseJwt(token: string) {
   )
 
   return JSON.parse(jsonPayload)
+}
+
+export function normalizePhone(phone: string): string {
+  phone = String(phone).trim()
+  if (phone.startsWith("+62")) {
+    phone = "0" + phone.slice(3)
+  } else if (phone.startsWith("62")) {
+    phone = "0" + phone.slice(2)
+  }
+  return phone.replace(/[- .]/g, "")
 }

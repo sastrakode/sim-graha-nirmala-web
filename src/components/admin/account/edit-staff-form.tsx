@@ -21,43 +21,27 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
-import { House, Occupant } from "@/lib/model"
-import { occupantRoleTypes } from "@/lib/constants"
+import { StaffResponse } from "@/server/models/responses/staff"
+import { staffRoleType, staffRoleTypes } from "@/lib/constants"
+import { editStaffFormSchema } from "@/lib/schema"
+import { normalizePhone } from "@/lib/utils"
+import { putStaff } from "@/lib/api"
 
-const formSchema = z.object({
-  house_id: z.string(),
-  name: z.string(),
-  phone: z.string(),
-  email: z.string().email(),
-  role: z.string(),
-})
+const formSchema = editStaffFormSchema
 
-export function OccupantForm({
-  occupant,
-  houses,
-}: {
-  occupant?: Occupant
-  houses: House[]
-}) {
-  let defaultValues
-
-  if (occupant) {
-    defaultValues = {
-      house_id: occupant.house_id?.toString(),
-      name: occupant.name,
-      phone: occupant.phone,
-      email: occupant.email ?? "",
-      role: occupant.role,
-    }
-  }
-
+export function EditStaffForm({ staff }: { staff: StaffResponse }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: defaultValues,
+    defaultValues: {
+      role: staff.role as staffRoleType,
+      name: staff.name,
+      phone: staff.phone,
+      email: staff.email ?? "",
+    },
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+    await putStaff(staff.id.toString(), values)
   }
 
   return (
@@ -65,23 +49,20 @@ export function OccupantForm({
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="house_id"
+          name="role"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Rumah</FormLabel>
-              <Select
-                onValueChange={field.onChange}
-                defaultValue={occupant?.house_id?.toString()}
-              >
+              <FormLabel>Tipe</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={staff?.role}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {houses.map((house) => (
-                    <SelectItem key={house.id} value={house.id.toString()}>
-                      {house.code}
+                  {staffRoleTypes.map((type, idx) => (
+                    <SelectItem key={idx} value={type.key}>
+                      {type.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -97,7 +78,13 @@ export function OccupantForm({
             <FormItem>
               <FormLabel>Nama</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input
+                  {...field}
+                  onBlur={(e) => {
+                    field.onChange(e.target.value.trim())
+                    field.onBlur()
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -110,7 +97,13 @@ export function OccupantForm({
             <FormItem>
               <FormLabel>No. Telp</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input
+                  {...field}
+                  onBlur={(e) => {
+                    field.onChange(normalizePhone(e.target.value))
+                    field.onBlur()
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -125,33 +118,6 @@ export function OccupantForm({
               <FormControl>
                 <Input {...field} />
               </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="role"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Tipe</FormLabel>
-              <Select
-                onValueChange={field.onChange}
-                defaultValue={occupant?.role}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {occupantRoleTypes.map((type, idx) => (
-                    <SelectItem key={idx} value={type.key}>
-                      {type.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
               <FormMessage />
             </FormItem>
           )}

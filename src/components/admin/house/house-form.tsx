@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { House } from "@/lib/model"
+import { postHouse, putHouse } from "@/lib/api"
+import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
   code: z.string(),
@@ -22,6 +24,8 @@ const formSchema = z.object({
 })
 
 export function HouseForm({ house }: { house?: House }) {
+  const router = useRouter()
+
   let defaultValues:
     | {
         code?: string
@@ -41,7 +45,14 @@ export function HouseForm({ house }: { house?: House }) {
     defaultValues: defaultValues,
   })
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {}
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (house) {
+      await putHouse(house.id.toString(), values)
+    } else {
+      await postHouse(values)
+    }
+    router.replace("/admin/house")
+  }
 
   return (
     <Form {...form}>

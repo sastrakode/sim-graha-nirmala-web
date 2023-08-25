@@ -1,4 +1,5 @@
-import { THouse } from "../../db/schema"
+import { THouse, TOccupant } from "../../db/schema"
+import { OccupantResponse, toOccupantResponse } from "./occupant"
 
 export type HouseResponse = {
   id: number
@@ -6,9 +7,17 @@ export type HouseResponse = {
   address: string
   created_at: Date
   updated_at: Date | null
+  owner: OccupantResponse | null
+  renter: OccupantResponse | null
 }
 
-export function toHouseResponse(house?: THouse): HouseResponse | null {
+export function toHouseResponse(
+  house?: THouse,
+  relations?: {
+    owner?: TOccupant
+    renter?: TOccupant
+  },
+): HouseResponse | null {
   return house
     ? {
         id: house.id,
@@ -16,6 +25,8 @@ export function toHouseResponse(house?: THouse): HouseResponse | null {
         address: house.address,
         created_at: house.createdAt,
         updated_at: house.updatedAt,
+        owner: toOccupantResponse(relations?.owner),
+        renter: toOccupantResponse(relations?.renter),
       }
     : null
 }

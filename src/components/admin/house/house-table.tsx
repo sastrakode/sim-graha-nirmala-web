@@ -7,9 +7,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { House } from "@/lib/model"
+import { HouseResponse } from "@/server/models/responses/house"
+import { OccupantResponse } from "@/server/models/responses/occupant"
 
-export default function HouseTable({ houses }: { houses: House[] }) {
+export default function HouseTable({
+  houses,
+}: {
+  houses: (HouseResponse & {
+    owner: OccupantResponse | null
+    renter: OccupantResponse | null
+  })[]
+}) {
   return (
     <Table>
       <TableHeader>
