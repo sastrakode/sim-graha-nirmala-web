@@ -3,7 +3,7 @@ import { ApiError } from "../models/exceptions/api"
 
 export async function bindJson<T extends z.ZodTypeAny>(
   req: Request,
-  schema: T
+  schema: T,
 ): Promise<z.infer<T>> {
   try {
     const body = await req.json()

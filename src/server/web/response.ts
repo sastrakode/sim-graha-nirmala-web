@@ -10,7 +10,7 @@ export function sendData(code: number, data: any, meta?: any) {
     },
     {
       status: code,
-    }
+    },
   )
 }
 
@@ -23,7 +23,7 @@ export function sendErrors(code: number, errors: any, meta?: any) {
     },
     {
       status: code,
-    }
+    },
   )
 }
 
