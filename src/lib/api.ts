@@ -15,7 +15,7 @@ const getToken = async () => {
     const { cookies } = await import("next/headers")
     token = `Bearer ${cookies().get("token")?.value}`
   } else {
-    token = String(getCookie("token"))
+    token = `Bearer ${String(getCookie("token"))}`
   }
   return token
 }
