@@ -31,8 +31,10 @@ import { useRouter } from "next/navigation"
 const formSchema = z.object({
   title: z.string().nonempty("Judul harus diisi"),
   content: z.string().nonempty("Konten harus diisi"),
-  announcement_category_id: z.string().nonempty("Kategori harus diisi"),
-  author_id: z.string().nonempty("Penulis harus diisi"),
+  announcement_category_id: z.coerce
+    .number()
+    .nonnegative("Kategori harus diisi"),
+  author_id: z.coerce.number().nonnegative("Penulis harus diisi"),
 })
 
 export function AnnouncementForm({
@@ -49,9 +51,8 @@ export function AnnouncementForm({
   const defaultValues = {
     title: announcement?.title ?? "",
     content: announcement?.content ?? "",
-    announcement_category_id:
-      announcement?.announcement_category_id.toString() ?? "",
-    author_id: announcement?.author_id.toString() ?? "",
+    announcement_category_id: announcement?.announcement_category_id ?? -1,
+    author_id: announcement?.author_id ?? -1,
   }
 
   const form = useForm<z.infer<typeof formSchema>>({
