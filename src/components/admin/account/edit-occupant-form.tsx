@@ -35,7 +35,6 @@ export function EditOccupantForm({
   occupant,
   houses,
 }: {
-  id: string
   occupant: OccupantResponse
   houses: HouseResponse[]
 }) {
