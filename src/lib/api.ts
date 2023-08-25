@@ -125,10 +125,12 @@ export async function getOccupant(
   return res
 }
 
-export async function getOccupants(): Promise<[Occupant[], FetchError]> {
+export async function getOccupants(): Promise<
+  [OccupantResponse[], FetchError]
+> {
   const token = await getToken()
 
-  const res = await handleFetch<Occupant[]>(`${baseURL}/occupant`, {
+  const res = await handleFetch<OccupantResponse[]>(`${baseURL}/occupant`, {
     headers: {
       Authorization: token,
     },
@@ -136,10 +138,12 @@ export async function getOccupants(): Promise<[Occupant[], FetchError]> {
   return res
 }
 
-export async function postOccupant(body: {}): Promise<[Occupant, FetchError]> {
+export async function postOccupant(body: {}): Promise<
+  [OccupantResponse, FetchError]
+> {
   const token = await getToken()
 
-  const res = await handleFetch<Occupant>(`${baseURL}/occupant`, {
+  const res = await handleFetch<OccupantResponse>(`${baseURL}/occupant`, {
     method: "POST",
     body: JSON.stringify(body),
     headers: {
@@ -152,10 +156,10 @@ export async function postOccupant(body: {}): Promise<[Occupant, FetchError]> {
 export async function putOccupant(
   id: string,
   body: {},
-): Promise<[Occupant, FetchError]> {
+): Promise<[OccupantResponse, FetchError]> {
   const token = await getToken()
 
-  const res = await handleFetch<Occupant>(`${baseURL}/occupant/${id}`, {
+  const res = await handleFetch<OccupantResponse>(`${baseURL}/occupant/${id}`, {
     method: "PUT",
     body: JSON.stringify(body),
     headers: {

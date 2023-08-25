@@ -14,16 +14,16 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { House } from "@/lib/model"
 import { postHouse, putHouse } from "@/lib/api"
 import { useRouter } from "next/navigation"
+import { HouseResponse } from "@/server/models/responses/house"
 
 const formSchema = z.object({
   code: z.string(),
   address: z.string(),
 })
 
-export function HouseForm({ house }: { house?: House }) {
+export function HouseForm({ house }: { house?: HouseResponse }) {
   const router = useRouter()
 
   let defaultValues:

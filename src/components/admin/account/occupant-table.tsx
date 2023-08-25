@@ -8,14 +8,15 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { role } from "@/lib/constants"
-import { House, Occupant } from "@/lib/model"
+import { HouseResponse } from "@/server/models/responses/house"
+import { OccupantResponse } from "@/server/models/responses/occupant"
 
 export default function OccupantTable({
   occupants,
   houses,
 }: {
-  occupants: Occupant[]
-  houses: House[]
+  occupants: OccupantResponse[]
+  houses: HouseResponse[]
 }) {
   return (
     <Table>
