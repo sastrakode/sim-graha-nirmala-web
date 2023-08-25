@@ -6,7 +6,11 @@ const userBaseSchema = {
     .string()
     .nonempty("No. Telp harus diisi")
     .regex(new RegExp(/^08[1-9][0-9]{7,10}$/), "No. Telp tidak valid"),
-  email: z.string().email("Email tidak valid").optional(),
+  email: z
+    .string()
+    .optional()
+    .transform((value) => value || undefined)
+    .pipe(z.string().email().optional()),
 }
 
 export const addOccupantFormSchema = z
