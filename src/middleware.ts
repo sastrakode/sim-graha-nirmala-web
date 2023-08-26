@@ -43,6 +43,7 @@ export function middleware(req: NextRequest) {
   }
 
   if (req.nextUrl.pathname.startsWith("/admin")) {
+    let response: NextResponse
     const token = req.cookies.get("token")?.value
 
     if (token) {
@@ -50,13 +51,17 @@ export function middleware(req: NextRequest) {
         const { role_type } = parseJwt(token)
         if (role_type === "staff") return NextResponse.next()
         else if (role_type === "occupant")
-          return NextResponse.redirect(new URL("/app/dashboard", req.url))
+          response = NextResponse.redirect(new URL("/app/dashboard", req.url))
       } catch (error) {
         req.cookies.delete(token)
-        return NextResponse.redirect(new URL("/admin/login", req.url))
+        response = NextResponse.redirect(new URL("/admin/login", req.url))
       }
     }
 
-    return NextResponse.redirect(new URL("/admin/login", req.url))
+    response = NextResponse.redirect(new URL("/admin/login", req.url))
+
+    // Disable middleware cache so we can use router.push() without being cached
+    response.headers.set("x-middleware-cache", "no-cache")
+    return response
   }
 }
