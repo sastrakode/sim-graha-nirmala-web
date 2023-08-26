@@ -12,7 +12,7 @@ export const GET = defineHandler(
     let announcement = await db().query.Announcement.findFirst({
       where: eq(Announcement.id, params.id),
     })
-    if (!announcement) sendErrors(404, "Announcement not found")
+    if (!announcement) return sendErrors(404, "Announcement not found")
 
     return sendData(200, toAnnouncementResponse(announcement))
   },

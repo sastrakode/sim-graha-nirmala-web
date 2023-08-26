@@ -7,6 +7,7 @@ import { defineHandler } from "@/server/web/handler"
 import { bindJson } from "@/server/web/request"
 import { sendData, sendErrors } from "@/server/web/response"
 import { and, eq } from "drizzle-orm"
+import { revalidateTag } from "next/cache"
 import { z } from "zod"
 
 const Param = z.object({
@@ -57,5 +58,6 @@ export const POST = defineHandler(async (req) => {
   }
 
   let [newOccupant] = await db().insert(Occupant).values(occupant).returning()
+  revalidateTag("house")
   return sendData(201, toOccupantResponse(newOccupant))
 })

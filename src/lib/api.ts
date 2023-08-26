@@ -1,5 +1,5 @@
 import { getCookie } from "cookies-next"
-import { House, Occupant, OccupantLogin, StaffLogin } from "./model"
+import { OccupantLogin, StaffLogin } from "./model"
 import { AnnouncementResponse } from "@/server/models/responses/announcement"
 import { StaffResponse } from "@/server/models/responses/staff"
 import { AnnouncementCategoryResponse } from "@/server/models/responses/announcement-category"
@@ -12,6 +12,7 @@ const baseURL = isServer ? "http://127.0.0.1:3000/api/v1" : "/api/v1"
 const getToken = async () => {
   let token: string
   if (isServer) {
+    // The route that needs server-side cookies, will not be cached
     const { cookies } = await import("next/headers")
     token = `Bearer ${cookies().get("token")?.value}`
   } else {
@@ -69,12 +70,20 @@ export async function staffLogin(body: {}): Promise<[StaffLogin, FetchError]> {
 export async function getHouse(
   id: string,
 ): Promise<[HouseResponse, FetchError]> {
-  const res = await handleFetch<HouseResponse>(`${baseURL}/house/${id}`)
+  const res = await handleFetch<HouseResponse>(`${baseURL}/house/${id}`, {
+    next: {
+      tags: ["house"],
+    },
+  })
   return res
 }
 
 export async function getHouses(): Promise<[HouseResponse[], FetchError]> {
-  const res = await handleFetch<HouseResponse[]>(`${baseURL}/house`)
+  const res = await handleFetch<HouseResponse[]>(`${baseURL}/house`, {
+    next: {
+      tags: ["house"],
+    },
+  })
   return res
 }
 
@@ -150,6 +159,7 @@ export async function postOccupant(body: {}): Promise<
       Authorization: token,
     },
   })
+
   return res
 }
 
@@ -230,6 +240,11 @@ export async function getAnnouncements(): Promise<
 > {
   const res = await handleFetch<AnnouncementResponse[]>(
     `${baseURL}/announcement`,
+    {
+      next: {
+        tags: ["house"],
+      },
+    },
   )
 
   return res
@@ -245,6 +260,9 @@ export async function getAnnouncement(
     {
       headers: {
         Authorization: token,
+      },
+      next: {
+        tags: ["house"],
       },
     },
   )

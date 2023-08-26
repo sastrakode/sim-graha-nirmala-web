@@ -26,10 +26,12 @@ import { staffRoleType, staffRoleTypes } from "@/lib/constants"
 import { editStaffFormSchema } from "@/lib/schema"
 import { normalizePhone } from "@/lib/utils"
 import { putStaff } from "@/lib/api"
+import { useRouter } from "next/navigation"
 
 const formSchema = editStaffFormSchema
 
 export function EditStaffForm({ staff }: { staff: StaffResponse }) {
+  const router = useRouter()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -42,7 +44,9 @@ export function EditStaffForm({ staff }: { staff: StaffResponse }) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     await putStaff(staff.id.toString(), values)
-    window.location.assign("/admin/account")
+
+    router.refresh()
+    router.replace("/admin/account")
   }
 
   return (

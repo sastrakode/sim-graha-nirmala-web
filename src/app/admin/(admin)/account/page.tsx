@@ -15,7 +15,7 @@ export default async function AdminAccountPage() {
 
   return (
     <div className="m-6">
-      <Tabs defaultValue="occupant" className="">
+      <Tabs defaultValue="occupant">
         <TabsList>
           <TabsTrigger value="occupant">Penghuni</TabsTrigger>
           <TabsTrigger value="staff">Staf</TabsTrigger>

@@ -6,6 +6,7 @@ import { defineHandler } from "@/server/web/handler"
 import { bindJson } from "@/server/web/request"
 import { sendData, sendErrors } from "@/server/web/response"
 import { eq } from "drizzle-orm"
+import { revalidateTag } from "next/cache"
 import { z } from "zod"
 
 const Param = z.object({
@@ -33,6 +34,7 @@ export const PUT = defineHandler(
     house.updatedAt = new Date()
 
     await db().update(House).set(house).where(eq(House.id, params.id))
+    revalidateTag("house")
     return sendData(200, toHouseResponse(house))
   },
 )

@@ -28,6 +28,7 @@ import { useState } from "react"
 import { editOccupantFormSchema } from "@/lib/schema"
 import { normalizePhone } from "@/lib/utils"
 import { putOccupant } from "@/lib/api"
+import { useRouter } from "next/navigation"
 
 const formSchema = editOccupantFormSchema
 
@@ -38,6 +39,7 @@ export function EditOccupantForm({
   occupant: OccupantResponse
   houses: HouseResponse[]
 }) {
+  const router = useRouter()
   const [filteredHouses, setFilteredHouses] = useState(
     filterHouses(occupant.role as occupantRoleType),
   )
@@ -73,7 +75,9 @@ export function EditOccupantForm({
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     await putOccupant(occupant.id.toString(), values)
-    window.location.assign("/admin/account")
+
+    router.refresh()
+    router.replace("/admin/account")
   }
 
   return (

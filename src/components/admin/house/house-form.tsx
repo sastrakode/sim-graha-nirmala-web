@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { postHouse, putHouse } from "@/lib/api"
 import { HouseResponse } from "@/server/models/responses/house"
+import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
   code: z.string().nonempty("Kode harus diisi"),
@@ -23,6 +24,7 @@ const formSchema = z.object({
 })
 
 export function HouseForm({ house }: { house?: HouseResponse }) {
+  const router = useRouter()
   const defaultValues = {
     code: house?.code ?? "",
     address: house?.address ?? "",
@@ -39,7 +41,9 @@ export function HouseForm({ house }: { house?: HouseResponse }) {
     } else {
       await postHouse(values)
     }
-    window.location.assign("/admin/house")
+
+    router.refresh()
+    router.replace("/admin/house")
   }
 
   return (
