@@ -74,7 +74,20 @@ export function EditOccupantForm({
   }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await putOccupant(occupant.id.toString(), values)
+    const [_, errors] = await putOccupant(occupant.id.toString(), values)
+
+    if (errors) {
+      errors.forEach((error) => {
+        if (error.field) {
+          form.setError(error.field as any, {
+            type: "server",
+            message: error.message,
+          })
+        }
+      })
+
+      return
+    }
 
     router.refresh()
     router.replace("/admin/account")

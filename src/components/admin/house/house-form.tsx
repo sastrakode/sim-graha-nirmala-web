@@ -37,9 +37,35 @@ export function HouseForm({ house }: { house?: HouseResponse }) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (house) {
-      await putHouse(house.id.toString(), values)
+      const [_, errors] = await putHouse(house.id.toString(), values)
+
+      if (errors) {
+        errors.forEach((error) => {
+          if (error.field) {
+            form.setError(error.field as any, {
+              type: "server",
+              message: error.message,
+            })
+          }
+        })
+
+        return
+      }
     } else {
-      await postHouse(values)
+      const [_, errors] = await postHouse(values)
+
+      if (errors) {
+        errors.forEach((error) => {
+          if (error.field) {
+            form.setError(error.field as any, {
+              type: "server",
+              message: error.message,
+            })
+          }
+        })
+
+        return
+      }
     }
 
     router.refresh()

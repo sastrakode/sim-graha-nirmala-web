@@ -47,17 +47,14 @@ export default function LoginForm({ role }: { role: LoginRole }) {
     const [res, errors] = result
 
     if (errors) {
-      if (errors[0].includes("Phone")) {
-        form.setError("phone", {
-          type: "manual",
-          message: "No. Hp tidak terdaftar",
-        })
-      } else if (errors[0].includes("Password")) {
-        form.setError("password", {
-          type: "manual",
-          message: "Password salah",
-        })
-      }
+      errors.forEach((error) => {
+        if (error.field) {
+          form.setError(error.field as any, {
+            type: "server",
+            message: error.message,
+          })
+        }
+      })
 
       return
     }

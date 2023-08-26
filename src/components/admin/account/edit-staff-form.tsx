@@ -43,7 +43,20 @@ export function EditStaffForm({ staff }: { staff: StaffResponse }) {
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await putStaff(staff.id.toString(), values)
+    const [_, errors] = await putStaff(staff.id.toString(), values)
+
+    if (errors) {
+      errors.forEach((error) => {
+        if (error.field) {
+          form.setError(error.field as any, {
+            type: "server",
+            message: error.message,
+          })
+        }
+      })
+
+      return
+    }
 
     router.refresh()
     router.replace("/admin/account")

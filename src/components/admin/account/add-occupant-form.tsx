@@ -28,6 +28,7 @@ import { normalizePhone } from "@/lib/utils"
 import { addOccupantFormSchema } from "@/lib/schema"
 import { postOccupant } from "@/lib/api"
 import { useRouter } from "next/navigation"
+import { Loader2 } from "lucide-react"
 
 const formSchema = addOccupantFormSchema
 
@@ -68,10 +69,22 @@ export function AddOccupantForm({ houses }: { houses: HouseResponse[] }) {
   }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await postOccupant(values)
+    const [_, errors] = await postOccupant(values)
 
-    router.refresh()
-    router.replace("/admin/account")
+    if (errors) {
+      errors.forEach((error) => {
+        if (error.field) {
+          form.setError(error.field as any, {
+            type: "server",
+            message: error.message,
+          })
+        }
+      })
+
+      return
+    }
+
+    router.push("/admin/account")
   }
 
   return (
@@ -208,7 +221,14 @@ export function AddOccupantForm({ houses }: { houses: HouseResponse[] }) {
             </FormItem>
           )}
         />
-        <Button type="submit">Tambah</Button>
+        <Button disabled={form.formState.isSubmitting} type="submit">
+          <Loader2
+            className={`mr-2 h-4 w-4 animate-spin ${
+              form.formState.isSubmitting ? "span" : "hidden"
+            }`}
+          />
+          Tambah
+        </Button>
       </form>
     </Form>
   )

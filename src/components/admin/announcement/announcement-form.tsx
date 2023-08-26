@@ -61,9 +61,38 @@ export function AnnouncementForm({
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (announcement) {
-      await putAnnouncement(announcement.id.toString(), values)
+      const [_, errors] = await putAnnouncement(
+        announcement.id.toString(),
+        values,
+      )
+
+      if (errors) {
+        errors.forEach((error) => {
+          if (error.field) {
+            form.setError(error.field as any, {
+              type: "server",
+              message: error.message,
+            })
+          }
+        })
+
+        return
+      }
     } else {
-      await postAnnouncement(values)
+      const [_, errors] = await postAnnouncement(values)
+
+      if (errors) {
+        errors.forEach((error) => {
+          if (error.field) {
+            form.setError(error.field as any, {
+              type: "server",
+              message: error.message,
+            })
+          }
+        })
+
+        return
+      }
     }
 
     router.refresh()
