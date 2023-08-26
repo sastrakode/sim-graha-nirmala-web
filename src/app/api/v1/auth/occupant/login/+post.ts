@@ -1,3 +1,4 @@
+import { errorDefinition } from "@/lib/constants"
 import { db } from "@/server/db"
 import { Occupant } from "@/server/db/schema"
 import {
@@ -27,13 +28,14 @@ export const POST = defineHandler(async (req) => {
   const occupant = await db().query.Occupant.findFirst({
     where: eq(Occupant.phone, param.phone),
   })
-  if (!occupant) return sendErrors(404, "Phone not registered")
+  if (!occupant) return sendErrors(404, errorDefinition.occupant_not_found)
 
   let isCorrectPassword = await comparePassword(
     param.password,
     occupant.password,
   )
-  if (!isCorrectPassword) return sendErrors(401, "Password incorrect")
+  if (!isCorrectPassword)
+    return sendErrors(401, errorDefinition.password_incorrect)
 
   let token = generateToken({
     sub: occupant.id.toString(),

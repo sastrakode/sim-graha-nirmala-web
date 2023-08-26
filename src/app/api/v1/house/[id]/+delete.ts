@@ -1,3 +1,4 @@
+import { errorDefinition } from "@/lib/constants"
 import { db } from "@/server/db"
 import { House } from "@/server/db/schema"
 import { useAuth } from "@/server/security/auth"
@@ -12,7 +13,7 @@ export const DELETE = defineHandler(
     let house = await db().query.House.findFirst({
       where: eq(House.id, params.id),
     })
-    if (!house) return sendErrors(404, "House not found")
+    if (!house) return sendErrors(404, errorDefinition.house_not_found)
 
     await db().delete(House).where(eq(House.id, params.id))
     return sendNoContent()

@@ -1,3 +1,4 @@
+import { errorDefinition } from "@/lib/constants"
 import { db } from "@/server/db"
 import { House } from "@/server/db/schema"
 import { toHouseResponse } from "@/server/models/responses/house"
@@ -22,12 +23,13 @@ export const PUT = defineHandler(
     let houseExist = await db().query.House.findFirst({
       where: eq(House.code, param.code),
     })
-    if (houseExist) return sendErrors(409, "House already exist")
+    if (houseExist)
+      return sendErrors(409, errorDefinition.house_code_registered)
 
     let house = await db().query.House.findFirst({
       where: eq(House.id, params.id),
     })
-    if (!house) return sendErrors(404, "House not found")
+    if (!house) return sendErrors(404, errorDefinition.house_not_found)
 
     house.code = param.code
     house.address = param.address

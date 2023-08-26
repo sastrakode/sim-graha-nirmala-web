@@ -1,3 +1,4 @@
+import { errorDefinition } from "@/lib/constants"
 import { db } from "@/server/db"
 import { Announcement } from "@/server/db/schema"
 import { toAnnouncementResponse } from "@/server/models/responses/announcement"
@@ -12,7 +13,8 @@ export const GET = defineHandler(
     let announcement = await db().query.Announcement.findFirst({
       where: eq(Announcement.id, params.id),
     })
-    if (!announcement) return sendErrors(404, "Announcement not found")
+    if (!announcement)
+      return sendErrors(404, errorDefinition.announcement_not_found)
 
     return sendData(200, toAnnouncementResponse(announcement))
   },

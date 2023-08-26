@@ -1,3 +1,4 @@
+import { errorDefinition } from "@/lib/constants"
 import { db } from "@/server/db"
 import { Staff, TInsertStaff } from "@/server/db/schema"
 import { toStaffResponse } from "@/server/models/responses/staff"
@@ -25,13 +26,13 @@ export const POST = defineHandler(async (req) => {
     let staffExists = await db().query.Staff.findFirst({
       where: eq(Staff.email, param.email),
     })
-    if (staffExists) return sendErrors(409, "Email already registered")
+    if (staffExists) return sendErrors(409, errorDefinition.email_registered)
   }
 
   let staffExists = await db().query.Staff.findFirst({
     where: eq(Staff.phone, param.phone),
   })
-  if (staffExists) return sendErrors(409, "Phone already registered")
+  if (staffExists) return sendErrors(409, errorDefinition.phone_registered)
 
   let staff: TInsertStaff = {
     name: param.name,

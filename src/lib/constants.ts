@@ -45,3 +45,61 @@ export const occupantRoleTypes: readonly {
   { key: "owner", name: "Pemilik" },
   { key: "renter", name: "Penyewa" },
 ]
+
+type errorKeyType =
+  | "house_taken"
+  | "email_registered"
+  | "phone_registered"
+  | "house_not_found"
+  | "occupant_not_found"
+  | "phone_not_registered"
+  | "password_incorrect"
+  | "house_code_registered"
+  | "staff_not_found"
+  | "announcement_not_found"
+  | "announcement_category_exist"
+
+export const errorDefinition: {
+  [key in errorKeyType]: { field?: string; message: string }
+} = {
+  house_not_found: {
+    message: "Rumah tidak ada",
+  },
+  house_taken: {
+    field: "phone",
+    message: "Rumah sudah diisi",
+  },
+  email_registered: {
+    field: "phone",
+    message: "Email sudah terdaftar",
+  },
+  phone_registered: {
+    field: "phone",
+    message: "No. Telp sudah terdaftar",
+  },
+  occupant_not_found: {
+    message: "Penghuni tidak ditemukan",
+  },
+  phone_not_registered: {
+    field: "phone",
+    message: "No. Telp belum terdaftar",
+  },
+  password_incorrect: {
+    field: "password",
+    message: "Password salah",
+  },
+  house_code_registered: {
+    field: "code",
+    message: "Kode rumah sudah terdaftar",
+  },
+  staff_not_found: {
+    message: "Staf tidak ditemukan",
+  },
+  announcement_not_found: {
+    message: "Pengumuman tidak ditemukan",
+  },
+  announcement_category_exist: {
+    field: "name",
+    message: "Kategori pengumuman sudah ada",
+  },
+}

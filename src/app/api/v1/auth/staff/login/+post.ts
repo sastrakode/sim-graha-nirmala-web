@@ -1,3 +1,4 @@
+import { errorDefinition } from "@/lib/constants"
 import { db } from "@/server/db"
 import { Staff } from "@/server/db/schema"
 import { StaffResponse, toStaffResponse } from "@/server/models/responses/staff"
@@ -24,10 +25,11 @@ export const POST = defineHandler(async (req) => {
   let staff = await db().query.Staff.findFirst({
     where: eq(Staff.phone, param.phone),
   })
-  if (!staff) return sendErrors(404, "Phone not registered")
+  if (!staff) return sendErrors(404, errorDefinition.phone_not_registered)
 
   let isCorrectPassword = await comparePassword(param.password, staff.password)
-  if (!isCorrectPassword) return sendErrors(401, "Password incorrect")
+  if (!isCorrectPassword)
+    return sendErrors(401, errorDefinition.password_incorrect)
 
   let token = generateToken({
     sub: staff.id.toString(),

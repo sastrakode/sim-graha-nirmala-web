@@ -21,7 +21,7 @@ const getToken = async () => {
   return token
 }
 
-export type FetchError = string[] | null
+export type FetchError = { field?: string; message: string }[] | null
 
 async function handleFetch<T>(
   url: string,

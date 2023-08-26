@@ -1,3 +1,4 @@
+import { errorDefinition } from "@/lib/constants"
 import { db } from "@/server/db"
 import { House, Occupant } from "@/server/db/schema"
 import { toOccupantResponse } from "@/server/models/responses/occupant"
@@ -24,29 +25,31 @@ export const PUT = defineHandler(
     const isHouseExists = await db().query.House.findFirst({
       where: eq(House.id, param.house_id),
     })
-    if (!isHouseExists) return sendErrors(404, "House not found")
+    if (!isHouseExists) return sendErrors(404, errorDefinition.house_not_found)
 
     let houseBelongToSomeone = await db().query.Occupant.findFirst({
       where: eq(Occupant.houseId, param.house_id),
     })
-    if (houseBelongToSomeone) return sendErrors(409, "House belong to someone")
+    if (houseBelongToSomeone)
+      return sendErrors(409, errorDefinition.house_taken)
 
     if (param.email) {
       let occupantExists = await db().query.Occupant.findFirst({
         where: eq(Occupant.email, param.email),
       })
-      if (occupantExists) return sendErrors(409, "Email already registered")
+      if (occupantExists)
+        return sendErrors(409, errorDefinition.email_registered)
     }
 
     let phoneExists = await db().query.Occupant.findFirst({
       where: eq(Occupant.phone, param.phone),
     })
-    if (phoneExists) return sendErrors(409, "Phone Number already registered")
+    if (phoneExists) return sendErrors(409, errorDefinition.phone_registered)
 
     let occupant = await db().query.Occupant.findFirst({
       where: eq(Occupant.id, params.id),
     })
-    if (!occupant) return sendErrors(404, "Occupant not found")
+    if (!occupant) return sendErrors(404, errorDefinition.occupant_not_found)
 
     occupant.houseId = param.house_id
     occupant.name = param.name

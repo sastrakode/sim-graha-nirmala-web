@@ -1,3 +1,4 @@
+import { errorDefinition } from "@/lib/constants"
 import { db } from "@/server/db"
 import { Occupant } from "@/server/db/schema"
 import { toOccupantResponse } from "@/server/models/responses/occupant"
@@ -12,7 +13,7 @@ export const GET = defineHandler(
     let occupant = await db().query.Occupant.findFirst({
       where: eq(Occupant.id, params.id),
     })
-    if (!occupant) sendErrors(404, "Occupant not found")
+    if (!occupant) sendErrors(404, errorDefinition.occupant_not_found)
 
     return sendData(200, toOccupantResponse(occupant))
   },

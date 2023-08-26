@@ -14,7 +14,13 @@ export function sendData(code: number, data: any, meta?: any) {
   )
 }
 
-export function sendErrors(code: number, errors: any, meta?: any) {
+export function sendErrors(
+  code: number,
+  errors:
+    | { field?: string; message: string }[]
+    | { field?: string; message: string },
+  meta?: any,
+) {
   return NextResponse.json(
     {
       status: false,
@@ -28,7 +34,7 @@ export function sendErrors(code: number, errors: any, meta?: any) {
 }
 
 export function sendErrorServer() {
-  return sendErrors(500, errServer)
+  return sendErrors(500, { message: errServer })
 }
 
 export function sendNoContent() {

@@ -1,10 +1,11 @@
+import { errorDefinition } from "@/lib/constants"
 import { db } from "@/server/db"
 import { Announcement } from "@/server/db/schema"
 import { toAnnouncementResponse } from "@/server/models/responses/announcement"
 import { useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
 import { bindJson } from "@/server/web/request"
-import { sendErrors } from "@/server/web/response"
+import { sendData, sendErrors } from "@/server/web/response"
 import { eq } from "drizzle-orm"
 import { revalidateTag } from "next/cache"
 import { z } from "zod"
@@ -23,7 +24,8 @@ export const PUT = defineHandler(
     let announcement = await db().query.Announcement.findFirst({
       where: eq(Announcement.id, params.id),
     })
-    if (!announcement) return sendErrors(404, "Announcement not found")
+    if (!announcement)
+      return sendErrors(404, errorDefinition.announcement_not_found)
 
     announcement.title = param.title
     announcement.content = param.content
@@ -35,6 +37,6 @@ export const PUT = defineHandler(
       .where(eq(Announcement.id, params.id))
 
     revalidateTag("announcement")
-    return sendErrors(200, toAnnouncementResponse(announcement))
+    return sendData(200, toAnnouncementResponse(announcement))
   },
 )

@@ -1,3 +1,4 @@
+import { errorDefinition } from "@/lib/constants"
 import { db } from "@/server/db"
 import { House, Occupant } from "@/server/db/schema"
 import {
@@ -18,7 +19,7 @@ export const GET = defineHandler(
     const house = await db().query.House.findFirst({
       where: eq(House.id, params.id),
     })
-    if (!house) return sendErrors(404, "House not found")
+    if (!house) return sendErrors(404, errorDefinition.house_not_found)
 
     const owner = await db().query.Occupant.findFirst({
       where: and(eq(Occupant.houseId, params.id), eq(Occupant.role, "owner")),

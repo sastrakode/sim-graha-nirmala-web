@@ -1,3 +1,4 @@
+import { errorDefinition } from "@/lib/constants"
 import { db } from "@/server/db"
 import { House } from "@/server/db/schema"
 import { toHouseResponse } from "@/server/models/responses/house"
@@ -10,7 +11,7 @@ export const GET = defineHandler(
     let house = await db().query.House.findFirst({
       where: eq(House.id, params.id),
     })
-    if (!house) return sendErrors(404, "House not found")
+    if (!house) return sendErrors(404, errorDefinition.house_not_found)
 
     return sendData(200, toHouseResponse(house))
   },

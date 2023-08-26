@@ -1,3 +1,4 @@
+import { errorDefinition } from "@/lib/constants"
 import { db } from "@/server/db"
 import {
   AnnouncementCategory,
@@ -22,7 +23,7 @@ export const POST = defineHandler(async (req) => {
       where: eq(AnnouncementCategory.name, param.name),
     })
   if (announcementCategoryExist) {
-    return sendErrors(409, "Announcement category already exist")
+    return sendErrors(409, errorDefinition.announcement_category_exist)
   }
 
   const announcementCategory: TInsertAnnouncementCategory = {

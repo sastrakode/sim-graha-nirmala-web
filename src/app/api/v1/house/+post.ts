@@ -1,3 +1,4 @@
+import { errorDefinition } from "@/lib/constants"
 import { db } from "@/server/db"
 import { House, TInsertHouse } from "@/server/db/schema"
 import { toHouseResponse } from "@/server/models/responses/house"
@@ -21,7 +22,7 @@ export const POST = defineHandler(async (req) => {
   let houseExist = await db().query.House.findFirst({
     where: eq(House.code, param.code),
   })
-  if (houseExist) return sendErrors(409, "House already exist")
+  if (houseExist) return sendErrors(409, errorDefinition.house_code_registered)
 
   let house: TInsertHouse = {
     code: param.code,

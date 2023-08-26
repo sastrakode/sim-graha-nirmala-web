@@ -1,3 +1,4 @@
+import { errorDefinition } from "@/lib/constants"
 import { db } from "@/server/db"
 import { House, Occupant, TInsertOccupant } from "@/server/db/schema"
 import { toOccupantResponse } from "@/server/models/responses/occupant"
@@ -26,7 +27,7 @@ export const POST = defineHandler(async (req) => {
   const isHouseExists = await db().query.House.findFirst({
     where: eq(House.id, param.house_id),
   })
-  if (!isHouseExists) return sendErrors(404, "House not found")
+  if (!isHouseExists) return sendErrors(404, errorDefinition.house_not_found)
 
   const isHouseTaken = await db().query.Occupant.findFirst({
     where: and(
@@ -34,19 +35,19 @@ export const POST = defineHandler(async (req) => {
       eq(Occupant.role, param.role),
     ),
   })
-  if (isHouseTaken) return sendErrors(409, "House already taken")
+  if (isHouseTaken) return sendErrors(409, errorDefinition.house_taken)
 
   if (param.email) {
     let occupantExists = await db().query.Occupant.findFirst({
       where: eq(Occupant.email, param.email),
     })
-    if (occupantExists) return sendErrors(409, "Email already registered")
+    if (occupantExists) return sendErrors(409, errorDefinition.email_registered)
   }
 
   let occupantExists = await db().query.Occupant.findFirst({
     where: eq(Occupant.phone, param.phone),
   })
-  if (occupantExists) return sendErrors(409, "Phone already registered")
+  if (occupantExists) return sendErrors(409, errorDefinition.phone_registered)
 
   const occupant: TInsertOccupant = {
     role: param.role,
