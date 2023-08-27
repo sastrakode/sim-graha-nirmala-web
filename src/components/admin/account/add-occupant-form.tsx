@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { useForm } from "react-hook-form"
 
-import { Button } from "@/components/ui/button"
+import { LoadingButton } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -221,14 +221,9 @@ export function AddOccupantForm({ houses }: { houses: HouseResponse[] }) {
             </FormItem>
           )}
         />
-        <Button disabled={form.formState.isSubmitting} type="submit">
-          <Loader2
-            className={`mr-2 h-4 w-4 animate-spin ${
-              form.formState.isSubmitting ? "span" : "hidden"
-            }`}
-          />
+        <LoadingButton loading={form.formState.isSubmitting} type="submit">
           Tambah
-        </Button>
+        </LoadingButton>
       </form>
     </Form>
   )

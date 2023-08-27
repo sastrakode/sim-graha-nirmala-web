@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { useForm } from "react-hook-form"
 
-import { Button } from "@/components/ui/button"
+import { LoadingButton } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -140,7 +140,9 @@ export function EditStaffForm({ staff }: { staff: StaffResponse }) {
             </FormItem>
           )}
         />
-        <Button type="submit">Edit</Button>
+        <LoadingButton loading={form.formState.isSubmitting} type="submit">
+          Edit
+        </LoadingButton>
       </form>
     </Form>
   )

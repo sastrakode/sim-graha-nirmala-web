@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import { useRouter } from "next/navigation"
 import { setCookie } from "cookies-next"
 
-import { Button } from "@/components/ui/button"
+import { LoadingButton } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -102,7 +102,9 @@ export default function LoginForm({ role }: { role: LoginRole }) {
           )}
         />
         <div className="flex justify-center">
-          <Button type="submit">Login</Button>
+          <LoadingButton loading={form.formState.isSubmitting} type="submit">
+            Login
+          </LoadingButton>
         </div>
       </form>
     </Form>
