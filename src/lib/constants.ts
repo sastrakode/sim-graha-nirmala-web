@@ -9,6 +9,8 @@ export const adminRouteNames = {
   account: "/admin/account",
   house: "/admin/house",
   announcement: "/admin/announcement",
+  transaction: "/admin/transaction",
+  bill: "/admin/bill",
 }
 
 export const role: { [key: string]: string } = {

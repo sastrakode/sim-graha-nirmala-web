@@ -1,20 +1,9 @@
 import { db } from "@/server/db"
+import { TransactionResponse } from "@/server/models/responses/transaction"
 import { useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
 import { sendData } from "@/server/web/response"
 import { sql } from "drizzle-orm"
-
-type Response = {
-  total_income: number
-  total_outcome: number
-  total: number
-  transactions: {
-    title: string
-    created_at: Date
-    amount: number
-    movement: string
-  }[]
-}
 
 export const GET = defineHandler(async (req) => {
   useAuth(req)
@@ -42,7 +31,7 @@ export const GET = defineHandler(async (req) => {
         created_at desc`,
   )
 
-  let response: Response = {
+  let response: TransactionResponse = {
     total_income: 0,
     total_outcome: 0,
     total: 0,

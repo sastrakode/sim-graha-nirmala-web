@@ -31,6 +31,20 @@ const AdminSidebar = ({ currentRoute }: { currentRoute: string }) => {
         >
           Pengumuman
         </NavItem>
+        <NavItem
+          Icon={Icons.UserSquare2}
+          isActive={currentRoute.includes(adminRouteNames.transaction)}
+          routeName={adminRouteNames.transaction}
+        >
+          Transaksi
+        </NavItem>
+        <NavItem
+          Icon={Icons.UserSquare2}
+          isActive={currentRoute.includes(adminRouteNames.bill)}
+          routeName={adminRouteNames.bill}
+        >
+          Tagihan
+        </NavItem>
       </div>
 
       <LogoutButton className="w-full" />
