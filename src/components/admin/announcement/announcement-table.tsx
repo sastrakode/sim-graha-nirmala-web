@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import DeleteAlertDialog from "@/components/ui/delete-alert-dialog"
 import {
   Table,
   TableBody,
@@ -41,9 +42,11 @@ export default function AnnouncementTable({
                     Edit
                   </Button>
                 </a>
-                <Button variant="destructive" size="sm">
-                  Hapus
-                </Button>
+                <DeleteAlertDialog
+                  message={`Apakah anda yakin ingin menghapus ${announcement.title}?`}
+                  domain="announcement"
+                  id={announcement.id}
+                />
               </TableCell>
             </TableRow>
           ))}

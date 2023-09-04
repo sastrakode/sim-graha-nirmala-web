@@ -5,6 +5,7 @@ import { StaffResponse } from "@/server/models/responses/staff"
 import { AnnouncementCategoryResponse } from "@/server/models/responses/announcement-category"
 import { HouseResponse } from "@/server/models/responses/house"
 import { OccupantResponse } from "@/server/models/responses/occupant"
+import { TransactionResponse } from "@/server/models/responses/transaction"
 
 const isServer = typeof window === "undefined"
 const baseURL = isServer ? "http://127.0.0.1:3000/api/v1" : "/api/v1"
@@ -120,6 +121,20 @@ export async function putHouse(
   return res
 }
 
+export async function deleteHouse(
+  id: number,
+): Promise<[StaffResponse, FetchError]> {
+  const token = await getToken()
+
+  const res = await handleFetch<StaffResponse>(`${baseURL}/house/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: token,
+    },
+  })
+  return res
+}
+
 export async function getOccupant(
   id: string,
 ): Promise<[OccupantResponse, FetchError]> {
@@ -179,6 +194,20 @@ export async function putOccupant(
   return res
 }
 
+export async function deleteOccupant(
+  id: number,
+): Promise<[OccupantResponse, FetchError]> {
+  const token = await getToken()
+
+  const res = await handleFetch<OccupantResponse>(`${baseURL}/occupant/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: token,
+    },
+  })
+  return res
+}
+
 export async function getStaff(
   id: string,
 ): Promise<[StaffResponse, FetchError]> {
@@ -228,6 +257,20 @@ export async function putStaff(
   const res = await handleFetch<StaffResponse>(`${baseURL}/staff/${id}`, {
     method: "PUT",
     body: JSON.stringify(body),
+    headers: {
+      Authorization: token,
+    },
+  })
+  return res
+}
+
+export async function deleteStaff(
+  id: number,
+): Promise<[StaffResponse, FetchError]> {
+  const token = await getToken()
+
+  const res = await handleFetch<StaffResponse>(`${baseURL}/staff/${id}`, {
+    method: "DELETE",
     headers: {
       Authorization: token,
     },
@@ -309,12 +352,43 @@ export async function putAnnouncement(
   return res
 }
 
+export async function deleteAnnouncement(
+  id: number,
+): Promise<[StaffResponse, FetchError]> {
+  const token = await getToken()
+
+  const res = await handleFetch<StaffResponse>(
+    `${baseURL}/announcement/${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: token,
+      },
+    },
+  )
+  return res
+}
+
 export async function getAnnouncementCategories(): Promise<
   [AnnouncementCategoryResponse[], FetchError]
 > {
   const res = await handleFetch<AnnouncementCategoryResponse[]>(
     `${baseURL}/announcement/category`,
   )
+
+  return res
+}
+
+export async function getTransaction(): Promise<
+  [TransactionResponse, FetchError]
+> {
+  const token = await getToken()
+
+  const res = await handleFetch<TransactionResponse>(`${baseURL}/transaction`, {
+    headers: {
+      Authorization: token,
+    },
+  })
 
   return res
 }

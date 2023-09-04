@@ -4,7 +4,7 @@ import { cookies } from "next/headers"
 import Image from "next/image"
 
 import { Button } from "@/components/ui/button"
-import { getHouse, getOccupant } from "@/lib/api"
+import { getHouse } from "@/lib/api"
 import { role } from "@/lib/constants"
 
 export const metadata: Metadata = {
@@ -12,15 +12,11 @@ export const metadata: Metadata = {
 }
 
 export default async function ProfilePage() {
-  const userId = cookies().get("userId")?.value || "-1"
   const houseId = cookies().get("houseId")?.value || "-1"
 
-  const [[occupant, occupantErr], [house, houseErr]] = await Promise.all([
-    getOccupant(userId),
-    getHouse(houseId),
-  ])
+  const [house, houseErr] = await getHouse(houseId)
 
-  if (occupantErr || houseErr) {
+  if (houseErr) {
     throw new Error("Something went wrong")
   }
 
@@ -37,8 +33,12 @@ export default async function ProfilePage() {
             />
           </div>
           <div className="">
-            <p className="text-lg text-primary font-bold">{occupant.name}</p>
-            <p className="text-gray-400">{role[occupant.role ?? "owner"]}</p>
+            <p className="text-lg text-primary font-bold">
+              {house.owner?.name}
+            </p>
+            <p className="text-gray-400">
+              {role[house.owner?.role ?? "owner"]}
+            </p>
             <p className="text-gray-400">{house.address}</p>
           </div>
         </div>
@@ -56,20 +56,20 @@ export default async function ProfilePage() {
                 <MailIcon />
                 <p>Email</p>
               </div>
-              <p className="text-gray-500">{occupant.email}</p>
+              <p className="text-gray-500">{house.owner?.email}</p>
             </div>
             <div className="flex justify-between">
               <div className="flex gap-4">
                 <Phone />
                 <p>No. Telp</p>
               </div>
-              <p className="text-gray-500">{occupant.phone}</p>
+              <p className="text-gray-500">{house.owner?.phone}</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="md:basis-1/2 hidden">
+      <div className={`md:basis-1/2 ${!house.renter && "hidden"}`}>
         <div className="flex bg-white rounded-3xl gap-6 p-8 items-center w-fit mx-auto md:mx-0">
           <div className="relative h-16 w-16">
             <Image
@@ -80,9 +80,11 @@ export default async function ProfilePage() {
             />
           </div>
           <div className="">
-            <p className="text-lg text-primary font-bold">Yossan Rahmadi</p>
-            <p className="text-gray-400">Pemilik</p>
-            <p className="text-gray-400">A12, Jl. Teras Rumah</p>
+            <p className="text-lg text-primary font-bold">
+              {house.renter?.name}
+            </p>
+            <p className="text-gray-400">Penyewa</p>
+            <p className="text-gray-400">{house.address}</p>
           </div>
         </div>
         <div className="bg-white rounded-3xl mt-6 p-4">
@@ -99,14 +101,14 @@ export default async function ProfilePage() {
                 <MailIcon />
                 <p>Email</p>
               </div>
-              <p className="text-gray-500">yossan@email.com</p>
+              <p className="text-gray-500">{house.renter?.email}</p>
             </div>
             <div className="flex justify-between">
               <div className="flex gap-4">
                 <Phone />
                 <p>No. Telp</p>
               </div>
-              <p className="text-gray-500">081258857674</p>
+              <p className="text-gray-500">{house.renter?.phone}</p>
             </div>
           </div>
         </div>

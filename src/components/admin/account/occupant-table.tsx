@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import DeleteAlertDialog from "@/components/ui/delete-alert-dialog"
 import {
   Table,
   TableBody,
@@ -7,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { deleteOccupant } from "@/lib/api"
 import { role } from "@/lib/constants"
 import { HouseResponse } from "@/server/models/responses/house"
 import { OccupantResponse } from "@/server/models/responses/occupant"
@@ -49,9 +51,11 @@ export default function OccupantTable({
                     Edit
                   </Button>
                 </a>
-                <Button variant="destructive" size="sm">
-                  Hapus
-                </Button>
+                <DeleteAlertDialog
+                  message={`Apakah anda yakin ingin menghapus ${occupant.name}?`}
+                  domain="occupant"
+                  id={occupant.id}
+                />
               </TableCell>
             </TableRow>
           ))}

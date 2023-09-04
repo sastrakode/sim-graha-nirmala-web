@@ -4,22 +4,15 @@ import { dateFormat, numberFormat } from "@/lib/utils"
 
 const TransactionListItem = ({
   date,
-  belongType,
   flow,
   amount,
-  cashflowTitle,
+  title,
 }: {
   date: Date
-  belongType: string
   flow: string
   amount: number
-  cashflowTitle?: string
+  title: string
 }) => {
-  const title: { [key: string]: string } = {
-    BILLING: "Pembayaran Iuran",
-    CASHFLOW: cashflowTitle ?? "Transaksi",
-  }
-
   return (
     <div className="flex sm:items-center gap-4">
       <div className="rounded-full h-[1.875rem] p-1 sm:p-2 flex items-center shadow-simgn sm:h-[2.6875rem]">
@@ -29,19 +22,17 @@ const TransactionListItem = ({
       </div>
       <div className="flex justify-between grow flex-wrap">
         <div className="">
-          <p className="txt-tiny sm:txt-lead text-primary">
-            {title[belongType]}
-          </p>
+          <p className="txt-tiny sm:txt-lead text-primary">{title}</p>
           <p className="text-[0.5rem] sm:text-xs text-gray-400">
             {dateFormat(date, true)}
           </p>
         </div>
         <p
           className={`justify-self-end text-[0.625rem] sm:text-base font-bold ${
-            flow === "CREDIT" ? " text-success" : " text-destructive"
+            flow === "income" ? " text-success" : " text-destructive"
           }`}
         >
-          {(flow === "DEBIT" ? "- " : "+ ") + `${numberFormat(amount)}`}
+          {(flow === "outcome" ? "- " : "+ ") + `${numberFormat(amount)}`}
         </p>
       </div>
     </div>

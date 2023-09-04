@@ -2,23 +2,25 @@ import { Metadata } from "next"
 
 import TransactionSummaryCard from "@/components/app/transaction/transaction-summary-card"
 
-import { dummyTransactionSummary, dummyTransactions } from "@/lib/dummyData"
-import { Transaction } from "@/lib/model"
 import TransactionTable from "@/components/app/transaction/transaction-table"
+import { getTransaction } from "@/lib/api"
 
 export const metadata: Metadata = {
   title: "Transaksi - SIMGN",
 }
 
-export default function TransactionPage() {
-  const transactionSummary = dummyTransactionSummary
-  const transactions: Transaction[] = dummyTransactions
+export default async function TransactionPage() {
+  const [transaction, err] = await getTransaction()
 
   return (
     <div className="m-6">
-      <TransactionSummaryCard transactionSummary={transactionSummary} />
+      <TransactionSummaryCard
+        total={transaction.total}
+        total_income={transaction.total_income}
+        total_outcome={transaction.total_outcome}
+      />
       <div className="bg-white mt-8 rounded-3xl">
-        <TransactionTable transactions={transactions} />
+        <TransactionTable transactions={transaction.transactions} />
       </div>
     </div>
   )

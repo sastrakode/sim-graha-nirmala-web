@@ -1,18 +1,16 @@
 import { Metadata } from "next"
 
 import OverviewCard from "@/components/app/dashboard/overview-card"
-import TransactionListItem from "@/components/app/transaction/transaction-list-item"
-import { dummyTransactions } from "@/lib/dummyData"
-import { Transaction } from "@/lib/model"
-import { Button } from "@/components/ui/button"
 import AnnouncementList from "@/components/app/dashboard/announcement-list"
+import TransactionTableSummary from "@/components/app/dashboard/transaction-table-summary"
+import { getTransaction } from "@/lib/api"
 
 export const metadata: Metadata = {
   title: "Dashboard - SIMGN",
 }
 
-export default function DashboardPage() {
-  const transactions: Transaction[] = dummyTransactions
+export default async function DashboardPage() {
+  const [transaction, err] = await getTransaction()
 
   return (
     <div className="flex flex-col gap-[1.125rem] m-6 lg:flex-row lg:gap-8">
@@ -22,19 +20,19 @@ export default function DashboardPage() {
           <div className="flex flex-col flex-wrap mt-4 gap-4 sm:flex-row">
             <OverviewCard
               title="Total Kas"
-              total={32_080_000}
+              total={transaction.total}
               icon="total_cash.png"
               className="bg-secondary"
             />
             <OverviewCard
               title="Pemasukan"
-              total={60_080_000}
+              total={transaction.total_income}
               icon="income.png"
               className="bg-success"
             />
             <OverviewCard
               title="Pengeluaran"
-              total={27_920_000}
+              total={transaction.total_outcome}
               icon="outcome.png"
               className="bg-destructive"
             />
@@ -46,54 +44,7 @@ export default function DashboardPage() {
         </section>
       </div>
       <section className="bg-white basis-1/2 p-4 rounded-3xl h-fit">
-        <h6>Transaksi Kas Terbaru</h6>
-        <div className="h-[2px] w-full bg-gray-200 mt-3 mb-7" />
-        <div className="flex flex-col gap-5">
-          {transactions.length === 0 ? (
-            <p className="text-navy text-base font-medium text-center">
-              Tidak ada transaksi kas
-            </p>
-          ) : (
-            transactions.map((transaction: Transaction) => {
-              if (transaction.id !== null) {
-                if (transaction.belong_type === "CASHFLOW") {
-                  return (
-                    <TransactionListItem
-                      key={transaction.id ?? Math.random()}
-                      belongType={transaction.belong_type ?? ""}
-                      date={
-                        transaction.created_at
-                          ? new Date(transaction.created_at)
-                          : new Date()
-                      }
-                      amount={transaction.amount ?? 0}
-                      flow={transaction.flow ?? "CASHFLOW"}
-                      cashflowTitle={transaction.cashflow?.title ?? ""}
-                    />
-                  )
-                }
-                return (
-                  <TransactionListItem
-                    key={transaction.id ?? Math.random()}
-                    belongType={transaction.belong_type ?? ""}
-                    date={
-                      transaction.created_at
-                        ? new Date(transaction.created_at)
-                        : new Date()
-                    }
-                    amount={transaction.amount ?? 0}
-                    flow={transaction.flow ?? "CASHFLOW"}
-                  />
-                )
-              }
-            })
-          )}
-        </div>
-        <div className="flex justify-center mt-8">
-          <Button variant="outline" size="sm" asChild>
-            <a href="/app/transaction">LIHAT SEMUA</a>
-          </Button>
-        </div>
+        <TransactionTableSummary transactions={transaction.transactions} />
       </section>
     </div>
   )

@@ -1,13 +1,17 @@
 "use client"
 
-import { Transaction } from "@/lib/model"
 import { useState } from "react"
 import TransactionListItem from "./transaction-list-item"
 
 export default function TransactionTable({
   transactions,
 }: {
-  transactions: Transaction[]
+  transactions: {
+    title: string
+    created_at: Date
+    amount: number
+    movement: string
+  }[]
 }) {
   const [activeTab, setActiveTab] = useState("all")
 
@@ -16,6 +20,7 @@ export default function TransactionTable({
 
     setActiveTab(category)
   }
+
   return (
     <>
       <div className="flex justify-evenly">
@@ -30,19 +35,19 @@ export default function TransactionTable({
         </div>
         <div
           className={`cursor-pointer text-xs md:text-base px-[2%] py-2 md:py-4 ${
-            activeTab === "CREDIT" &&
+            activeTab === "income" &&
             "text-secondary border-b-2 border-secondary font-bold"
           }`}
-          onClick={() => handleTabClick("CREDIT")}
+          onClick={() => handleTabClick("income")}
         >
           Pemasukan
         </div>
         <div
           className={`cursor-pointer text-xs md:text-base px-[2%] py-2 md:py-4 ${
-            activeTab === "DEBIT" &&
+            activeTab === "outcome" &&
             "text-secondary border-b-2 border-secondary font-bold"
           }`}
-          onClick={() => handleTabClick("DEBIT")}
+          onClick={() => handleTabClick("outcome")}
         >
           Pengeluaran
         </div>
@@ -54,43 +59,25 @@ export default function TransactionTable({
           </p>
         ) : (
           transactions
-            .filter((transaction: Transaction) => {
+            .filter((transaction) => {
               if (activeTab === "all") return true
 
-              return transaction.flow === activeTab
+              return transaction.movement === activeTab
             })
-            .map((transaction: Transaction) => {
-              if (transaction.id !== null) {
-                if (transaction.belong_type === "CASHFLOW") {
-                  return (
-                    <TransactionListItem
-                      key={transaction.id ?? Math.random()}
-                      belongType={transaction.belong_type ?? ""}
-                      date={
-                        transaction.created_at
-                          ? new Date(transaction.created_at)
-                          : new Date()
-                      }
-                      amount={transaction.amount ?? 0}
-                      flow={transaction.flow ?? "CASHFLOW"}
-                      cashflowTitle={transaction.cashflow?.title ?? ""}
-                    />
-                  )
-                }
-                return (
-                  <TransactionListItem
-                    key={transaction.id ?? Math.random()}
-                    belongType={transaction.belong_type ?? ""}
-                    date={
-                      transaction.created_at
-                        ? new Date(transaction.created_at)
-                        : new Date()
-                    }
-                    amount={transaction.amount ?? 0}
-                    flow={transaction.flow ?? "CASHFLOW"}
-                  />
-                )
-              }
+            .map((transaction, idx) => {
+              return (
+                <TransactionListItem
+                  key={idx}
+                  date={
+                    transaction.created_at
+                      ? new Date(transaction.created_at)
+                      : new Date()
+                  }
+                  amount={transaction.amount ?? 0}
+                  flow={transaction.movement}
+                  title={transaction.title}
+                />
+              )
             })
         )}
       </div>
