@@ -98,7 +98,7 @@ export type TInsertOccupant = InferModel<typeof Occupant, "insert">
 
 export const Gender = pgEnum("gender", ["male", "female"])
 
-export const OccupantMember = pgTable("occupant_member", {
+export const Family = pgTable("family", {
   id: bigserial("id", { mode: "number" }).primaryKey(),
   occupantId: bigint("occupant_id", { mode: "number" })
     .notNull()
@@ -111,8 +111,8 @@ export const OccupantMember = pgTable("occupant_member", {
   gender: Gender("gender").notNull(),
   ...Timestamps,
 })
-export type TOccupantMember = InferModel<typeof OccupantMember>
-export type TInsertOccupantMember = InferModel<typeof OccupantMember, "insert">
+export type TFamily = InferModel<typeof Family>
+export type TInsertFamily = InferModel<typeof Family, "insert">
 
 export const Billing = pgTable("billing", {
   id: bigserial("id", { mode: "number" }).primaryKey(),
