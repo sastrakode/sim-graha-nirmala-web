@@ -60,6 +60,7 @@ type errorKeyType =
   | "staff_not_found"
   | "announcement_not_found"
   | "announcement_category_exist"
+  | "announcement_category_not_found"
 
 export const errorDefinition: {
   [key in errorKeyType]: { field?: string; message: string }
@@ -103,5 +104,8 @@ export const errorDefinition: {
   announcement_category_exist: {
     field: "name",
     message: "Kategori pengumuman sudah ada",
+  },
+  announcement_category_not_found: {
+    message: "Kategori pengumuman tidak ditemukan",
   },
 }

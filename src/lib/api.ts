@@ -6,6 +6,8 @@ import { AnnouncementCategoryResponse } from "@/server/models/responses/announce
 import { HouseResponse } from "@/server/models/responses/house"
 import { OccupantResponse } from "@/server/models/responses/occupant"
 import { TransactionResponse } from "@/server/models/responses/transaction"
+import { BillingResponse } from "@/server/models/responses/billing"
+import { TInsertPayment } from "@/server/db/schema"
 
 const isServer = typeof window === "undefined"
 const baseURL = isServer ? "http://127.0.0.1:3000/api/v1" : "/api/v1"
@@ -40,6 +42,20 @@ async function handleFetch<T>(
     }
 
     return [resJson.data, null]
+  } catch (error) {
+    throw new Error("Something went wrong")
+  }
+}
+
+async function handleFetchNoContent(url: string, requestOptions?: RequestInit) {
+  try {
+    const res = await fetch(url, requestOptions)
+
+    if (!res.ok) {
+      const resJson = await res.json()
+
+      if (resJson.errors) throw new Error(resJson.errors[0].message)
+    }
   } catch (error) {
     throw new Error("Something went wrong")
   }
@@ -285,7 +301,7 @@ export async function getAnnouncements(): Promise<
     `${baseURL}/announcement`,
     {
       next: {
-        tags: ["house"],
+        tags: ["announcement"],
       },
     },
   )
@@ -305,7 +321,7 @@ export async function getAnnouncement(
         Authorization: token,
       },
       next: {
-        tags: ["house"],
+        tags: ["announcement"],
       },
     },
   )
@@ -352,21 +368,15 @@ export async function putAnnouncement(
   return res
 }
 
-export async function deleteAnnouncement(
-  id: number,
-): Promise<[StaffResponse, FetchError]> {
+export async function deleteAnnouncement(id: number) {
   const token = await getToken()
 
-  const res = await handleFetch<StaffResponse>(
-    `${baseURL}/announcement/${id}`,
-    {
-      method: "DELETE",
-      headers: {
-        Authorization: token,
-      },
+  await handleFetchNoContent(`${baseURL}/announcement/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: token,
     },
-  )
-  return res
+  })
 }
 
 export async function getAnnouncementCategories(): Promise<
@@ -374,6 +384,25 @@ export async function getAnnouncementCategories(): Promise<
 > {
   const res = await handleFetch<AnnouncementCategoryResponse[]>(
     `${baseURL}/announcement/category`,
+    {
+      next: {
+        tags: ["announcementCategory"],
+      },
+    },
+  )
+
+  return res
+}
+
+export async function postAnnouncementCategory(body: {}): Promise<
+  [AnnouncementCategoryResponse, FetchError]
+> {
+  const res = await handleFetch<AnnouncementCategoryResponse>(
+    `${baseURL}/announcement/category`,
+    {
+      method: "POST",
+      body: JSON.stringify(body),
+    },
   )
 
   return res
@@ -389,6 +418,40 @@ export async function getTransaction(): Promise<
       Authorization: token,
     },
   })
+
+  return res
+}
+
+export async function getBills(
+  houseId: string,
+): Promise<[BillingResponse[], FetchError]> {
+  const token = await getToken()
+
+  const res = await handleFetch<BillingResponse[]>(
+    `${baseURL}/house/${houseId}/billing`,
+    {
+      headers: {
+        Authorization: token,
+      },
+    },
+  )
+
+  return res
+}
+
+export async function payBill(
+  id: number,
+): Promise<[TInsertPayment, FetchError]> {
+  const token = await getToken()
+
+  const res = await handleFetch<TInsertPayment>(
+    `${baseURL}/billing/${id}/pay/transfer`,
+    {
+      headers: {
+        Authorization: token,
+      },
+    },
+  )
 
   return res
 }

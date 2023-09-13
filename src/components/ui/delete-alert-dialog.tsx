@@ -11,7 +11,9 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Button, LoadingButton } from "@/components/ui/button"
-import { deleteOccupant } from "@/lib/api"
+import { deleteAnnouncement, deleteHouse, deleteOccupant } from "@/lib/api"
+import { catchError } from "@/lib/utils"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 type Domain = "occupant" | "staff" | "house" | "announcement" | "transaction"
@@ -25,22 +27,40 @@ export default function DeleteAlertDialog({
   domain: Domain
   id: number
 }) {
+  const router = useRouter()
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const handleDelete = async () => {
     setLoading(true)
-    switch (domain) {
-      case "occupant":
-        await deleteOccupant(id)
-        break
+    try {
+      switch (domain) {
+        case "occupant":
+          await deleteOccupant(id)
+          break
 
-      case "staff":
-        break
+        case "staff":
+          break
+
+        case "house":
+          await deleteHouse(id)
+          break
+
+        case "announcement":
+          await deleteAnnouncement(id)
+          break
+
+        case "transaction":
+          break
+      }
+      setLoading(false)
+      setOpen(false)
+      router.refresh()
+    } catch (error) {
+      setLoading(false)
+      setOpen(false)
+      catchError(error)
     }
-
-    setLoading(false)
-    setOpen(false)
   }
 
   return (

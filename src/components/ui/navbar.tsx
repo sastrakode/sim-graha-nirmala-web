@@ -1,3 +1,7 @@
+"use client"
+
+import { useParams, usePathname } from "next/navigation"
+
 const pageName: { [key: string]: string } = {
   "/app/dashboard": "Dashboard",
   "/app/transaction": "Transaksi",
@@ -39,13 +43,9 @@ const getRouteWithoutParams = (
   return route
 }
 
-const Navbar = ({
-  currentRoute,
-  params,
-}: {
-  currentRoute: string
-  params: { [key: string]: string | string[] }
-}) => {
+const Navbar = () => {
+  const currentRoute = usePathname()
+  const params = useParams()
   return (
     <nav className="flex shadow-md bg-white sticky top-0 justify-between items-center p-6 z-50">
       <h4 className="text-primary">

@@ -1,5 +1,7 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
+import * as z from "zod"
+import { toast } from "sonner"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -72,4 +74,42 @@ export function normalizePhone(phone: string): string {
     phone = "0" + phone.slice(2)
   }
   return phone.replace(/[- .]/g, "")
+}
+
+export function capitalizeSentence(sentence: string) {
+  const arr = sentence.split(" ")
+
+  for (var i = 0; i < arr.length; i++) {
+    arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1)
+  }
+
+  return arr.join(" ")
+}
+
+export function catchError(err: unknown) {
+  if (err instanceof z.ZodError) {
+    const errors = err.issues.map((issue) => {
+      return issue.message
+    })
+    toast.error(errors.join("\n"), {
+      action: {
+        label: "Muat ulang",
+        onClick: () => window.location.reload(),
+      },
+    })
+  } else if (err instanceof Error) {
+    toast.error(err.message, {
+      action: {
+        label: "Muat ulang",
+        onClick: () => window.location.reload(),
+      },
+    })
+  } else {
+    toast.error("Something went wrong, please try again later.", {
+      action: {
+        label: "Muat ulang",
+        onClick: () => window.location.reload(),
+      },
+    })
+  }
 }

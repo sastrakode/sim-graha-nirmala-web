@@ -12,6 +12,10 @@ export const metadata: Metadata = {
 export default async function DashboardPage() {
   const [transaction, err] = await getTransaction()
 
+  if (err) {
+    throw new Error("Something went wrong")
+  }
+
   return (
     <div className="flex flex-col gap-[1.125rem] m-6 lg:flex-row lg:gap-8">
       <div className="basis-1/2">
