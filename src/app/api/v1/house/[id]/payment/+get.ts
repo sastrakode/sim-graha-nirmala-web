@@ -1,11 +1,14 @@
 import { db } from "@/server/db"
 import { Billing, House, Payment } from "@/server/db/schema"
+import { useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
 import { sendData, sendErrors } from "@/server/web/response"
 import { desc, eq, inArray } from "drizzle-orm"
 
 export const GET = defineHandler(
-  async (_, { params }: { params: { id: number } }) => {
+  async (req, { params }: { params: { id: number } }) => {
+    useAuth(req)
+
     const house = await db().query.House.findFirst({
       where: eq(House.id, params.id),
     })
