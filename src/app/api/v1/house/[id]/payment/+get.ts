@@ -2,7 +2,7 @@ import { db } from "@/server/db"
 import { Billing, House, Payment } from "@/server/db/schema"
 import { defineHandler } from "@/server/web/handler"
 import { sendData, sendErrors } from "@/server/web/response"
-import { eq, inArray } from "drizzle-orm"
+import { desc, eq, inArray } from "drizzle-orm"
 
 export const GET = defineHandler(
   async (_, { params }: { params: { id: number } }) => {
@@ -20,6 +20,7 @@ export const GET = defineHandler(
         Payment.billingId,
         billings.map((billing) => billing.id),
       ),
+      orderBy: desc(Payment.createdAt),
     })
 
     return sendData(200, payments)
