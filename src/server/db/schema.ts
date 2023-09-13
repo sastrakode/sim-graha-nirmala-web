@@ -109,6 +109,14 @@ export const Family = pgTable("family", {
   identityNumber: text("identity_number").unique().notNull(),
   birthday: timestamp("birthday").notNull(),
   gender: Gender("gender").notNull(),
+  birthplace: text("birthplace").notNull(),
+  religion: text("religion").notNull(),
+  education: text("education"),
+  job_type: text("job_type"),
+  maritalStatus: text("marital_status").notNull(),
+  relationshipStatus: text("relationship_status").notNull(),
+  fatherName: text("father_name").notNull(),
+  motherName: text("mother_name").notNull(),
   ...Timestamps,
 })
 export type TFamily = InferModel<typeof Family>
