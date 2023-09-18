@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { useForm } from "react-hook-form"
 import { useRouter } from "next/navigation"
-import { setCookie } from "cookies-next"
 
 import { LoadingButton } from "@/components/ui/button"
 import {
@@ -59,16 +58,10 @@ export default function LoginForm({ role }: { role: LoginRole }) {
       return
     }
 
-    if (res.token) {
-      setCookie("token", res.token)
-      if ("occupant" in res) {
-        setCookie("userId", res.occupant.id)
-        setCookie("houseId", res.occupant.house_id)
-        router.replace("/app/dashboard")
-      } else {
-        setCookie("userId", res.staff.id)
-        router.replace("/admin")
-      }
+    if ("occupant" in res) {
+      router.replace("/app/dashboard")
+    } else {
+      router.replace("/admin")
     }
   }
 

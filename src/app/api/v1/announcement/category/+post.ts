@@ -10,7 +10,6 @@ import { defineHandler } from "@/server/web/handler"
 import { bindJson } from "@/server/web/request"
 import { sendData, sendErrors } from "@/server/web/response"
 import { eq } from "drizzle-orm"
-import { revalidateTag } from "next/cache"
 import { z } from "zod"
 
 const Param = z.object({
@@ -38,6 +37,5 @@ export const POST = defineHandler(async (req) => {
     .values(announcementCategory)
     .returning()
 
-  revalidateTag("announcementCategory")
   return sendData(201, toAnnouncementCategoryResponse(newAnnouncementCategory))
 })

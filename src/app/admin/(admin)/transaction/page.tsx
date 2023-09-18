@@ -7,6 +7,10 @@ import { getTransaction } from "@/lib/api"
 export default async function AdminTransactionPage() {
   const [transaction, err] = await getTransaction()
 
+  if (err) {
+    throw new Error("Something went wrong")
+  }
+
   return (
     <div className="m-6">
       <TransactionSummaryCard

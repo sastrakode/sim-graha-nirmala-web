@@ -1,5 +1,6 @@
 import { FC } from "react"
 import { LucideIcon } from "lucide-react"
+import Link from "next/link"
 
 interface INavItemProp {
   Icon: LucideIcon
@@ -9,7 +10,7 @@ interface INavItemProp {
 }
 
 const NavItem: FC<INavItemProp> = ({ Icon, isActive, routeName, children }) => (
-  <a
+  <Link
     href={routeName}
     className={`${
       isActive && "active-link"
@@ -20,7 +21,7 @@ const NavItem: FC<INavItemProp> = ({ Icon, isActive, routeName, children }) => (
     <p className={`${isActive && "font-bold"} text-xs lg:text-base`}>
       {children}
     </p>
-  </a>
+  </Link>
 )
 
 export default NavItem

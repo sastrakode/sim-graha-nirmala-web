@@ -1,7 +1,13 @@
 import Navbar from "@/components/ui/navbar"
 import AdminSidebar from "@/components/ui/admin-sidebar"
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+export const dynamic = "force-dynamic"
+
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
     <>
       <AdminSidebar />

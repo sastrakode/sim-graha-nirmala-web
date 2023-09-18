@@ -42,5 +42,8 @@ export const POST = defineHandler(async (req) => {
     staff: toStaffResponse(staff)!,
   }
 
-  return sendData(200, response)
+  const data = sendData(200, response)
+  data.cookies.set("token", token)
+  data.cookies.set("userId", staff.id.toString())
+  return data
 })

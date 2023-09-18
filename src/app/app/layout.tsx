@@ -1,6 +1,8 @@
 import Navbar from "@/components/ui/navbar"
 import Sidebar from "@/components/ui/sidebar"
 
+export const dynamic = "force-dynamic"
+
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <>

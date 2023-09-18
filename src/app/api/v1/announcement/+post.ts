@@ -5,7 +5,6 @@ import { getCurrentStaff, useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
 import { bindJson } from "@/server/web/request"
 import { sendData } from "@/server/web/response"
-import { revalidateTag } from "next/cache"
 import { z } from "zod"
 
 const Param = z.object({
@@ -30,6 +29,5 @@ export const POST = defineHandler(async (req) => {
     .insert(Announcement)
     .values(announcement)
     .returning()
-  revalidateTag("announcement")
   return sendData(201, toAnnouncementResponse(newAnnouncement))
 })

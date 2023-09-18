@@ -48,5 +48,16 @@ export const POST = defineHandler(async (req) => {
     occupant: toOccupantResponse(occupant)!,
   }
 
-  return sendData(200, response)
+  const data = sendData(200, response)
+  data.cookies.set({
+    name: "token",
+    value: token,
+    httpOnly: true,
+    path: "/",
+    secure: process.env.NODE_ENV !== "development",
+    maxAge: 60 * 60 * 24 * 2,
+  })
+  data.cookies.set("userId", occupant.id.toString())
+  data.cookies.set("houseId", occupant.houseId.toString())
+  return data
 })

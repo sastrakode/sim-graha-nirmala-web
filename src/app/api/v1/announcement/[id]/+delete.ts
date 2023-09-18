@@ -5,7 +5,6 @@ import { useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
 import { sendErrors, sendNoContent } from "@/server/web/response"
 import { eq } from "drizzle-orm"
-import { revalidateTag } from "next/cache"
 
 export const DELETE = defineHandler(
   async (req, { params }: { params: { id: number } }) => {
@@ -19,7 +18,6 @@ export const DELETE = defineHandler(
 
     await db().delete(Announcement).where(eq(Announcement.id, params.id))
 
-    revalidateTag("announcement")
     return sendNoContent()
   },
 )

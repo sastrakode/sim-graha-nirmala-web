@@ -4,7 +4,6 @@ import { AnnouncementCategory } from "@/server/db/schema"
 import { defineHandler } from "@/server/web/handler"
 import { sendErrors, sendNoContent } from "@/server/web/response"
 import { eq } from "drizzle-orm"
-import { revalidateTag } from "next/cache"
 
 export const DELETE = defineHandler(
   async (_, { params }: { params: { id: number } }) => {
@@ -18,7 +17,6 @@ export const DELETE = defineHandler(
       .delete(AnnouncementCategory)
       .where(eq(AnnouncementCategory.id, params.id))
 
-    revalidateTag("announcementCategory")
     return sendNoContent()
   },
 )

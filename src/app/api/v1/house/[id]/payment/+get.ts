@@ -1,5 +1,6 @@
+import { errorDefinition } from "@/lib/constants"
 import { db } from "@/server/db"
-import { Billing, House, Payment } from "@/server/db/schema"
+import { Billing, House, Payment, TPayment } from "@/server/db/schema"
 import { useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
 import { sendData, sendErrors } from "@/server/web/response"
@@ -12,13 +13,13 @@ export const GET = defineHandler(
     const house = await db().query.House.findFirst({
       where: eq(House.id, params.id),
     })
-    if (!house) return sendErrors(404, "House not found" as any)
+    if (!house) return sendErrors(404, errorDefinition.house_not_found)
 
     const billings = await db().query.Billing.findMany({
       where: eq(Billing.houseId, house.id),
     })
 
-    const payments = await db().query.Payment.findMany({
+    const payments: TPayment[] = await db().query.Payment.findMany({
       where: inArray(
         Payment.billingId,
         billings.map((billing) => billing.id),
