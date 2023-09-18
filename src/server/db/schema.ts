@@ -1,4 +1,9 @@
-import { InferModel, relations } from "drizzle-orm"
+import {
+  InferInsertModel,
+  InferModel,
+  InferSelectModel,
+  relations,
+} from "drizzle-orm"
 import {
   alias,
   bigint,
@@ -32,18 +37,19 @@ export const Staff = pgTable("staff", {
   password: text("password").notNull(),
   ...Timestamps,
 })
-export type TStaff = InferModel<typeof Staff>
-export type TInsertStaff = InferModel<typeof Staff, "insert">
+export type TStaff = InferSelectModel<typeof Staff>
+export type TInsertStaff = InferInsertModel<typeof Staff>
 
 export const AnnouncementCategory = pgTable("announcement_category", {
   id: bigserial("id", { mode: "number" }).primaryKey(),
   name: text("name").unique().notNull(),
   ...Timestamps,
 })
-export type TAnnouncementCategory = InferModel<typeof AnnouncementCategory>
-export type TInsertAnnouncementCategory = InferModel<
-  typeof AnnouncementCategory,
-  "insert"
+export type TAnnouncementCategory = InferSelectModel<
+  typeof AnnouncementCategory
+>
+export type TInsertAnnouncementCategory = InferInsertModel<
+  typeof AnnouncementCategory
 >
 
 export const Announcement = pgTable("announcement", {
@@ -68,8 +74,8 @@ export const announcementRelations = relations(Announcement, ({ one }) => ({
     references: [Staff.id],
   }),
 }))
-export type TAnnouncement = InferModel<typeof Announcement>
-export type TInsertAnnouncement = InferModel<typeof Announcement, "insert">
+export type TAnnouncement = InferSelectModel<typeof Announcement>
+export type TInsertAnnouncement = InferInsertModel<typeof Announcement>
 
 export const House = pgTable("house", {
   id: bigserial("id", { mode: "number" }).primaryKey(),
@@ -77,8 +83,8 @@ export const House = pgTable("house", {
   address: text("address").notNull(),
   ...Timestamps,
 })
-export type THouse = InferModel<typeof House>
-export type TInsertHouse = InferModel<typeof House, "insert">
+export type THouse = InferSelectModel<typeof House>
+export type TInsertHouse = InferInsertModel<typeof House>
 
 export const OccupantRole = pgEnum("occupant_role", ["owner", "renter"])
 export const Occupant = pgTable("occupant", {
@@ -93,8 +99,8 @@ export const Occupant = pgTable("occupant", {
   password: text("password").notNull(),
   ...Timestamps,
 })
-export type TOccupant = InferModel<typeof Occupant>
-export type TInsertOccupant = InferModel<typeof Occupant, "insert">
+export type TOccupant = InferSelectModel<typeof Occupant>
+export type TInsertOccupant = InferInsertModel<typeof Occupant>
 
 export const Gender = pgEnum("gender", ["male", "female"])
 
@@ -119,8 +125,8 @@ export const Family = pgTable("family", {
   motherName: text("mother_name").notNull(),
   ...Timestamps,
 })
-export type TFamily = InferModel<typeof Family>
-export type TInsertFamily = InferModel<typeof Family, "insert">
+export type TFamily = InferSelectModel<typeof Family>
+export type TInsertFamily = InferInsertModel<typeof Family>
 
 export const Billing = pgTable("billing", {
   id: bigserial("id", { mode: "number" }).primaryKey(),
@@ -133,8 +139,8 @@ export const Billing = pgTable("billing", {
   extraCharge: bigint("extra_charge", { mode: "number" }),
   ...Timestamps,
 })
-export type TBilling = InferModel<typeof Billing>
-export type TInsertBilling = InferModel<typeof Billing, "insert">
+export type TBilling = InferSelectModel<typeof Billing>
+export type TInsertBilling = InferInsertModel<typeof Billing>
 
 export const PaymentMode = pgEnum("payment_mode", ["transfer", "cash"])
 export const PaymentStatus = pgEnum("payment_status", [
@@ -168,8 +174,8 @@ export const Payment = pgTable("payment", {
   redirect_url: text("redirect_url").notNull(),
   ...Timestamps,
 })
-export type TPayment = InferModel<typeof Payment>
-export type TInsertPayment = InferModel<typeof Payment, "insert">
+export type TPayment = InferSelectModel<typeof Payment>
+export type TInsertPayment = InferInsertModel<typeof Payment>
 
 export const CashflowMovement = pgEnum("cashflow_movement", [
   "income",
@@ -186,5 +192,5 @@ export const Cashflow = pgTable("cashflow", {
   description: text("description"),
   ...Timestamps,
 })
-export type TCashflow = InferModel<typeof Cashflow>
-export type TInsertCashflow = InferModel<typeof Cashflow, "insert">
+export type TCashflow = InferSelectModel<typeof Cashflow>
+export type TInsertCashflow = InferInsertModel<typeof Cashflow>
