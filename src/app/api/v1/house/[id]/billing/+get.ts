@@ -5,7 +5,7 @@ import { toBillingResponse } from "@/server/models/responses/billing"
 import { useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
 import { sendData, sendErrors } from "@/server/web/response"
-import { eq } from "drizzle-orm"
+import { and, eq, ne } from "drizzle-orm"
 
 export const GET = defineHandler(
   async (req, { params }: { params: { id: number } }) => {
@@ -17,7 +17,7 @@ export const GET = defineHandler(
     if (!house) return sendErrors(404, errorDefinition.house_not_found)
 
     const billings = await db().query.Billing.findMany({
-      where: eq(Billing.houseId, house.id),
+      where: and(eq(Billing.houseId, house.id), ne(Billing.isPaid, false)),
     })
 
     return sendData(200, billings.map(toBillingResponse))
