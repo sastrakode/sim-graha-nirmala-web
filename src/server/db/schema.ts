@@ -165,6 +165,7 @@ export const Payment = pgTable("payment", {
   mode: PaymentMode("mode").notNull(),
   status: PaymentStatus("status").notNull(),
   expired_at: timestamp("expired_at", { withTimezone: true }).notNull(),
+  redirect_url: text("redirect_url").notNull(),
   ...Timestamps,
 })
 export type TPayment = InferModel<typeof Payment>

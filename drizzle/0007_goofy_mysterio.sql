@@ -1,0 +1,1 @@
+ALTER TABLE "payment" ADD COLUMN "redirect_url" text NOT NULL;

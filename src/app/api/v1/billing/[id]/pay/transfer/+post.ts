@@ -43,20 +43,19 @@ export const POST = defineHandler(
     }
 
     const res = await snap().createTransaction(parameter)
-
     const payment: TInsertPayment = {
       billingId: params.id,
-      amount: 150_000,
+      amount: billing.amount,
       payerId: occupant.id,
       invoice: generateOrderId(),
       token: res.token,
       status: "pending",
       mode: "transfer",
       expired_at: expiredAt,
+      redirect_url: res.redirect_url,
     }
 
     const [newPayment] = await db().insert(Payment).values(payment).returning()
-
     return sendData(200, newPayment)
   },
 )
