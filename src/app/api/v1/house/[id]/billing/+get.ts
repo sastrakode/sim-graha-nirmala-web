@@ -17,7 +17,7 @@ export const GET = defineHandler(
     if (!house) return sendErrors(404, errorDefinition.house_not_found)
 
     const billings = await db().query.Billing.findMany({
-      where: and(eq(Billing.houseId, house.id), ne(Billing.isPaid, false)),
+      where: and(eq(Billing.houseId, house.id), eq(Billing.isPaid, false)),
     })
 
     return sendData(200, billings.map(toBillingResponse))
