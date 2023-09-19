@@ -3,7 +3,7 @@ import { Billing, Payment, TInsertPayment } from "@/server/db/schema"
 import { generateOrderId, snap } from "@/server/providers/midtrans"
 import { getCurrentOccupant, useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
-import { sendData } from "@/server/web/response"
+import { sendData, sendErrors } from "@/server/web/response"
 import { format } from "date-fns"
 import { eq } from "drizzle-orm"
 
@@ -15,7 +15,11 @@ export const POST = defineHandler(
     const billing = await db().query.Billing.findFirst({
       where: eq(Billing.id, params.id),
     })
-    if (!billing) return sendData(404, { message: "Billing not found" })
+    if (!billing) return sendErrors(404, { message: "Billing not found" })
+
+    if (billing.isPaid) {
+      return sendErrors(423, { message: "Billing already paid" })
+    }
 
     const now = new Date()
     const expiredAt = new Date(now.getTime() + 24 * 60 * 60 * 1000)
@@ -44,7 +48,7 @@ export const POST = defineHandler(
 
     const res = await snap().createTransaction(parameter)
     const payment: TInsertPayment = {
-      billingId: params.id,
+      billingId: billing.id,
       amount: billing.amount,
       payerId: occupant.id,
       invoice: generateOrderId(),
