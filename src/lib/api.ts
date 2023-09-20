@@ -30,9 +30,10 @@ async function handleFetch<T>(
     if (requestOptions.endpointProtected) {
       if (isServer) {
         const { cookies } = await import("next/headers")
+
         res = await fetch(`${baseURL}${url}`, {
           headers: {
-            Authorization: cookies().get("token")?.value ?? "",
+            Authorization: `Bearer ${cookies().get("token")?.value ?? ""}`,
           },
           ...requestOptions,
         })
