@@ -1,6 +1,6 @@
 import { db } from "@/server/db"
 import { Billing, Payment, TInsertPayment } from "@/server/db/schema"
-import { getCurrentStaff, useAuth } from "@/server/security/auth"
+import { useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
 import { bindJson } from "@/server/web/request"
 import { sendData, sendErrors } from "@/server/web/response"
