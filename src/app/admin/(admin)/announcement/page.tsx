@@ -11,7 +11,7 @@ export default async function AdminAnnouncementPage() {
     <div className="m-6">
       <div className="flex gap-4">
         <Button asChild>
-          <a href="/admin/annoucement/add">
+          <a href="/admin/announcement/add">
             <Icons.Plus size={20} className="mr-1" />
             Tambah Pengumuman
           </a>

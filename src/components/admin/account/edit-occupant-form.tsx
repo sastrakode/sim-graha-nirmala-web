@@ -89,8 +89,8 @@ export function EditOccupantForm({
       return
     }
 
-    router.refresh()
     router.replace("/admin/account")
+    router.refresh()
   }
 
   return (

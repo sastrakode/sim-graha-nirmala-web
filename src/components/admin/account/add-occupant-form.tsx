@@ -84,7 +84,8 @@ export function AddOccupantForm({ houses }: { houses: HouseResponse[] }) {
       return
     }
 
-    router.push("/admin/account")
+    router.replace("/admin/account")
+    router.refresh()
   }
 
   return (

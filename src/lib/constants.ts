@@ -48,6 +48,8 @@ export const occupantRoleTypes: readonly {
   { key: "renter", name: "Penyewa" },
 ]
 
+export type PaymentMethod = "direct" | "paymentGateway"
+
 type errorKeyType =
   | "house_taken"
   | "email_registered"
@@ -61,6 +63,7 @@ type errorKeyType =
   | "announcement_not_found"
   | "announcement_category_exist"
   | "announcement_category_not_found"
+  | "billing_not_found"
 
 export const errorDefinition: {
   [key in errorKeyType]: { field?: string; message: string }
@@ -107,5 +110,8 @@ export const errorDefinition: {
   },
   announcement_category_not_found: {
     message: "Kategori pengumuman tidak ditemukan",
+  },
+  billing_not_found: {
+    message: "Tagihan tidak ditemukan",
   },
 }

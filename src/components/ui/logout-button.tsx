@@ -3,15 +3,13 @@
 import { useRouter } from "next/navigation"
 import { Button } from "./button"
 
-import { deleteCookie } from "cookies-next"
+import { logout } from "@/lib/api"
 
 export default function LogoutButton({ ...props }) {
   const router = useRouter()
 
-  const handleLogout = () => {
-    deleteCookie("token")
-    deleteCookie("userId")
-    deleteCookie("houseId")
+  const handleLogout = async () => {
+    await logout()
     router.replace("/login")
     router.refresh()
   }

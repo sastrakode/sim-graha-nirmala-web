@@ -32,7 +32,7 @@ export default function BillHistoryItem({
 
       case "EXPIRE":
         return {
-          title: "Ditolak",
+          title: "Kadaluwarsa",
           color: "bg-destructive",
         }
 
@@ -52,7 +52,12 @@ export default function BillHistoryItem({
       </div>
       <div className="flex flex-col flex-wrap gap-y-2 grow sm:flex-row sm:items-center">
         <div className="mr-auto pr-4">
-          <p className="text-xs font-semibold sm:txt-lead text-primary">{`Bayar kos (Januari)`}</p>
+          <p className="text-xs font-semibold sm:txt-lead text-primary">{`Bayar kas (${date.toLocaleString(
+            "id-ID",
+            {
+              month: "long",
+            },
+          )})`}</p>
           <p className="text-[0.625rem] sm:text-xs text-gray-400">
             {dateFormat(date, true)}
           </p>

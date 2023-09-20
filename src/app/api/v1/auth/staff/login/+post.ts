@@ -43,7 +43,14 @@ export const POST = defineHandler(async (req) => {
   }
 
   const data = sendData(200, response)
-  data.cookies.set("token", token)
+  data.cookies.set({
+    name: "token",
+    value: token,
+    httpOnly: true,
+    path: "/",
+    secure: process.env.NODE_ENV !== "development",
+    maxAge: 60 * 60 * 24 * 2,
+  })
   data.cookies.set("userId", staff.id.toString())
   return data
 })

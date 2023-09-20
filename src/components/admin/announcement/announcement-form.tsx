@@ -95,8 +95,8 @@ export function AnnouncementForm({
       }
     }
 
-    router.refresh()
     router.replace("/admin/announcement")
+    router.refresh()
   }
 
   return (

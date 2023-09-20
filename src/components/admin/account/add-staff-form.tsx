@@ -60,8 +60,8 @@ export function AddStaffForm() {
       return
     }
 
-    router.refresh()
     router.replace("/admin/account")
+    router.refresh()
   }
 
   return (

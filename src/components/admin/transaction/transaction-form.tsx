@@ -21,15 +21,15 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
-import { postHouse, putHouse } from "@/lib/api"
+import { postCashflow, postHouse, putHouse } from "@/lib/api"
 import { useRouter } from "next/navigation"
 import { CashflowResponse } from "@/server/models/responses/cashflow"
 
 const formSchema = z.object({
   title: z.string().nonempty("Judul harus diisi"),
-  description: z.string().nonempty("Alamat harus diisi"),
-  movement: z.string().nonempty("Alur harus diisi"),
-  amount: z.number().nonnegative(),
+  description: z.string().optional(),
+  movement: z.string().nonempty("Tipe harus diisi"),
+  amount: z.coerce.number().nonnegative(),
 })
 
 const flowTypes = [
@@ -59,22 +59,20 @@ export function TransactionForm({ cashflow }: { cashflow?: CashflowResponse }) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (cashflow) {
-      const [_, errors] = await putHouse(cashflow.id.toString(), values)
-
-      if (errors) {
-        errors.forEach((error) => {
-          if (error.field) {
-            form.setError(error.field as any, {
-              type: "server",
-              message: error.message,
-            })
-          }
-        })
-
-        return
-      }
+      // const [_, errors] = await putHouse(cashflow.id.toString(), values)
+      // if (errors) {
+      //   errors.forEach((error) => {
+      //     if (error.field) {
+      //       form.setError(error.field as any, {
+      //         type: "server",
+      //         message: error.message,
+      //       })
+      //     }
+      //   })
+      //   return
+      // }
     } else {
-      const [_, errors] = await postHouse(values)
+      const [_, errors] = await postCashflow(values)
 
       if (errors) {
         errors.forEach((error) => {
@@ -90,8 +88,8 @@ export function TransactionForm({ cashflow }: { cashflow?: CashflowResponse }) {
       }
     }
 
-    router.refresh()
     router.replace("/admin/transaction")
+    router.refresh()
   }
 
   return (

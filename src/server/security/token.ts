@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken"
 import { config } from "../config"
 import { Role, RoleType, throwUnauthorized } from "./auth"
+import { NextRequest } from "next/server"
 
 type Claim = {
   sub: string
@@ -32,12 +33,18 @@ export function verifyToken(token: string) {
   }
 }
 
-export function getToken(req: Request) {
+export function getToken(req: NextRequest): string {
+  let token: string | undefined
   let authorization = req.headers.get("authorization")
-  if (!authorization) {
+  if (authorization) {
+    token = authorization.split(" ")[0]
+  } else {
+    token = req.cookies.get("token")?.value
+  }
+
+  if (!token) {
     throwUnauthorized()
   }
 
-  let [_type, token] = authorization.split(" ")
   return token
 }

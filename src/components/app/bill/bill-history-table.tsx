@@ -1,24 +1,30 @@
 import { dummyBillHistory } from "@/lib/dummyData"
 import BillHistoryItem from "./bill-history-item"
+import { TPayment } from "@/server/db/schema"
+import { getPaymentHistory } from "@/lib/api"
 
-export default function BillHistoryTable() {
-  const billHistory = dummyBillHistory
+export default async function BillHistoryTable({
+  houseId,
+}: {
+  houseId: string
+}) {
+  const [paymentsHistory, paymentsHistoryErr] = await getPaymentHistory(houseId)
 
   return (
     <div className="bg-white p-4 mt-[1.125rem] lg:mt-9 rounded-3xl">
-      <p className="text-sm font-bold sm:text-base">Riwayat Tagihan</p>
+      <p className="text-sm font-bold sm:text-base">Riwayat Pembayaran</p>
       <div className="h-[2px] bg-gray-200 mt-3 mb-5" />
       <div className="flex flex-col gap-6 px-5">
-        {billHistory.length === 0 ? (
+        {paymentsHistory.length === 0 ? (
           <p className="text-navy text-base font-medium text-center">
-            Tidak ada transaksi kas
+            Tidak ada riwayat pembayaran
           </p>
         ) : (
-          billHistory.map((item) => (
+          paymentsHistory.map((item) => (
             <BillHistoryItem
               key={item.id}
               status={item.status ?? ""}
-              date={item.created_at ? new Date(item.created_at) : new Date()}
+              date={new Date(item.createdAt)}
               amount={item.amount ?? 0}
             />
           ))

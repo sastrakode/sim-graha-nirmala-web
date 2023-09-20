@@ -68,8 +68,8 @@ export function HouseForm({ house }: { house?: HouseResponse }) {
       }
     }
 
-    router.refresh()
     router.replace("/admin/house")
+    router.refresh()
   }
 
   return (

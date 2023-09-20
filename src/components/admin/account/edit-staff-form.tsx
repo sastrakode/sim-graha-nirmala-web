@@ -58,8 +58,8 @@ export function EditStaffForm({ staff }: { staff: StaffResponse }) {
       return
     }
 
-    router.refresh()
     router.replace("/admin/account")
+    router.refresh()
   }
 
   return (

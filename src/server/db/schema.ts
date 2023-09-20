@@ -1,11 +1,5 @@
+import { InferInsertModel, InferSelectModel, relations } from "drizzle-orm"
 import {
-  InferInsertModel,
-  InferModel,
-  InferSelectModel,
-  relations,
-} from "drizzle-orm"
-import {
-  alias,
   bigint,
   bigserial,
   boolean,

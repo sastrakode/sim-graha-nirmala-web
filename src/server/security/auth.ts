@@ -3,6 +3,7 @@ import { db } from "../db"
 import { ApiError } from "../models/exceptions/api"
 import { getToken, verifyToken } from "./token"
 import { Occupant, Staff } from "../db/schema"
+import { NextRequest } from "next/server"
 
 const claimSubHeader = "x-claim-sub"
 
@@ -16,7 +17,7 @@ export type Role =
 
 export type RoleType = "staff" | "occupant"
 
-export function useAuth(req: Request, ...roles: Role[]) {
+export function useAuth(req: NextRequest, ...roles: Role[]) {
   const token = getToken(req)
   const claim = verifyToken(token)
   req.headers.set(claimSubHeader, claim.sub)

@@ -20,6 +20,8 @@ export const GET = defineHandler(
       where: and(eq(Billing.houseId, house.id), eq(Billing.isPaid, false)),
     })
 
+    if (!billings) return sendErrors(404, errorDefinition.billing_not_found)
+
     return sendData(200, billings.map(toBillingResponse))
   },
 )

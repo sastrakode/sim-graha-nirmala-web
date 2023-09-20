@@ -1,15 +1,33 @@
+"use client"
+
 import { numberFormat } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { BillingResponse } from "@/server/models/responses/billing"
 import { payBill } from "@/lib/api"
+import { PaymentMethod } from "@/lib/constants"
+import { useRouter } from "next/navigation"
 
-export default function BillListItem({ bill }: { bill: BillingResponse }) {
+export default function BillListItem({
+  bill,
+  paymentMethod,
+}: {
+  bill: BillingResponse
+  paymentMethod: PaymentMethod
+}) {
+  const router = useRouter()
+
   const handlePay = async () => {
-    const [payment, err] = await payBill(bill.id)
+    switch (paymentMethod) {
+      case "direct":
+        break
+      case "paymentGateway":
+        const [payment, err] = await payBill(bill.id)
 
-    window.open(
-      `${process.env.NEXT_PUBLIC_MIDTRANS_PAYMENT_URL}/${payment.token}`,
-    )
+        window.open(payment.redirect_url)
+        break
+    }
+
+    router.refresh()
   }
 
   return (

@@ -1,7 +1,12 @@
+import { AdminBillTable } from "@/components/admin/bill/admin-bill-table"
+import { getHouses } from "@/lib/api"
+
 export default async function AdminBillPage() {
+  const [houses, err] = await getHouses()
+
   return (
-    <>
-      <h1>Tagihan</h1>
-    </>
+    <div className="m-6">
+      <AdminBillTable houses={houses} />
+    </div>
   )
 }
