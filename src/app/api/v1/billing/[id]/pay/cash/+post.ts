@@ -15,7 +15,6 @@ export const POST = defineHandler(
   async (req, { params }: { params: { id: number } }) => {
     useAuth(req, "admin", "treasurer")
     const param = await bindJson(req, Param)
-    const staff = await getCurrentStaff(req)
 
     let billing = await db().query.Billing.findFirst({
       where: eq(Billing.id, params.id),
