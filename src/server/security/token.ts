@@ -37,7 +37,7 @@ export function getToken(req: NextRequest): string {
   let token: string | undefined
   let authorization = req.headers.get("authorization")
   if (authorization) {
-    token = authorization.split(" ")[0]
+    token = authorization.split(" ")[1]
   } else {
     token = req.cookies.get("token")?.value
   }
