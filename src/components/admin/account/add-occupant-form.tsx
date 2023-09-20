@@ -28,7 +28,6 @@ import { normalizePhone } from "@/lib/utils"
 import { addOccupantFormSchema } from "@/lib/schema"
 import { postOccupant } from "@/lib/api"
 import { useRouter } from "next/navigation"
-import { Loader2 } from "lucide-react"
 
 const formSchema = addOccupantFormSchema
 
