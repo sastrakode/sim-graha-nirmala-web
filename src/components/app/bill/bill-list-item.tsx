@@ -22,8 +22,9 @@ export default function BillListItem({
         break
       case "paymentGateway":
         const [payment, err] = await payBill(bill.id)
-
-        window.open(payment.redirect_url)
+        if (payment.redirect_url) {
+          window.open(payment.redirect_url)
+        }
         break
     }
 
