@@ -14,7 +14,7 @@ const Param = z.object({
   role: z.enum(["owner", "renter"]),
   house_id: z.number(),
   name: z.string(),
-  email: z.string().nullable(),
+  email: z.string().optional(),
   phone: z.string(),
   password: z.string().min(8),
 })

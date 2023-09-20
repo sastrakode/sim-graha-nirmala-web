@@ -11,7 +11,7 @@ import { z } from "zod"
 
 const Param = z.object({
   name: z.string(),
-  email: z.string().email().nullable(),
+  email: z.string().email().optional(),
   phone: z.string(),
   role: z.enum(["admin", "secretary", "treasurer", "security_guard"]),
 })
@@ -39,7 +39,7 @@ export const PUT = defineHandler(
     if (!staff) return sendErrors(404, errorDefinition.staff_not_found)
 
     staff.name = param.name
-    staff.email = param.email
+    staff.email = param.email ?? null
     staff.phone = param.phone
     staff.role = param.role
     staff.updatedAt = new Date()

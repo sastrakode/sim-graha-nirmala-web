@@ -21,13 +21,19 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
-import { postCashflow, postHouse, putHouse } from "@/lib/api"
+import { postCashflow } from "@/lib/api"
 import { useRouter } from "next/navigation"
 import { CashflowResponse } from "@/server/models/responses/cashflow"
 
 const formSchema = z.object({
   title: z.string().nonempty("Judul harus diisi"),
-  description: z.string().optional(),
+  description: z
+    .string()
+    .optional()
+    .transform((value) =>
+      value ? (value.length > 0 ? value : undefined) : undefined,
+    )
+    .pipe(z.string().min(1).optional()),
   movement: z.string().nonempty("Tipe harus diisi"),
   amount: z.coerce.number().nonnegative(),
 })

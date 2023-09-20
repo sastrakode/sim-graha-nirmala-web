@@ -11,7 +11,7 @@ import { z } from "zod"
 const Param = z.object({
   amount: z.number(),
   movement: z.enum(["income", "outcome"]),
-  description: z.string().nullable(),
+  description: z.string().optional().nullable(),
   title: z.string(),
 })
 
@@ -28,7 +28,7 @@ export const PUT = defineHandler(
 
     cashflow.amount = param.amount
     cashflow.movement = param.movement
-    cashflow.description = param.description
+    cashflow.description = param.description ?? null
     cashflow.title = param.title
 
     await db().update(Cashflow).set(cashflow).where(eq(Cashflow.id, params.id))

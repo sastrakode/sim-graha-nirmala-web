@@ -12,7 +12,7 @@ import { z } from "zod"
 const Param = z.object({
   house_id: z.number(),
   name: z.string(),
-  email: z.string().nullable(),
+  email: z.string().optional(),
   phone: z.string(),
 })
 
@@ -53,7 +53,7 @@ export const PUT = defineHandler(
 
     occupant.houseId = param.house_id
     occupant.name = param.name
-    occupant.email = param.email
+    occupant.email = param.email ?? null
     occupant.phone = param.phone
     return sendData(200, toOccupantResponse(occupant))
   },

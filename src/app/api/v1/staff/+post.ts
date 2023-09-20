@@ -12,7 +12,7 @@ import { z } from "zod"
 
 const Param = z.object({
   name: z.string(),
-  email: z.string().email().nullable(),
+  email: z.string().email().optional(),
   phone: z.string(),
   password: z.string().min(8),
   role: z.enum(["admin", "secretary", "treasurer", "security_guard"]),
