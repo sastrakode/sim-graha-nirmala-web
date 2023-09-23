@@ -48,8 +48,6 @@ export const occupantRoleTypes: readonly {
   { key: "renter", name: "Penyewa" },
 ]
 
-export type PaymentMethod = "direct" | "paymentGateway"
-
 type errorKeyType =
   | "house_taken"
   | "email_registered"

@@ -1,16 +1,14 @@
-import { BillingResponse } from "@/server/models/responses/billing"
 import BillListItem from "./bill-list-item"
-import { PaymentMethod } from "@/lib/constants"
 import { getBills } from "@/lib/api"
 
 export default async function BillTable({
   houseId,
-  paymentMethod,
+  occupantId,
 }: {
   houseId: string
-  paymentMethod: PaymentMethod
+  occupantId?: number
 }) {
-  const [bills, err] = await getBills(houseId)
+  let [bills, err] = await getBills(houseId)
 
   if (err) {
     throw new Error("Something went wrong")
@@ -23,11 +21,7 @@ export default async function BillTable({
       <div className="flex flex-col gap-6 px-5">
         {bills.length ? (
           bills.map((bill) => (
-            <BillListItem
-              key={bill.id}
-              bill={bill}
-              paymentMethod={paymentMethod}
-            />
+            <BillListItem key={bill.id} bill={bill} occupantId={occupantId} />
           ))
         ) : (
           <p>Tidak ada tagihan</p>

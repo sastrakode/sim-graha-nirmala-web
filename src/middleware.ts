@@ -35,7 +35,7 @@ export function middleware(req: NextRequest) {
           return NextResponse.redirect(new URL("/admin", req.url))
       } catch (error) {
         req.cookies.delete(token)
-        NextResponse.redirect(new URL("/login", req.url))
+        return NextResponse.redirect(new URL("/login", req.url))
       }
     }
 
@@ -51,17 +51,26 @@ export function middleware(req: NextRequest) {
         const { role_type } = parseJwt(token)
         if (role_type === "staff") return NextResponse.next()
         else if (role_type === "occupant")
-          response = NextResponse.redirect(new URL("/app/dashboard", req.url))
+          return NextResponse.redirect(new URL("/app/dashboard", req.url))
       } catch (error) {
         req.cookies.delete(token)
-        response = NextResponse.redirect(new URL("/admin/login", req.url))
+        return NextResponse.redirect(new URL("/admin/login", req.url))
       }
     }
 
-    response = NextResponse.redirect(new URL("/admin/login", req.url))
-
-    // Disable middleware cache so we can use router.push() without being cached
-    response.headers.set("x-middleware-cache", "no-cache")
-    return response
+    return NextResponse.redirect(new URL("/admin/login", req.url))
   }
+}
+
+export const config = {
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
+    "/((?!api|_next/static|_next/image|favicon.ico).*)",
+  ],
 }

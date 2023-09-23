@@ -21,6 +21,12 @@ const pageName: { [key: string]: string } = {
   "/admin/announcement": "Kelola Pengumuman",
   "/admin/announcement/add": "Tambah Pengumuman",
   "/admin/announcement/edit": "Edit Pengumuman",
+
+  "/admin/transaction": "Kelola Transaksi",
+  "/admin/transaction/add": "Tambah Transaksi",
+  "/admin/transaction/edit": "Edit Trannsaksi",
+
+  "/admin/bill": "Kelola Tagihan",
 }
 
 const getRouteWithoutParams = (

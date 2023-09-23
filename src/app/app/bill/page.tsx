@@ -13,7 +13,7 @@ export default function Bill() {
   return (
     <div className="flex flex-col m-6 gap-8 lg:flex-row">
       <div className="grow">
-        <BillTable houseId={houseId} paymentMethod="paymentGateway" />
+        <BillTable houseId={houseId} />
       </div>
       <div className="grow">
         <BillHistoryTable houseId={houseId} />

@@ -2,16 +2,12 @@
 
 import { useState } from "react"
 import TransactionListItem from "./transaction-list-item"
+import { TransactionCasflow } from "@/server/models/responses/transaction"
 
 export default function TransactionTable({
   transactions,
 }: {
-  transactions: {
-    title: string
-    created_at: Date
-    amount: number
-    movement: string
-  }[]
+  transactions: TransactionCasflow[]
 }) {
   const [activeTab, setActiveTab] = useState("all")
 

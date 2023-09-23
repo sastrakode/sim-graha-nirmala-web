@@ -1,15 +1,11 @@
 import TransactionListItem from "@/components/app/transaction/transaction-list-item"
 import { Button } from "@/components/ui/button"
+import { TransactionCasflow } from "@/server/models/responses/transaction"
 
 export default function TransactionTableSummary({
   transactions,
 }: {
-  transactions: {
-    title: string
-    created_at: Date
-    amount: number
-    movement: string
-  }[]
+  transactions: TransactionCasflow[]
 }) {
   return (
     <>

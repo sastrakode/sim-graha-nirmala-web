@@ -48,7 +48,9 @@ export default async function DashboardPage() {
         </section>
       </div>
       <section className="bg-white basis-1/2 p-4 rounded-3xl h-fit">
-        <TransactionTableSummary transactions={transaction.transactions} />
+        <TransactionTableSummary
+          transactions={transaction.transactions.slice(0, 5)}
+        />
       </section>
     </div>
   )

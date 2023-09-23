@@ -1,31 +1,38 @@
 "use client"
 
-import { numberFormat } from "@/lib/utils"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
+
+import { catchError, numberFormat } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { BillingResponse } from "@/server/models/responses/billing"
-import { payBill } from "@/lib/api"
-import { PaymentMethod } from "@/lib/constants"
-import { useRouter } from "next/navigation"
+import { payBill, payBillCash } from "@/lib/api"
 
 export default function BillListItem({
   bill,
-  paymentMethod,
+  occupantId,
 }: {
   bill: BillingResponse
-  paymentMethod: PaymentMethod
+  occupantId?: number
 }) {
   const router = useRouter()
 
   const handlePay = async () => {
-    switch (paymentMethod) {
-      case "direct":
-        break
-      case "paymentGateway":
-        const [payment, err] = await payBill(bill.id)
-        if (payment.redirect_url) {
-          window.open(payment.redirect_url)
-        }
-        break
+    if (occupantId) {
+      const [_, err] = await payBillCash(bill.id, {
+        occupant_id: occupantId,
+      })
+
+      if (err) {
+        catchError(new Error("Pembayaran gagal"))
+      } else {
+        toast.success("Pembayaran berhasil")
+      }
+    } else {
+      const [payment, err] = await payBill(bill.id)
+      if (payment.redirect_url) {
+        window.open(payment.redirect_url)
+      }
     }
 
     router.refresh()

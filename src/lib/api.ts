@@ -386,6 +386,19 @@ export async function payBill(
   return res
 }
 
+export async function payBillCash(
+  id: number,
+  body: { occupant_id: number },
+): Promise<[TInsertPayment, FetchError]> {
+  const res = await handleFetch<TInsertPayment>(`/billing/${id}/pay/cash`, {
+    method: "POST",
+    body: JSON.stringify(body),
+    endpointProtected: true,
+  })
+
+  return res
+}
+
 export async function getPaymentHistory(
   id: string,
 ): Promise<[TPayment[], FetchError]> {
