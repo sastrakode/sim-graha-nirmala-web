@@ -36,6 +36,13 @@ export function verifyToken(token: string) {
 export function getToken(req: NextRequest): string {
   let token: string | undefined
   let authorization = req.headers.get("authorization")
+
+  // If server-side rendering we'll get the token from authorizationn header
+  // If client-side rendering we'll get the token directly via req.cookies() that bring cookies from client
+
+  // Server-side cannot send the cookie to the Request since it's not from the browser
+  // Client-side cannot get cookie to set auth header because the token cookie is httpOnly
+
   if (authorization) {
     token = authorization.split(" ")[1]
   } else {
