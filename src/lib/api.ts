@@ -27,24 +27,15 @@ async function handleFetch<T>(
   try {
     let res: Response
 
-    if (requestOptions.endpointProtected) {
-      if (isServer) {
-        const { cookies } = await import("next/headers")
+    if (requestOptions.endpointProtected && isServer) {
+      const { cookies } = await import("next/headers")
 
-        res = await fetch(`${baseURL}${url}`, {
-          headers: {
-            Authorization: `Bearer ${cookies().get("token")?.value ?? ""}`,
-          },
-          ...requestOptions,
-        })
-      } else {
-        // Recommended solution is using http proxy and set auth header via the /api/proxy (https://github.com/maximilianschmitt/next-auth/blob/master/pages/api/proxy/%5B...path%5D.js)
-        // But I still can't find how to make it in Next.js 13
-        // example (if we can use the proxy): res = await fetch(`${baseURL}/proxy${url}`, requestOptions)
-
-        // alternative solution, if client-side, just get the cookie via the api route, cause we can do it anyway, check in token.ts
-        res = await fetch(`${baseURL}${url}`, requestOptions)
-      }
+      res = await fetch(`${baseURL}${url}`, {
+        headers: {
+          Authorization: `Bearer ${cookies().get("token")?.value ?? ""}`,
+        },
+        ...requestOptions,
+      })
     } else {
       res = await fetch(`${baseURL}${url}`, requestOptions)
     }
@@ -70,19 +61,15 @@ async function handleFetchNoContent(
   try {
     let res: Response
 
-    if (requestOptions.endpointProtected) {
-      if (isServer) {
-        const { cookies } = await import("next/headers")
-        res = await fetch(`${baseURL}${url}`, {
-          headers: {
-            Authorization: cookies().get("token")?.value ?? "",
-          },
-          ...requestOptions,
-        })
-      } else {
-        // check the explanation in handleFetch
-        res = await fetch(`${baseURL}${url}`, requestOptions)
-      }
+    if (requestOptions.endpointProtected && isServer) {
+      const { cookies } = await import("next/headers")
+
+      res = await fetch(`${baseURL}${url}`, {
+        headers: {
+          Authorization: `Bearer ${cookies().get("token")?.value ?? ""}`,
+        },
+        ...requestOptions,
+      })
     } else {
       res = await fetch(`${baseURL}${url}`, requestOptions)
     }
