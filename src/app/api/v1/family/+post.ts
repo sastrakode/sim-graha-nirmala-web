@@ -1,5 +1,6 @@
 import { db } from "@/server/db"
 import { Family, TInsertFamily } from "@/server/db/schema"
+import { toFamilyResponse } from "@/server/models/responses/family"
 import { getCurrentOccupant, useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
 import { bindJson } from "@/server/web/request"
@@ -43,5 +44,5 @@ export const POST = defineHandler(async (req) => {
   }
 
   const [newFamily] = await db().insert(Family).values(family).returning()
-  return sendData(201, newFamily)
+  return sendData(201, toFamilyResponse(newFamily))
 })
