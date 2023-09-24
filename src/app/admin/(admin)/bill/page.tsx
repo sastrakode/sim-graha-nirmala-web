@@ -1,4 +1,4 @@
-import { AdminBillTable } from "@/components/admin/bill/admin-bill-table"
+import { AdminBill } from "@/components/admin/bill/admin-bill"
 import { getHouses } from "@/lib/api"
 
 export default async function AdminBillPage() {
@@ -6,7 +6,7 @@ export default async function AdminBillPage() {
 
   return (
     <div className="m-6">
-      <AdminBillTable
+      <AdminBill
         houses={houses.filter((house) => house.owner || house.renter)}
       />
     </div>

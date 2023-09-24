@@ -1,5 +1,5 @@
 import BillHistoryTable from "@/components/app/bill/bill-history-table"
-import BillTable from "@/components/app/bill/bill-table"
+import OccupantBill from "@/components/app/bill/occupant-bill"
 import { Metadata } from "next"
 import { cookies } from "next/headers"
 
@@ -13,7 +13,7 @@ export default function Bill() {
   return (
     <div className="flex flex-col m-6 gap-8 lg:flex-row">
       <div className="grow">
-        <BillTable houseId={houseId} />
+        <OccupantBill houseId={houseId} />
       </div>
       <div className="grow">
         <BillHistoryTable houseId={houseId} />

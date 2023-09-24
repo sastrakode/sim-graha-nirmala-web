@@ -1,6 +1,7 @@
 "use client"
 
-import BillTable from "@/components/app/bill/bill-table"
+import { useEffect, useState } from "react"
+
 import { Label } from "@/components/ui/label"
 import {
   Select,
@@ -9,20 +10,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-
+import { getBills } from "@/lib/api"
+import { BillingResponse } from "@/server/models/responses/billing"
 import { HouseResponse } from "@/server/models/responses/house"
-import { useEffect, useState } from "react"
+import { BillListItem, BillTable } from "@/components/ui/bill"
 
-export function AdminBillTable({ houses }: { houses: HouseResponse[] }) {
+export function AdminBill({ houses }: { houses: HouseResponse[] }) {
   const [selectedHouse, setSelectedHouse] = useState<HouseResponse>(houses[0])
 
   const [selectedOccupantId, setSelectedOccupantId] = useState<number>(
     houses[0].owner ? houses[0].owner.id : -1,
   )
 
+  const [bills, setBills] = useState<BillingResponse[]>([])
+
   useEffect(() => {
-    console.log("selectedHouse effect")
+    async function fetchBills() {
+      const [billsResponse, err] = await getBills(selectedHouse.id.toString())
+      setBills(billsResponse)
+    }
+
     setSelectedOccupantId(selectedHouse.owner?.id ?? -1)
+    fetchBills()
   }, [selectedHouse])
 
   return (
@@ -81,12 +90,19 @@ export function AdminBillTable({ houses }: { houses: HouseResponse[] }) {
           </Select>
         </div>
       </div>
-      <div className="">
-        <BillTable
-          houseId={selectedHouse.id.toString()}
-          occupantId={selectedOccupantId}
-        />
-      </div>
+      <BillTable>
+        {bills.length ? (
+          bills.map((bill) => (
+            <BillListItem
+              key={bill.id}
+              bill={bill}
+              occupantId={selectedOccupantId}
+            />
+          ))
+        ) : (
+          <p>Tidak ada tagihan</p>
+        )}
+      </BillTable>
     </>
   )
 }

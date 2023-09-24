@@ -1,14 +1,23 @@
 "use client"
 
-import { useRouter } from "next/navigation"
+import { ReactNode } from "react"
 import { toast } from "sonner"
 
 import { catchError, numberFormat } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { Button } from "./button"
 import { BillingResponse } from "@/server/models/responses/billing"
+import { useRouter } from "next/navigation"
 import { payBill, payBillCash } from "@/lib/api"
 
-export default function BillListItem({
+export const BillTable = ({ children }: { children: ReactNode }) => (
+  <div className="bg-white p-4 mt-[1.125rem] lg:mt-9 rounded-3xl">
+    <p className="font-bold text-sm sm:text-base">Tagihan</p>
+    <div className="h-[2px] bg-gray-200 mt-3 mb-5" />
+    <div className="flex flex-col gap-6 px-5">{children}</div>
+  </div>
+)
+
+export function BillListItem({
   bill,
   occupantId,
 }: {
