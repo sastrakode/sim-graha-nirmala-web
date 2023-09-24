@@ -64,6 +64,20 @@
       "when": 1695099145102,
       "tag": "0008_tricky_machine_man",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1695367899829,
+      "tag": "0009_numerous_blue_blade",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1695527967063,
+      "tag": "0010_even_franklin_richards",
+      "breakpoints": true
     }
   ]
 }

@@ -7,6 +7,7 @@ import {
   pgTable,
   text,
   timestamp,
+  uuid,
 } from "drizzle-orm/pg-core"
 
 const Timestamps = {
@@ -188,3 +189,12 @@ export const Cashflow = pgTable("cashflow", {
 })
 export type TCashflow = InferSelectModel<typeof Cashflow>
 export type TInsertCashflow = InferInsertModel<typeof Cashflow>
+
+export const Storage = pgTable("storage", {
+  id: bigserial("id", { mode: "number" }).primaryKey(),
+  name: text("name").notNull(),
+  ext: text("ext").notNull(),
+  token: uuid("token").unique().defaultRandom().notNull(),
+})
+export type TStorage = InferSelectModel<typeof Storage>
+export type TInsertStorage = InferInsertModel<typeof Storage>
