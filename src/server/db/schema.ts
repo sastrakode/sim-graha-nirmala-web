@@ -105,8 +105,6 @@ export const Family = pgTable("family", {
     .notNull()
     .references(() => Occupant.id),
   name: text("name").notNull(),
-  email: text("email").unique(),
-  phone: text("phone").unique().notNull(),
   identityNumber: text("identity_number").unique().notNull(),
   birthday: timestamp("birthday").notNull(),
   gender: Gender("gender").notNull(),

@@ -8,8 +8,6 @@ import { z } from "zod"
 
 const Param = z.object({
   name: z.string(),
-  email: z.string(),
-  phone: z.string(),
   identity_number: z.string(),
   birthday: z.date(),
   gender: z.enum(["male", "female"]),
@@ -31,8 +29,6 @@ export const POST = defineHandler(async (req) => {
   const family: TInsertFamily = {
     occupantId: occupant.id,
     name: param.name,
-    email: param.email,
-    phone: param.phone,
     identityNumber: param.identity_number,
     birthday: param.birthday,
     gender: param.gender,
