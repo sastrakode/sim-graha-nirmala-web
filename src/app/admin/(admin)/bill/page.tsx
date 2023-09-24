@@ -6,7 +6,9 @@ export default async function AdminBillPage() {
 
   return (
     <div className="m-6">
-      <AdminBillTable houses={houses} />
+      <AdminBillTable
+        houses={houses.filter((house) => house.owner || house.renter)}
+      />
     </div>
   )
 }
