@@ -56,7 +56,6 @@ export const POST = defineHandler(
     }
 
     const res = await snap().createTransaction(parameter)
-    console.log("res:", res)
     const payment: TInsertPayment = {
       billingId: billing.id,
       amount: billing.amount,
