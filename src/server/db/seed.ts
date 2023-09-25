@@ -1,14 +1,15 @@
 import { eq } from "drizzle-orm"
-import { connection } from "."
 import { Staff } from "./schema"
 import { hashPassword } from "../security/password"
+import { PostgresJsDatabase } from "drizzle-orm/postgres-js"
+import * as schema from "./schema"
 
-export async function seed() {
-  let adminStaff = await connection.query.Staff.findFirst({
+export async function seed(conn: PostgresJsDatabase<typeof schema>) {
+  let adminStaff = await conn.query.Staff.findFirst({
     where: eq(Staff.role, "admin"),
   })
   if (!adminStaff) {
-    await connection.insert(Staff).values({
+    await conn.insert(Staff).values({
       name: "Admin",
       phone: "085108510851",
       password: await hashPassword("supersecret"),

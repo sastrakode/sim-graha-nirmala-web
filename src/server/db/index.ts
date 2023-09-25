@@ -1,7 +1,7 @@
 import os from "os"
 import { PostgresJsDatabase, drizzle } from "drizzle-orm/postgres-js"
 import { migrate } from "drizzle-orm/postgres-js/migrator"
-import postgres from "postgres"
+import postgres, { Sql } from "postgres"
 import * as schema from "./schema"
 import { config } from "../config"
 import { seed } from "./seed"
@@ -9,34 +9,38 @@ import { seed } from "./seed"
 const maxOpenConnections = 2 * os.cpus().length
 const maxLifetimeConnections = 30 * 60
 
-const pool = postgres({
-  host: config.db.host,
-  port: config.db.port,
-  user: config.db.user,
-  password: config.db.pass,
-  database: config.db.name,
+let pool: Sql
+let connection: PostgresJsDatabase<typeof schema>
 
-  max: maxOpenConnections,
-  keep_alive: maxOpenConnections,
-  max_lifetime: maxLifetimeConnections,
-  idle_timeout: maxLifetimeConnections,
-})
-
-export let connection: PostgresJsDatabase<typeof schema>
-
-async function setupDb() {
-  await migrate(connection, {
+async function setupDb(conn: PostgresJsDatabase<typeof schema>) {
+  await migrate(conn, {
     migrationsFolder: "./drizzle",
   })
 
-  await seed()
+  await seed(conn)
 }
 
-export function db() {
-  if (connection) return connection
+function getPool() {
+  if (pool) return pool
+  pool = postgres({
+    host: config.db.host,
+    port: config.db.port,
+    user: config.db.user,
+    password: config.db.pass,
+    database: config.db.name,
+    max: maxOpenConnections,
+    keep_alive: maxOpenConnections,
+    max_lifetime: maxLifetimeConnections,
+    idle_timeout: maxLifetimeConnections,
+  })
 
-  connection = drizzle(pool, { logger: true, schema: schema })
-  setupDb()
+  return pool
+}
+
+function getConnection() {
+  if (connection) return connection
+  connection = drizzle(getPool(), { logger: true, schema: schema })
+  setupDb(connection)
     .then(() => {
       console.log("database setup success")
     })
@@ -48,4 +52,11 @@ export function db() {
     })
 
   return connection
+}
+
+export function db() {
+  if (process.env.NODE_ENV === "production") return getConnection()
+
+  if (!global._DB_CONNECTION) global._DB_CONNECTION = getConnection()
+  return global._DB_CONNECTION
 }
