@@ -5,7 +5,7 @@ import { getCurrentOccupant, useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
 import { sendData, sendErrors } from "@/server/web/response"
 import { format } from "date-fns"
-import { eq } from "drizzle-orm"
+import { and, eq, gte } from "drizzle-orm"
 
 export const POST = defineHandler(
   async (req, { params }: { params: { id: number } }) => {
@@ -16,14 +16,21 @@ export const POST = defineHandler(
       where: eq(Billing.id, params.id),
     })
     if (!billing) return sendErrors(404, { message: "Billing not found" })
-
     if (billing.isPaid) {
       return sendErrors(423, { message: "Billing already paid" })
     }
 
     const now = new Date()
-    const expiredAt = new Date(now.getTime() + 24 * 60 * 60 * 1000)
+    const pendingPayment = await db().query.Payment.findFirst({
+      where: and(
+        eq(Payment.billingId, billing.id),
+        eq(Payment.status, "pending"),
+        gte(Payment.expiredAt, now),
+      ),
+    })
+    if (pendingPayment) return sendData(200, pendingPayment)
 
+    const expiredAt = new Date(now.getTime() + 24 * 60 * 60 * 1000)
     const parameter = {
       transaction_details: {
         order_id: generateOrderId(),
@@ -55,8 +62,8 @@ export const POST = defineHandler(
       token: res.token,
       status: "pending",
       mode: "transfer",
-      expired_at: expiredAt,
-      redirect_url: res.redirect_url,
+      expiredAt: expiredAt,
+      redirectUrl: res.redirect_url,
     }
 
     const [newPayment] = await db().insert(Payment).values(payment).returning()
