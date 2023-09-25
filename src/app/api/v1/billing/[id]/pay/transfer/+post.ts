@@ -30,10 +30,12 @@ export const POST = defineHandler(
     })
     if (pendingPayment) return sendData(200, pendingPayment)
 
+    const orderId = generateOrderId()
     const expiredAt = new Date(now.getTime() + 24 * 60 * 60 * 1000)
+
     const parameter = {
       transaction_details: {
-        order_id: generateOrderId(),
+        order_id: orderId,
         gross_amount: 150_000,
       },
       customer_details: {
@@ -54,11 +56,12 @@ export const POST = defineHandler(
     }
 
     const res = await snap().createTransaction(parameter)
+    console.log("res:", res)
     const payment: TInsertPayment = {
       billingId: billing.id,
       amount: billing.amount,
       payerId: occupant.id,
-      invoice: generateOrderId(),
+      invoice: orderId,
       token: res.token,
       status: "pending",
       mode: "transfer",
