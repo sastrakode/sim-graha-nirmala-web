@@ -1,16 +1,15 @@
 import { config } from "@/server/config"
 import { db } from "@/server/db"
-import { Storage, TInsertStorage } from "@/server/db/schema"
-import { eq } from "drizzle-orm"
-import Minio from "minio"
+import { Storage, TInsertStorage, TStorage } from "@/server/db/schema"
+import * as Minio from "minio"
 import path from "path"
 
-let client: Minio.Client
+let connection: Minio.Client
 const bucketName = config.minio.bucket
 
-export function minioClient() {
-  if (client) return client
-  client = new Minio.Client({
+function getConnection() {
+  if (connection) return connection
+  connection = new Minio.Client({
     endPoint: config.minio.host,
     port: config.minio.port,
     useSSL: false,
@@ -18,37 +17,38 @@ export function minioClient() {
     secretKey: config.minio.secretKey,
   })
 
-  client.bucketExists(bucketName, (err, exists) => {
+  connection.bucketExists(bucketName, (err, exists) => {
     if (err) throw err
-    if (!exists) client.makeBucket(bucketName, () => {})
+    if (!exists) connection.makeBucket(bucketName, () => {})
   })
 
-  return client
+  return connection
 }
 
-export async function storeObject(file: File) {
+function minio() {
+  if (process.env.NODE_ENV === "production") return getConnection()
+
+  if (!global._MINIO_CONNECTION) global._MINIO_CONNECTION = getConnection()
+  return global._MINIO_CONNECTION
+}
+
+export async function putObject(file: File) {
   const { name, ext } = path.parse(file.name)
-  const bucket: TInsertStorage = {
+  const storage: TInsertStorage = {
     name: name,
     ext: ext,
   }
 
-  const [newBucket] = await db().insert(Storage).values(bucket).returning()
-  const objectName = newBucket.token + bucket.ext
-
+  const [newStorage] = await db().insert(Storage).values(storage).returning()
+  const objectName = newStorage.token + storage.ext
   const bytes = await file.arrayBuffer()
   const buffer = Buffer.from(bytes)
 
-  minioClient().putObject(bucketName, objectName, buffer)
+  await minio().putObject(bucketName, objectName, buffer)
+  return newStorage
 }
 
-export async function getObject(storageId: number) {
-  const bucket = await db().query.Storage.findFirst({
-    where: eq(Storage.id, storageId),
-  })
-  if (!bucket) return null
-
-  const objectName = bucket.token + bucket.ext
-  const buffer = await minioClient().getObject(bucketName, objectName)
-  return buffer.toString()
+export async function getObjectUrl(storage: TStorage) {
+  const objectName = storage.token + storage.ext
+  return await minio().presignedGetObject(bucketName, objectName)
 }

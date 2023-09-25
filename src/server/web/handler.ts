@@ -16,7 +16,6 @@ export function defineHandler(handler: Handler) {
     try {
       return await handler(req, event)
     } catch (error) {
-      console.log(error)
       if (error instanceof ApiError) {
         return sendErrors(error.code, error.errors)
       }

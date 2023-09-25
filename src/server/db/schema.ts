@@ -196,3 +196,33 @@ export const Storage = pgTable("storage", {
 })
 export type TStorage = InferSelectModel<typeof Storage>
 export type TInsertStorage = InferInsertModel<typeof Storage>
+
+export const OccupantDocumentType = pgEnum("occupant_document_type", [
+  "family_card",
+])
+export const OccupantDocument = pgTable("occupant_document", {
+  id: bigserial("id", { mode: "number" }).primaryKey(),
+  type: OccupantDocumentType("type").notNull(),
+  occupantId: bigint("occupant_id", { mode: "number" })
+    .notNull()
+    .references(() => Occupant.id),
+  storageId: bigint("storage_id", { mode: "number" })
+    .notNull()
+    .references(() => Storage.id),
+  ...Timestamps,
+})
+export const occupantDocumentRelations = relations(
+  OccupantDocument,
+  ({ one }) => ({
+    occupant: one(Occupant, {
+      fields: [OccupantDocument.occupantId],
+      references: [Occupant.id],
+    }),
+    storage: one(Storage, {
+      fields: [OccupantDocument.storageId],
+      references: [Storage.id],
+    }),
+  }),
+)
+export type TOccupantDocument = InferSelectModel<typeof OccupantDocument>
+export type TInsertOccupantDocument = InferInsertModel<typeof OccupantDocument>
