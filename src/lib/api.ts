@@ -34,10 +34,14 @@ async function handleFetch<T>(
         headers: {
           Authorization: `Bearer ${cookies().get("token")?.value ?? ""}`,
         },
+        cache: "no-store",
         ...requestOptions,
       })
     } else {
-      res = await fetch(`${baseURL}${url}`, requestOptions)
+      res = await fetch(`${baseURL}${url}`, {
+        cache: "no-store",
+        ...requestOptions,
+      })
     }
 
     const resJson = await res.json()
