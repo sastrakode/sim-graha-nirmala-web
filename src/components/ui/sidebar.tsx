@@ -17,28 +17,28 @@ const Sidebar = () => {
       <div className="flex flex-col space-y-3 text-white grow">
         <NavItem
           Icon={Icons.LayoutDashboard}
-          isActive={currentRoute === routeNames.dashboard}
+          isActive={currentRoute.includes(routeNames.dashboard)}
           routeName={routeNames.dashboard}
         >
           Dashboard
         </NavItem>
         <NavItem
           Icon={Icons.ArrowLeftRight}
-          isActive={currentRoute === routeNames.transaction}
+          isActive={currentRoute.includes(routeNames.transaction)}
           routeName={routeNames.transaction}
         >
           Transaksi
         </NavItem>
         <NavItem
           Icon={Icons.Receipt}
-          isActive={currentRoute === routeNames.bill}
+          isActive={currentRoute.includes(routeNames.bill)}
           routeName={routeNames.bill}
         >
           Tagihan
         </NavItem>
         <NavItem
           Icon={Icons.UserSquare2}
-          isActive={currentRoute === routeNames.profile}
+          isActive={currentRoute.includes(routeNames.profile)}
           routeName={routeNames.profile}
         >
           Profil

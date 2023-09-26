@@ -12,25 +12,25 @@ export default function BillHistoryItem({
 }) {
   const getStatus = (statusType: string) => {
     switch (statusType) {
-      case "SETTLEMENT":
+      case "settlement":
         return {
           title: "Berhasil",
           color: "bg-success",
         }
 
-      case "FAILURE":
+      case "failure":
         return {
           title: "Gagal",
           color: "bg-destructive",
         }
 
-      case "DENY":
+      case "deny":
         return {
           title: "Ditolak",
           color: "bg-destructive",
         }
 
-      case "EXPIRE":
+      case "expire":
         return {
           title: "Kadaluwarsa",
           color: "bg-destructive",

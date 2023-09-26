@@ -39,8 +39,8 @@ export function BillListItem({
       }
     } else {
       const [payment, err] = await payBill(bill.id)
-      if (payment.redirect_url) {
-        window.open(payment.redirect_url)
+      if (payment.redirectUrl) {
+        window.open(payment.redirectUrl)
       }
     }
 
