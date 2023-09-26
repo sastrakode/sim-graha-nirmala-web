@@ -97,7 +97,7 @@ export const Occupant = pgTable("occupant", {
 export type TOccupant = InferSelectModel<typeof Occupant>
 export type TInsertOccupant = InferInsertModel<typeof Occupant>
 
-export const Gender = pgEnum("gender", ["male", "female"])
+export const Gender = pgEnum("gender", ["laki-laki", "perempuan"])
 
 export const Family = pgTable("family", {
   id: bigserial("id", { mode: "number" }).primaryKey(),
@@ -193,6 +193,7 @@ export const Storage = pgTable("storage", {
   name: text("name").notNull(),
   ext: text("ext").notNull(),
   token: uuid("token").unique().defaultRandom().notNull(),
+  ...Timestamps,
 })
 export type TStorage = InferSelectModel<typeof Storage>
 export type TInsertStorage = InferInsertModel<typeof Storage>

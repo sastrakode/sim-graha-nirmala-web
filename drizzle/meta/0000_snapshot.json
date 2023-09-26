@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "f2c38b38-9e99-4814-a452-9ccbcf4802bd",
+  "id": "65603737-65ec-4a4b-bfc2-a6e8da774834",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "announcement": {
@@ -23,6 +23,12 @@
         "content": {
           "name": "content",
           "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "announcement_category_id": {
+          "name": "announcement_category_id",
+          "type": "bigint",
           "primaryKey": false,
           "notNull": true
         },
@@ -48,6 +54,19 @@
       },
       "indexes": {},
       "foreignKeys": {
+        "announcement_announcement_category_id_announcement_category_id_fk": {
+          "name": "announcement_announcement_category_id_announcement_category_id_fk",
+          "tableFrom": "announcement",
+          "tableTo": "announcement_category",
+          "columnsFrom": [
+            "announcement_category_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
         "announcement_author_id_staff_id_fk": {
           "name": "announcement_author_id_staff_id_fk",
           "tableFrom": "announcement",
@@ -64,6 +83,49 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
+    },
+    "announcement_category": {
+      "name": "announcement_category",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigserial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "announcement_category_name_unique": {
+          "name": "announcement_category_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        }
+      }
     },
     "billing": {
       "name": "billing",
@@ -148,6 +210,12 @@
           "primaryKey": true,
           "notNull": true
         },
+        "author_id": {
+          "name": "author_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
         "amount": {
           "name": "amount",
           "type": "bigint",
@@ -160,9 +228,9 @@
           "primaryKey": false,
           "notNull": true
         },
-        "cashflow_type_id": {
-          "name": "cashflow_type_id",
-          "type": "bigint",
+        "title": {
+          "name": "title",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
@@ -188,12 +256,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "cashflow_cashflow_type_id_cashflow_type_id_fk": {
-          "name": "cashflow_cashflow_type_id_cashflow_type_id_fk",
+        "cashflow_author_id_staff_id_fk": {
+          "name": "cashflow_author_id_staff_id_fk",
           "tableFrom": "cashflow",
-          "tableTo": "cashflow_type",
+          "tableTo": "staff",
           "columnsFrom": [
-            "cashflow_type_id"
+            "author_id"
           ],
           "columnsTo": [
             "id"
@@ -205,8 +273,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "cashflow_type": {
-      "name": "cashflow_type",
+    "family": {
+      "name": "family",
       "schema": "",
       "columns": {
         "id": {
@@ -215,8 +283,80 @@
           "primaryKey": true,
           "notNull": true
         },
+        "occupant_id": {
+          "name": "occupant_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
         "name": {
           "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "identity_number": {
+          "name": "identity_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "birthday": {
+          "name": "birthday",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "gender": {
+          "name": "gender",
+          "type": "gender",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "birthplace": {
+          "name": "birthplace",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "religion": {
+          "name": "religion",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "education": {
+          "name": "education",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "job_type": {
+          "name": "job_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "marital_status": {
+          "name": "marital_status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "relationship_status": {
+          "name": "relationship_status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "father_name": {
+          "name": "father_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "mother_name": {
+          "name": "mother_name",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -236,14 +376,28 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "family_occupant_id_occupant_id_fk": {
+          "name": "family_occupant_id_occupant_id_fk",
+          "tableFrom": "family",
+          "tableTo": "occupant",
+          "columnsFrom": [
+            "occupant_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "cashflow_type_name_unique": {
-          "name": "cashflow_type_name_unique",
+        "family_identity_number_unique": {
+          "name": "family_identity_number_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "name"
+            "identity_number"
           ]
         }
       }
@@ -391,8 +545,8 @@
         }
       }
     },
-    "occupant_member": {
-      "name": "occupant_member",
+    "occupant_document": {
+      "name": "occupant_document",
       "schema": "",
       "columns": {
         "id": {
@@ -401,45 +555,21 @@
           "primaryKey": true,
           "notNull": true
         },
+        "type": {
+          "name": "type",
+          "type": "occupant_document_type",
+          "primaryKey": false,
+          "notNull": true
+        },
         "occupant_id": {
           "name": "occupant_id",
           "type": "bigint",
           "primaryKey": false,
           "notNull": true
         },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "email": {
-          "name": "email",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "phone": {
-          "name": "phone",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "identity_number": {
-          "name": "identity_number",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "birthday": {
-          "name": "birthday",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "gender": {
-          "name": "gender",
-          "type": "gender",
+        "storage_id": {
+          "name": "storage_id",
+          "type": "bigint",
           "primaryKey": false,
           "notNull": true
         },
@@ -459,9 +589,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "occupant_member_occupant_id_occupant_id_fk": {
-          "name": "occupant_member_occupant_id_occupant_id_fk",
-          "tableFrom": "occupant_member",
+        "occupant_document_occupant_id_occupant_id_fk": {
+          "name": "occupant_document_occupant_id_occupant_id_fk",
+          "tableFrom": "occupant_document",
           "tableTo": "occupant",
           "columnsFrom": [
             "occupant_id"
@@ -471,32 +601,23 @@
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
+        },
+        "occupant_document_storage_id_storage_id_fk": {
+          "name": "occupant_document_storage_id_storage_id_fk",
+          "tableFrom": "occupant_document",
+          "tableTo": "storage",
+          "columnsFrom": [
+            "storage_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "occupant_member_email_unique": {
-          "name": "occupant_member_email_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
-        },
-        "occupant_member_phone_unique": {
-          "name": "occupant_member_phone_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "phone"
-          ]
-        },
-        "occupant_member_identity_number_unique": {
-          "name": "occupant_member_identity_number_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "identity_number"
-          ]
-        }
-      }
+      "uniqueConstraints": {}
     },
     "payment": {
       "name": "payment",
@@ -549,6 +670,18 @@
           "type": "payment_status",
           "primaryKey": false,
           "notNull": true
+        },
+        "expired_at": {
+          "name": "expired_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "redirect_url": {
+          "name": "redirect_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "created_at": {
           "name": "created_at",
@@ -669,6 +802,62 @@
           ]
         }
       }
+    },
+    "storage": {
+      "name": "storage",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigserial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ext": {
+          "name": "ext",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "token": {
+          "name": "token",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "storage_token_unique": {
+          "name": "storage_token_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "token"
+          ]
+        }
+      }
     }
   },
   "enums": {
@@ -682,8 +871,14 @@
     "gender": {
       "name": "gender",
       "values": {
-        "male": "male",
-        "female": "female"
+        "laki-laki": "laki-laki",
+        "perempuan": "perempuan"
+      }
+    },
+    "occupant_document_type": {
+      "name": "occupant_document_type",
+      "values": {
+        "family_card": "family_card"
       }
     },
     "occupant_role": {

@@ -5,7 +5,13 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "gender" AS ENUM('male', 'female');
+ CREATE TYPE "gender" AS ENUM('laki-laki', 'perempuan');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "occupant_document_type" AS ENUM('family_card');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -38,9 +44,18 @@ CREATE TABLE IF NOT EXISTS "announcement" (
 	"id" bigserial PRIMARY KEY NOT NULL,
 	"title" text NOT NULL,
 	"content" text NOT NULL,
+	"announcement_category_id" bigint NOT NULL,
 	"author_id" bigint NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "announcement_category" (
+	"id" bigserial PRIMARY KEY NOT NULL,
+	"name" text NOT NULL,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone,
+	CONSTRAINT "announcement_category_name_unique" UNIQUE("name")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "billing" (
@@ -56,20 +71,33 @@ CREATE TABLE IF NOT EXISTS "billing" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "cashflow" (
 	"id" bigserial PRIMARY KEY NOT NULL,
+	"author_id" bigint NOT NULL,
 	"amount" bigint NOT NULL,
 	"movement" "cashflow_movement" NOT NULL,
-	"cashflow_type_id" bigint NOT NULL,
+	"title" text NOT NULL,
 	"description" text,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "cashflow_type" (
+CREATE TABLE IF NOT EXISTS "family" (
 	"id" bigserial PRIMARY KEY NOT NULL,
+	"occupant_id" bigint NOT NULL,
 	"name" text NOT NULL,
+	"identity_number" text NOT NULL,
+	"birthday" timestamp NOT NULL,
+	"gender" "gender" NOT NULL,
+	"birthplace" text NOT NULL,
+	"religion" text NOT NULL,
+	"education" text,
+	"job_type" text,
+	"marital_status" text NOT NULL,
+	"relationship_status" text NOT NULL,
+	"father_name" text NOT NULL,
+	"mother_name" text NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone,
-	CONSTRAINT "cashflow_type_name_unique" UNIQUE("name")
+	CONSTRAINT "family_identity_number_unique" UNIQUE("identity_number")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "house" (
@@ -95,20 +123,13 @@ CREATE TABLE IF NOT EXISTS "occupant" (
 	CONSTRAINT "occupant_phone_unique" UNIQUE("phone")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "occupant_member" (
+CREATE TABLE IF NOT EXISTS "occupant_document" (
 	"id" bigserial PRIMARY KEY NOT NULL,
+	"type" "occupant_document_type" NOT NULL,
 	"occupant_id" bigint NOT NULL,
-	"name" text NOT NULL,
-	"email" text,
-	"phone" text NOT NULL,
-	"identity_number" text NOT NULL,
-	"birthday" timestamp NOT NULL,
-	"gender" "gender" NOT NULL,
+	"storage_id" bigint NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
-	"updated_at" timestamp with time zone,
-	CONSTRAINT "occupant_member_email_unique" UNIQUE("email"),
-	CONSTRAINT "occupant_member_phone_unique" UNIQUE("phone"),
-	CONSTRAINT "occupant_member_identity_number_unique" UNIQUE("identity_number")
+	"updated_at" timestamp with time zone
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "payment" (
@@ -120,6 +141,8 @@ CREATE TABLE IF NOT EXISTS "payment" (
 	"token" text,
 	"mode" "payment_mode" NOT NULL,
 	"status" "payment_status" NOT NULL,
+	"expired_at" timestamp with time zone,
+	"redirect_url" text,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone
 );
@@ -137,6 +160,22 @@ CREATE TABLE IF NOT EXISTS "staff" (
 	CONSTRAINT "staff_phone_unique" UNIQUE("phone")
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "storage" (
+	"id" bigserial PRIMARY KEY NOT NULL,
+	"name" text NOT NULL,
+	"ext" text NOT NULL,
+	"token" uuid DEFAULT gen_random_uuid() NOT NULL,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone,
+	CONSTRAINT "storage_token_unique" UNIQUE("token")
+);
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "announcement" ADD CONSTRAINT "announcement_announcement_category_id_announcement_category_id_fk" FOREIGN KEY ("announcement_category_id") REFERENCES "announcement_category"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "announcement" ADD CONSTRAINT "announcement_author_id_staff_id_fk" FOREIGN KEY ("author_id") REFERENCES "staff"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
@@ -150,7 +189,13 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "cashflow" ADD CONSTRAINT "cashflow_cashflow_type_id_cashflow_type_id_fk" FOREIGN KEY ("cashflow_type_id") REFERENCES "cashflow_type"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "cashflow" ADD CONSTRAINT "cashflow_author_id_staff_id_fk" FOREIGN KEY ("author_id") REFERENCES "staff"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "family" ADD CONSTRAINT "family_occupant_id_occupant_id_fk" FOREIGN KEY ("occupant_id") REFERENCES "occupant"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -162,7 +207,13 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "occupant_member" ADD CONSTRAINT "occupant_member_occupant_id_occupant_id_fk" FOREIGN KEY ("occupant_id") REFERENCES "occupant"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "occupant_document" ADD CONSTRAINT "occupant_document_occupant_id_occupant_id_fk" FOREIGN KEY ("occupant_id") REFERENCES "occupant"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "occupant_document" ADD CONSTRAINT "occupant_document_storage_id_storage_id_fk" FOREIGN KEY ("storage_id") REFERENCES "storage"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

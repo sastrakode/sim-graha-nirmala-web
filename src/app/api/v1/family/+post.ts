@@ -11,7 +11,7 @@ const Param = z.object({
   name: z.string(),
   identity_number: z.string(),
   birthday: z.date(),
-  gender: z.enum(["male", "female"]),
+  gender: z.enum(["laki-laki", "perempuan"]),
   birthplace: z.string(),
   religion: z.string(),
   education: z.string().optional(),

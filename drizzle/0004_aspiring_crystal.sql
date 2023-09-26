@@ -1,1 +1,0 @@
-ALTER TABLE "payment" ADD COLUMN "expired_at" timestamp with time zone NOT NULL;
