@@ -6,6 +6,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { getHouse } from "@/lib/api"
 import { role } from "@/lib/constants"
+import Link from "next/link"
 
 export const metadata: Metadata = {
   title: "Profil - SIMGN",
@@ -23,24 +24,27 @@ export default async function ProfilePage() {
   return (
     <div className="flex flex-col md:flex-row gap-12 md:gap-6 m-6">
       <div className="md:basis-1/2">
-        <div className="flex bg-white rounded-3xl gap-6 p-8 items-center w-fit mx-auto md:mx-0">
-          <div className="relative h-16 w-16">
-            <Image
-              src="/images/default-user.svg"
-              alt="Foto profil"
-              fill={true}
-              style={{ borderRadius: "100%" }}
-            />
+        <div className="bg-white rounded-3xl p-8 w-fit mx-auto md:mx-0">
+          <div className="flex items-center gap-6 mb-2">
+            <div className="relative h-16 w-16">
+              <Image
+                src="/images/default-user.svg"
+                alt="Foto profil"
+                fill={true}
+                style={{ borderRadius: "100%" }}
+              />
+            </div>
+            <div className="">
+              <p className="text-lg text-primary font-bold">
+                {house.owner?.name}
+              </p>
+              <p className="text-gray-400">{role["owner"]}</p>
+              <p className="text-gray-400">{house.address}</p>
+            </div>
           </div>
-          <div className="">
-            <p className="text-lg text-primary font-bold">
-              {house.owner?.name}
-            </p>
-            <p className="text-gray-400">
-              {role[house.owner?.role ?? "owner"]}
-            </p>
-            <p className="text-gray-400">{house.address}</p>
-          </div>
+          <Button asChild>
+            <Link href="/app/profile/family">Lihat Daftar Keluarga</Link>
+          </Button>
         </div>
         <div className="bg-white rounded-3xl mt-6 p-4">
           <div className="flex justify-between items-end">
@@ -70,22 +74,27 @@ export default async function ProfilePage() {
       </div>
 
       <div className={`md:basis-1/2 ${!house.renter && "hidden"}`}>
-        <div className="flex bg-white rounded-3xl gap-6 p-8 items-center w-fit mx-auto md:mx-0">
-          <div className="relative h-16 w-16">
-            <Image
-              src="/images/default-user.svg"
-              alt="Foto profil"
-              fill={true}
-              style={{ borderRadius: "100%" }}
-            />
+        <div className="bg-white rounded-3xl p-8 w-fit mx-auto md:mx-0">
+          <div className="flex items-center gap-6 mb-2">
+            <div className="relative h-16 w-16">
+              <Image
+                src="/images/default-user.svg"
+                alt="Foto profil"
+                fill={true}
+                style={{ borderRadius: "100%" }}
+              />
+            </div>
+            <div className="">
+              <p className="text-lg text-primary font-bold">
+                {house.renter?.name}
+              </p>
+              <p className="text-gray-400">{role["renter"]}</p>
+              <p className="text-gray-400">{house.address}</p>
+            </div>
           </div>
-          <div className="">
-            <p className="text-lg text-primary font-bold">
-              {house.renter?.name}
-            </p>
-            <p className="text-gray-400">Penyewa</p>
-            <p className="text-gray-400">{house.address}</p>
-          </div>
+          <Button asChild>
+            <Link href="/app/profile/family">Lihat Daftar Keluarga</Link>
+          </Button>
         </div>
         <div className="bg-white rounded-3xl mt-6 p-4">
           <div className="flex justify-between items-end">
