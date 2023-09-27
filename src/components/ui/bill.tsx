@@ -13,7 +13,9 @@ export const BillTable = ({ children }: { children: ReactNode }) => (
   <div className="bg-white p-4 mt-[1.125rem] lg:mt-9 rounded-3xl">
     <p className="font-bold text-sm sm:text-base">Tagihan</p>
     <div className="h-[2px] bg-gray-200 mt-3 mb-5" />
-    <div className="flex flex-col gap-6 px-5">{children}</div>
+    <div className="flex flex-col gap-4 px-5 py-2 rounded-md hover:bg-gray-100">
+      {children}
+    </div>
   </div>
 )
 
@@ -48,16 +50,15 @@ export function BillListItem({
   }
 
   return (
-    <div className="flex justify-between p4 items-center">
-      <p className="font-bold text-sm">{`${new Date(bill.period).toLocaleString(
-        "id-ID",
-        {
+    <div className="flex justify-between items-center gap-x-4">
+      <div className="flex flex-col gap-x-4 flex-wrap flex-1">
+        <p className="font-bold text-sm">{`${new Date(
+          bill.period,
+        ).toLocaleString("id-ID", {
           month: "long",
-        },
-      )} ${new Date(bill.period).getFullYear()}`}</p>
-      <p className="font-bold text-sm sm:text-base">
-        {numberFormat(bill.amount)}
-      </p>
+        })} ${new Date(bill.period).getFullYear()}`}</p>
+        <p className="text-sm sm:text-base">{numberFormat(bill.amount)}</p>
+      </div>
       <Button
         variant="secondary"
         className="hidden sm:block"

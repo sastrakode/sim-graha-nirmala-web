@@ -8,7 +8,7 @@ export default async function AnnouncementList() {
     <>
       <h6>Pemberitahuan</h6>
       {err ? (
-        <div className="flex flex-col gap-6 mt-3">
+        <div className="flex flex-col gap-6 mt-2 md:mt-3">
           <div className="flex items-end p-8 text-navy bg-white justify-center rounded-3xl mt-6">
             <p className="text-primary font-medium text-center">
               Terjadi masalah ketika memuat Pengumuman
@@ -16,9 +16,9 @@ export default async function AnnouncementList() {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col gap-6 mt-3">
+        <div className="flex flex-col gap-6 mt-2 md:mt-3">
           {announcements.length === 0 ? (
-            <div className="flex items-end p-8 text-navy bg-white justify-center rounded-3xl mt-6">
+            <div className="flex items-end p-8 text-navy bg-white justify-center rounded-3xl">
               <p className="text-primary font-medium text-center">
                 Tidak ada pemberitahuan
               </p>
