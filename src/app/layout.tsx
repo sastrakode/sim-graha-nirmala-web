@@ -4,7 +4,10 @@ import { Inter } from "next/font/google"
 
 import { Toaster } from "@/components/ui/toaster"
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+})
 
 export const metadata: Metadata = {
   title: "SIMGN",
@@ -18,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head />
-      <body className={inter.className}>
+      <body className={`${inter.className} mb-[92px] lg:mb-0`}>
         {children}
         <Toaster />
       </body>
