@@ -53,6 +53,6 @@ jobs:
 
       - name: Deploy
         run: |
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} cd /opt/sastrakode/sim-graha-nirmala/dev && docker compose pull web
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} cd /opt/sastrakode/sim-graha-nirmala/dev && docker compose down web
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} cd /opt/sastrakode/sim-graha-nirmala/dev && docker compose up -d web
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /opt/sastrakode/sim-graha-nirmala/dev && docker compose pull web"
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /opt/sastrakode/sim-graha-nirmala/dev && docker compose down web"
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /opt/sastrakode/sim-graha-nirmala/dev && docker compose up -d web"
