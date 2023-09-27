@@ -28,7 +28,7 @@ export const POST = defineHandler(async (req) => {
   const occupant = await db().query.Occupant.findFirst({
     where: eq(Occupant.phone, param.phone),
   })
-  if (!occupant) return sendErrors(404, errorDefinition.phone_not_registered)
+  if (!occupant) return sendErrors(404, errorDefinition.occupant_not_found_auth)
 
   let isCorrectPassword = await comparePassword(
     param.password,

@@ -54,6 +54,7 @@ type errorKeyType =
   | "phone_registered"
   | "house_not_found"
   | "occupant_not_found"
+  | "occupant_not_found_auth"
   | "phone_not_registered"
   | "password_incorrect"
   | "house_code_registered"
@@ -84,6 +85,10 @@ export const errorDefinition: {
   occupant_not_found: {
     message: "Penghuni tidak ditemukan",
   },
+  occupant_not_found_auth: {
+    field: "phone",
+    message: "Penghuni dengan No. Telp ini belum terdaftar",
+  },
   phone_not_registered: {
     field: "phone",
     message: "No. Telp belum terdaftar",
@@ -113,3 +118,35 @@ export const errorDefinition: {
     message: "Tagihan tidak ditemukan",
   },
 }
+
+export const genderTypes = ["laki-laki", "perempuan"] as const
+
+export const religionTypes = [
+  "islam",
+  "kristen",
+  "hindu",
+  "budha",
+  "katolik",
+  "konghucu",
+] as const
+
+export const maritalStatusTypes = [
+  "belum kawin",
+  "kawin",
+  "cerai hidup",
+  "cerai mati",
+] as const
+
+export const relationshipStatusTypes = [
+  "kepala keluarga",
+  "suami",
+  "istri",
+  "anak",
+  "menantu",
+  "cucu",
+  "orangtua",
+  "mertua",
+  "famili lain",
+  "pembantu",
+  "lainnya",
+] as const
