@@ -1,0 +1,60 @@
+name: CI-CD
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ci-cd:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup environment variable
+        run: |
+          rm -rf .env
+          touch .env
+          echo "DB_HOST=${{ secrets.DEV_DB_HOST }}" >> .env
+          echo "DB_PORT=${{ secrets.DEV_DB_PORT }}" >> .env
+          echo "DB_USER=${{ secrets.DEV_DB_USER }}" >> .env
+          echo "DB_PASS=${{ secrets.DEV_DB_PASS }}" >> .env
+          echo "DB_NAME=${{ secrets.DEV_DB_NAME }}" >> .env
+          echo "JWT_SECRET=${{ secrets.DEV_JWT_SECRET }}" >> .env
+          echo "JWT_EXPIRES_IN=${{ secrets.DEV_JWT_EXPIRES_IN }}" >> .env
+          echo "MIDTRANS_CLIENT_KEY=${{ secrets.DEV_MIDTRANS_CLIENT_KEY }}" >> .env
+          echo "MIDTRANS_SERVER_KEY=${{ secrets.DEV_MIDTRANS_SERVER_KEY }}" >> .env
+          echo "MINIO_HOST=${{ secrets.DEV_MINIO_HOST }}" >> .env
+          echo "MINIO_PORT=${{ secrets.DEV_MINIO_PORT }}" >> .env
+          echo "MINIO_ACCESS_KEY=${{ secrets.DEV_MINIO_ACCESS_KEY }}" >> .env
+          echo "MINIO_SECRET_KEY=${{ secrets.DEV_MINIO_SECRET_KEY }}" >> .env
+          echo "MINIO_BUCKET=${{ secrets.DEV_MINIO_BUCKET }}" >> .env
+
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          known_hosts: "secret"
+
+      - name: Adding Known Hosts
+        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/sim-graha-nirmala-web:dev
+
+      - name: Deploy
+        run: |
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} cd /opt/sastrakode/sim-graha-nirmala/dev && docker compose pull web
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} cd /opt/sastrakode/sim-graha-nirmala/dev && docker compose down web
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} cd /opt/sastrakode/sim-graha-nirmala/dev && docker compose up -d web
