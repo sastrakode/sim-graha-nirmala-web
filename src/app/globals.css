@@ -85,7 +85,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground min-h-screen;
+    @apply bg-background text-foreground min-h-[100dvh];
   }
 }
 
@@ -136,5 +136,9 @@
 @layer components {
   .active-link {
     @apply rounded-md bg-gray-300/25;
+  }
+
+  .active-link-mobile {
+    @apply text-white;
   }
 }
