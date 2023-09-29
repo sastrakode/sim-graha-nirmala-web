@@ -1,10 +1,15 @@
 import { errorDefinition } from "@/lib/constants"
 import { db } from "@/server/db"
 import { House, Occupant } from "@/server/db/schema"
-import { toHouseResponse } from "@/server/models/responses/house"
+import { HouseResponse, toHouseResponse } from "@/server/models/responses/house"
 import { defineHandler } from "@/server/web/handler"
 import { sendData, sendErrors } from "@/server/web/response"
 import { and, eq } from "drizzle-orm"
+
+type Response = HouseResponse & {
+  is_owner_family_card_uploaded: boolean
+  is_renter_family_card_uploaded: boolean
+}
 
 export const GET = defineHandler(
   async (_, { params }: { params: { id: number } }) => {
@@ -15,18 +20,27 @@ export const GET = defineHandler(
 
     const owner = await db().query.Occupant.findFirst({
       where: and(eq(Occupant.houseId, params.id), eq(Occupant.role, "owner")),
+      with: {
+        occupantDocument: true,
+      },
     })
 
     const renter = await db().query.Occupant.findFirst({
       where: and(eq(Occupant.houseId, params.id), eq(Occupant.role, "renter")),
+      with: {
+        occupantDocument: true,
+      },
     })
 
-    return sendData(
-      200,
-      toHouseResponse(house, {
+    const response: Response = {
+      ...toHouseResponse(house, {
         owner: owner,
         renter: renter,
-      }),
-    )
+      })!,
+      is_owner_family_card_uploaded: !!owner?.occupantDocument,
+      is_renter_family_card_uploaded: !!renter?.occupantDocument,
+    }
+
+    return sendData(200, response)
   },
 )
