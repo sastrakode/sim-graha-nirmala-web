@@ -1,13 +1,16 @@
+import { errorDefinition } from "@/lib/constants"
 import { db } from "@/server/db"
-import { Family, TInsertFamily } from "@/server/db/schema"
+import { Family, Occupant, TInsertFamily } from "@/server/db/schema"
 import { toFamilyResponse } from "@/server/models/responses/family"
-import { getCurrentOccupant, useAuth } from "@/server/security/auth"
+import { useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
 import { bindJson } from "@/server/web/request"
-import { sendData } from "@/server/web/response"
+import { sendData, sendErrors } from "@/server/web/response"
+import { eq } from "drizzle-orm"
 import { z } from "zod"
 
 const Param = z.object({
+  occupant_id: z.number().nonnegative(),
   name: z.string(),
   identity_number: z.string(),
   birthday: z.date(),
@@ -23,9 +26,12 @@ const Param = z.object({
 })
 
 export const POST = defineHandler(async (req) => {
-  useAuth(req, "owner", "renter")
+  useAuth(req, "admin", "secretary", "owner", "renter")
   const param = await bindJson(req, Param)
-  const occupant = await getCurrentOccupant(req)
+  const occupant = await db().query.Occupant.findFirst({
+    where: eq(Occupant.id, param.occupant_id),
+  })
+  if (!occupant) return sendErrors(404, errorDefinition.occupant_not_found)
 
   const family: TInsertFamily = {
     occupantId: occupant.id,
