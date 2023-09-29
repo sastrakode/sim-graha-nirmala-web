@@ -11,6 +11,10 @@ export type OccupantResponse = {
   phone: string
 }
 
+export type GetAllOccupantsResponse = OccupantResponse & {
+  is_family_card_uploaded: boolean
+}
+
 export function toOccupantResponse(
   occupant?: TOccupant,
 ): OccupantResponse | null {

@@ -94,6 +94,12 @@ export const Occupant = pgTable("occupant", {
   password: text("password").notNull(),
   ...Timestamps,
 })
+export const occupantRelations = relations(Occupant, ({ one }) => ({
+  occupantDocument: one(OccupantDocument, {
+    fields: [Occupant.id],
+    references: [OccupantDocument.occupantId],
+  }),
+}))
 export type TOccupant = InferSelectModel<typeof Occupant>
 export type TInsertOccupant = InferInsertModel<typeof Occupant>
 
