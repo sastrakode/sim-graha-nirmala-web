@@ -50,6 +50,9 @@ export function getToken(req: NextRequest): string {
   }
 
   if (!token) {
+    console.log(
+      "masalahnya disini................................................................",
+    )
     throwUnauthorized()
   }
 

@@ -9,6 +9,12 @@ import { uploadFile } from "@/server/storage"
 import { defineHandler } from "@/server/web/handler"
 import { sendData, sendErrors } from "@/server/web/response"
 
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+}
+
 export const POST = defineHandler(
   async (req, { params }: { params: { id: number } }) => {
     useAuth(req, "owner", "renter")
