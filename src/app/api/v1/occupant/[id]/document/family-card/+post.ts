@@ -1,12 +1,11 @@
 import { db } from "@/server/db"
 import { OccupantDocument, TInsertOccupantDocument } from "@/server/db/schema"
-import { toStorageResponse } from "@/server/models/responses/storage"
-import { putObject } from "@/server/providers/minio"
 import {
   getCurrentOccupant,
   throwUnauthorized,
   useAuth,
 } from "@/server/security/auth"
+import { uploadFile } from "@/server/storage"
 import { defineHandler } from "@/server/web/handler"
 import { sendData, sendErrors } from "@/server/web/response"
 
@@ -22,7 +21,7 @@ export const POST = defineHandler(
     const file = formData.get("file")
     if (!file) return sendErrors(400, { message: "Please upload file" })
 
-    const storage = await putObject(file as File)
+    const storage = await uploadFile(file as File)
     const occupantDocument: TInsertOccupantDocument = {
       type: "family_card",
       occupantId: occupant.id,
@@ -30,6 +29,6 @@ export const POST = defineHandler(
     }
 
     await db().insert(OccupantDocument).values(occupantDocument)
-    return sendData(200, await toStorageResponse(storage))
+    return sendData(200, { message: "ok" })
   },
 )
