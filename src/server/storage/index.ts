@@ -1,7 +1,7 @@
 import fs from "fs"
-import { writeFile } from "fs/promises"
+import { writeFile, readFile } from "fs/promises"
 import path from "path"
-import { Storage, TInsertStorage } from "../db/schema"
+import { Storage, TInsertStorage, TStorage } from "../db/schema"
 import { db } from "../db"
 
 const storageDirectory = "./storage/data"
@@ -27,4 +27,9 @@ export async function uploadFile(file: File) {
 
   await writeFile(path.join(storageDirectory, objectName), buffer)
   return newStorage
+}
+
+export async function getFile(storage: TStorage) {
+  const objectName = storage.token + storage.ext
+  return await readFile(path.join(storageDirectory, objectName))
 }

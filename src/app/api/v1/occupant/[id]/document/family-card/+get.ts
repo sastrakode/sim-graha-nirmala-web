@@ -1,11 +1,12 @@
 import { errorDefinition } from "@/lib/constants"
 import { db } from "@/server/db"
 import { Occupant, OccupantDocument } from "@/server/db/schema"
-import { toStorageResponse } from "@/server/models/responses/storage"
 import { useAuth } from "@/server/security/auth"
+import { getFile } from "@/server/storage"
 import { defineHandler } from "@/server/web/handler"
-import { sendData, sendErrors } from "@/server/web/response"
+import { sendErrors } from "@/server/web/response"
 import { and, desc, eq } from "drizzle-orm"
+import { NextResponse } from "next/server"
 
 export const GET = defineHandler(
   async (req, { params }: { params: { id: number } }) => {
@@ -30,6 +31,7 @@ export const GET = defineHandler(
       return sendErrors(404, { message: "Family card not found" })
     }
 
-    return sendData(200, await toStorageResponse(occupantDocument.storage))
+    const file = await getFile(occupantDocument.storage)
+    return new NextResponse(file)
   },
 )
