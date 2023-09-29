@@ -2,11 +2,13 @@ import { MailIcon, Phone } from "lucide-react"
 import { Metadata } from "next"
 import { cookies } from "next/headers"
 import Image from "next/image"
+import Link from "next/link"
+import { notFound } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import { getHouse } from "@/lib/api"
 import { role } from "@/lib/constants"
-import Link from "next/link"
+import FamilyCardDialog from "@/components/app/profile/family-card-dialog"
 
 export const metadata: Metadata = {
   title: "Profil - SIMGN",
@@ -14,11 +16,12 @@ export const metadata: Metadata = {
 
 export default async function ProfilePage() {
   const houseId = cookies().get("houseId")?.value || "-1"
+  const userId = cookies().get("userId")?.value || "-1"
 
-  const [house, houseErr] = await getHouse(houseId)
+  const [house, _houseErr] = await getHouse(houseId)
 
-  if (houseErr) {
-    throw new Error("Something went wrong")
+  if (!house) {
+    notFound()
   }
 
   return (
@@ -42,16 +45,25 @@ export default async function ProfilePage() {
               <p className="text-gray-400">{house.address}</p>
             </div>
           </div>
-          <Button asChild>
-            <Link href="/app/profile/family">Lihat Daftar Keluarga</Link>
-          </Button>
+          {userId === house.owner?.id.toString() && (
+            <Button asChild>
+              <Link href={`/app/profile/${userId}/family`}>
+                Lihat Daftar Keluarga
+              </Link>
+            </Button>
+          )}
         </div>
         <div className="bg-white rounded-3xl mt-6 p-4">
           <div className="flex justify-between items-end">
             <p className="text-primary font-semibold">Informasi Kontak</p>
-            <Button variant="outline" size="sm">
-              Ubah
-            </Button>
+            {userId === house.owner?.id.toString() && (
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm">
+                  Ubah
+                </Button>
+                <FamilyCardDialog occupantId={userId} />
+              </div>
+            )}
           </div>
           <div className="h-[2px] bg-gray-200 mt-3 mb-5" />
           <div className="flex flex-col gap-4">
@@ -66,6 +78,13 @@ export default async function ProfilePage() {
               <div className="flex gap-4">
                 <Phone />
                 <p>No. Telp</p>
+              </div>
+              <p className="text-gray-500">{house.owner?.phone}</p>
+            </div>
+            <div className="flex justify-between">
+              <div className="flex gap-4">
+                <Phone />
+                <p>Kartu Keluarga</p>
               </div>
               <p className="text-gray-500">{house.owner?.phone}</p>
             </div>
@@ -92,16 +111,23 @@ export default async function ProfilePage() {
               <p className="text-gray-400">{house.address}</p>
             </div>
           </div>
-          <Button asChild>
-            <Link href="/app/profile/family">Lihat Daftar Keluarga</Link>
-          </Button>
+          {userId === house.renter?.id.toString() && (
+            <Button asChild>
+              <Link href="/app/profile/family">Lihat Daftar Keluarga</Link>
+            </Button>
+          )}
         </div>
         <div className="bg-white rounded-3xl mt-6 p-4">
           <div className="flex justify-between items-end">
             <p className="text-primary font-semibold">Informasi Kontak</p>
-            <Button variant="outline" size="sm">
-              Ubah
-            </Button>
+            {userId === house.renter?.id.toString() && (
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm">
+                  Ubah
+                </Button>
+                <FamilyCardDialog occupantId={userId} />
+              </div>
+            )}
           </div>
           <div className="h-[2px] bg-gray-200 mt-3 mb-5" />
           <div className="flex flex-col gap-4">

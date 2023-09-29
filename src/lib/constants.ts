@@ -71,7 +71,7 @@ export const errorDefinition: {
     message: "Rumah tidak ada",
   },
   house_taken: {
-    field: "phone",
+    field: "house_id",
     message: "Rumah sudah diisi",
   },
   email_registered: {

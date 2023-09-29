@@ -16,7 +16,13 @@ import { catchError } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
-type Domain = "occupant" | "staff" | "house" | "announcement" | "transaction"
+type Domain =
+  | "occupant"
+  | "staff"
+  | "house"
+  | "announcement"
+  | "transaction"
+  | "family"
 
 export default function DeleteAlertDialog({
   message,
@@ -51,6 +57,9 @@ export default function DeleteAlertDialog({
           break
 
         case "transaction":
+          break
+
+        case "family":
           break
       }
       setLoading(false)

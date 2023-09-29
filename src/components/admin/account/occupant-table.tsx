@@ -8,7 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { deleteOccupant } from "@/lib/api"
 import { role } from "@/lib/constants"
 import { HouseResponse } from "@/server/models/responses/house"
 import { OccupantResponse } from "@/server/models/responses/occupant"
@@ -46,6 +45,11 @@ export default function OccupantTable({
               <TableCell>{occupant.email ?? "-"}</TableCell>
               <TableCell>{role[occupant.role]}</TableCell>
               <TableCell>
+                <a href={`/admin/account/occupant/family-card/${occupant.id}`}>
+                  <Button className="mr-1" variant="outline" size="sm">
+                    Lihat KK
+                  </Button>
+                </a>
                 <a href={`/admin/account/occupant/edit/${occupant.id}`}>
                   <Button className="mr-1" variant="outline" size="sm">
                     Edit

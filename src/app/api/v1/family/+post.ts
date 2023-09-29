@@ -1,4 +1,5 @@
 import { errorDefinition } from "@/lib/constants"
+import { familySchema } from "@/lib/schema"
 import { db } from "@/server/db"
 import { Family, Occupant, TInsertFamily } from "@/server/db/schema"
 import { toFamilyResponse } from "@/server/models/responses/family"
@@ -7,23 +8,8 @@ import { defineHandler } from "@/server/web/handler"
 import { bindJson } from "@/server/web/request"
 import { sendData, sendErrors } from "@/server/web/response"
 import { eq } from "drizzle-orm"
-import { z } from "zod"
 
-const Param = z.object({
-  occupant_id: z.number().nonnegative(),
-  name: z.string(),
-  identity_number: z.string(),
-  birthday: z.date(),
-  gender: z.enum(["laki-laki", "perempuan"]),
-  birthplace: z.string(),
-  religion: z.string(),
-  education: z.string().optional(),
-  job_type: z.string().optional(),
-  marital_status: z.string(),
-  relationship_status: z.string(),
-  father_name: z.string(),
-  mother_name: z.string(),
-})
+const Param = familySchema
 
 export const POST = defineHandler(async (req) => {
   useAuth(req, "admin", "secretary", "owner", "renter")

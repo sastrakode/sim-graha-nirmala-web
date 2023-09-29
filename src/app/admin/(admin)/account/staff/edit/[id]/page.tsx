@@ -1,15 +1,16 @@
 import { EditStaffForm } from "@/components/admin/account/edit-staff-form"
 import { getStaff } from "@/lib/api"
+import { notFound } from "next/navigation"
 
 export default async function EditStaffPage({
   params,
 }: {
   params: { id: string }
 }) {
-  const [staff, staffErr] = await getStaff(params.id)
+  const [staff] = await getStaff(params.id)
 
-  if (staffErr) {
-    throw new Error("Something went wrong")
+  if (!staff) {
+    notFound()
   }
 
   return (

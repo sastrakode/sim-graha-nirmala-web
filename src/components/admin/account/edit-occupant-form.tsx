@@ -61,7 +61,7 @@ export function EditOccupantForm({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      house_id: occupant.house_id.toString(),
+      house_id: editOccupantFormSchema.shape.house_id.parse(occupant.house_id),
       name: occupant.name,
       phone: occupant.phone,
       email: occupant.email ?? "",

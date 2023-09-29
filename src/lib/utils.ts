@@ -23,7 +23,10 @@ function join(t: Date, a: any, s: string) {
   return a.map(format).join(s)
 }
 
-export function dateFormat(dateObj: Date, isTimeDetail = false): string {
+export function dateFormat(
+  dateObj: Date,
+  isTimeDetail: boolean = false,
+): string {
   const a = [
     { day: "numeric" },
     { month: isTimeDetail ? "long" : "short" },
@@ -85,6 +88,8 @@ export function capitalizeSentence(sentence: string) {
 
   return arr.join(" ")
 }
+
+export function handleError() {}
 
 export function catchError(err: unknown) {
   if (err instanceof z.ZodError) {

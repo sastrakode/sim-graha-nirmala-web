@@ -1,18 +1,19 @@
 import { EditOccupantForm } from "@/components/admin/account/edit-occupant-form"
 import { getHouses, getOccupant } from "@/lib/api"
+import { notFound } from "next/navigation"
 
 export default async function EditOcuppantPage({
   params,
 }: {
   params: { id: string }
 }) {
-  const [[occupant, occupantErr], [houses, housesErr]] = await Promise.all([
+  const [[occupant, _occupantErr], [houses, _housesErr]] = await Promise.all([
     getOccupant(params.id),
     getHouses(),
   ])
 
-  if (occupantErr || housesErr) {
-    throw new Error("Something went wrong")
+  if (!occupant) {
+    notFound()
   }
 
   return (

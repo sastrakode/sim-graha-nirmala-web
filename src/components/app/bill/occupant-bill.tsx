@@ -1,11 +1,12 @@
 import { BillListItem, BillTable } from "@/components/ui/bill"
 import { getBills } from "@/lib/api"
+import { notFound } from "next/navigation"
 
 export default async function OccupantBill({ houseId }: { houseId: string }) {
-  let [bills, err] = await getBills(houseId)
+  let [bills, _err] = await getBills(houseId)
 
-  if (err) {
-    throw new Error("Something went wrong")
+  if (!bills) {
+    notFound()
   }
 
   return (

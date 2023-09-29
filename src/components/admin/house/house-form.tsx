@@ -25,10 +25,7 @@ const formSchema = z.object({
 
 export function HouseForm({ house }: { house?: HouseResponse }) {
   const router = useRouter()
-  const defaultValues = {
-    code: house?.code ?? "",
-    address: house?.address ?? "",
-  }
+  const defaultValues = house
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

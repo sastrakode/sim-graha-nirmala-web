@@ -7,6 +7,7 @@ const pageName: { [key: string]: string } = {
   "/app/transaction": "Transaksi",
   "/app/bill": "Tagihan",
   "/app/profile": "Profil",
+  "/app/profile/family": "Daftar Keluarga",
 
   "/admin/account": "Kelola Akun",
   "/admin/account/staff/add": "Tambah Staf",

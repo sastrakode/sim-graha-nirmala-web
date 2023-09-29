@@ -22,7 +22,7 @@ export default function TransactionSummaryCard({
       <div className="flex gap-5 mt-5">
         <div className="bg-success/10 py-2 px-4 text-center rounded-3xl">
           <div className="flex items-center justify-evenly">
-            <div className="w-8 max-w-[8px] h-2 max-h-[8px] justify-self-end rounded-full bg-success" />
+            <div className="w-8 max-w-[8px] h-2 max-h-[8px] justify-self-end rounded-full bg-success mr-2" />
             <div className="text-xs">Pemasukan</div>
           </div>
 
@@ -32,7 +32,7 @@ export default function TransactionSummaryCard({
         </div>
         <div className="bg-destructive/10 py-2 px-4 text-center rounded-3xl">
           <div className="flex items-center justify-evenly">
-            <div className="w-8 max-w-[8px] h-2 max-h-[8px] justify-self-end rounded-full bg-destructive" />
+            <div className="w-8 max-w-[8px] h-2 max-h-[8px] justify-self-end rounded-full bg-destructive mr-2" />
             <div className="text-xs">Pengeluaran</div>
           </div>
 

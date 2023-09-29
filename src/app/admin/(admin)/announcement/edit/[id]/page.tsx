@@ -4,21 +4,23 @@ import {
   getAnnouncementCategories,
   getStaffs,
 } from "@/lib/api"
+import { notFound } from "next/navigation"
 
 export default async function EditAnnouncementPage({
   params,
 }: {
   params: { id: string }
 }) {
-  const [
-    [announcement, announcementErr],
-    [announcementCategories, announcementCategoryErr],
-    [staffs, staffsErr],
-  ] = await Promise.all([
-    getAnnouncement(params.id),
-    getAnnouncementCategories(),
-    getStaffs(),
-  ])
+  const [[announcement], [announcementCategories], [staffs]] =
+    await Promise.all([
+      getAnnouncement(params.id),
+      getAnnouncementCategories(),
+      getStaffs(),
+    ])
+
+  if (!announcement) {
+    notFound()
+  }
 
   return (
     <div className="m-6">

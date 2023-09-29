@@ -14,6 +14,8 @@ interface Handler<T = any> {
 export function defineHandler(handler: Handler) {
   return async (req: NextRequest, event: { params: any }) => {
     try {
+      if (event.params?.id) event.params.id = parseInt(event.params.id)
+
       return await handler(req, event)
     } catch (error) {
       if (error instanceof ApiError) {

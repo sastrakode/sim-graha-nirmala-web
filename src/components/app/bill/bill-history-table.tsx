@@ -1,14 +1,18 @@
-import { dummyBillHistory } from "@/lib/dummyData"
 import BillHistoryItem from "./bill-history-item"
-import { TPayment } from "@/server/db/schema"
 import { getPaymentHistory } from "@/lib/api"
+import { notFound } from "next/navigation"
 
 export default async function BillHistoryTable({
   houseId,
 }: {
   houseId: string
 }) {
-  const [paymentsHistory, paymentsHistoryErr] = await getPaymentHistory(houseId)
+  const [paymentsHistory, _paymentsHistoryErr] =
+    await getPaymentHistory(houseId)
+
+  if (!paymentsHistory) {
+    notFound()
+  }
 
   return (
     <div className="bg-white p-4 mt-[1.125rem] lg:mt-9 rounded-3xl">

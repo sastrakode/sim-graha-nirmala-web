@@ -1,4 +1,10 @@
 import * as z from "zod"
+import {
+  genderTypes,
+  maritalStatusTypes,
+  relationshipStatusTypes,
+  religionTypes,
+} from "./constants"
 
 const userBaseSchema = {
   name: z.string().nonempty("Nama harus diisi"),
@@ -32,7 +38,7 @@ export const addOccupantFormSchema = z
 export const editOccupantFormSchema = z.object({
   ...userBaseSchema,
   role: z.enum(["owner", "renter"]),
-  house_id: z.string().nonempty("Rumah harus diisi"),
+  house_id: z.coerce.number().nonnegative("Rumah harus diisi"),
 })
 
 export const addStaffFormSchema = z
@@ -53,4 +59,20 @@ export const addStaffFormSchema = z
 export const editStaffFormSchema = z.object({
   ...userBaseSchema,
   role: z.enum(["admin", "secretary", "treasurer", "security_guard"]),
+})
+
+export const familySchema = z.object({
+  occupant_id: z.number().nonnegative(),
+  name: z.string().nonempty("Name harus diisi"),
+  identity_number: z.string().nonempty("No. Identitas harus diisi"),
+  birthday: z.date(),
+  gender: z.enum(genderTypes),
+  birthplace: z.string().nonempty("Tempat lahir harus diisi"),
+  religion: z.enum(religionTypes),
+  education: z.string().optional(),
+  job_type: z.string().optional(),
+  marital_status: z.enum(maritalStatusTypes),
+  relationship_status: z.enum(relationshipStatusTypes),
+  father_name: z.string().nonempty("Nama Ayah harus diisi"),
+  mother_name: z.string().nonempty("Nama Ibu harus diisi"),
 })

@@ -1,15 +1,16 @@
 import { HouseForm } from "@/components/admin/house/house-form"
 import { getHouse } from "@/lib/api"
+import { notFound } from "next/navigation"
 
 export default async function EditHousePage({
   params,
 }: {
   params: { id: string }
 }) {
-  const [house, houseErr] = await getHouse(params.id)
+  const [house, _] = await getHouse(params.id)
 
-  if (houseErr) {
-    throw new Error("Something went wrong")
+  if (!house) {
+    notFound()
   }
 
   return (

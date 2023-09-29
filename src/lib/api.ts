@@ -8,6 +8,8 @@ import { TransactionResponse } from "@/server/models/responses/transaction"
 import { BillingResponse } from "@/server/models/responses/billing"
 import { TInsertPayment, TPayment } from "@/server/db/schema"
 import { CashflowResponse } from "@/server/models/responses/cashflow"
+import { FamilyResponse } from "@/server/models/responses/family"
+import { StorageResponse } from "@/server/models/responses/storage"
 
 const isServer = typeof window === "undefined"
 const baseURL = isServer ? "http://127.0.0.1:3000/api/v1" : "/api/v1"
@@ -46,14 +48,18 @@ async function handleFetch<T>(
 
     const resJson = await res.json()
 
+    console.log("ocan", resJson)
+
     if (!res.ok) {
-      if (resJson.errors) return [null as T, resJson.errors]
+      if (res.status >= 500) throw new Error(`${resJson.errors[0].message}`)
+      else if (res.status === 404) return [null as T, resJson.errors]
 
       throw new Error("Something went wrong")
     }
 
     return [resJson.data, null]
   } catch (error) {
+    console.error(error)
     throw new Error("Something went wrong")
   }
 }
@@ -81,7 +87,7 @@ async function handleFetchNoContent(
     if (!res.ok) {
       const resJson = await res.json()
 
-      if (resJson.errors) throw new Error(resJson.errors[0].message)
+      throw new Error(resJson.errors[0].message)
     }
   } catch (error) {
     throw new Error("Something went wrong")
@@ -264,11 +270,7 @@ export async function deleteStaff(
 export async function getAnnouncements(): Promise<
   [AnnouncementResponse[], FetchError]
 > {
-  const res = await handleFetch<AnnouncementResponse[]>(`/announcement`, {
-    next: {
-      tags: ["announcement"],
-    },
-  })
+  const res = await handleFetch<AnnouncementResponse[]>(`/announcement`)
 
   return res
 }
@@ -320,11 +322,6 @@ export async function getAnnouncementCategories(): Promise<
 > {
   const res = await handleFetch<AnnouncementCategoryResponse[]>(
     `/announcement/category`,
-    {
-      next: {
-        tags: ["announcementCategory"],
-      },
-    },
   )
 
   return res
@@ -338,6 +335,54 @@ export async function postAnnouncementCategory(body: {}): Promise<
     {
       method: "POST",
       body: JSON.stringify(body),
+    },
+  )
+
+  return res
+}
+
+export async function getFamily(
+  id: string,
+): Promise<[FamilyResponse[], FetchError]> {
+  const res = await handleFetch<FamilyResponse[]>(`/occupant/${id}/family`, {
+    endpointProtected: true,
+  })
+
+  return res
+}
+
+export async function postFamilyMember(body: {}): Promise<
+  [FamilyResponse, FetchError]
+> {
+  const res = await handleFetch<FamilyResponse>(`/family`, {
+    method: "POST",
+    body: JSON.stringify(body),
+    endpointProtected: true,
+  })
+
+  return res
+}
+
+export async function getFamilyCard(
+  id: string,
+): Promise<[StorageResponse, FetchError]> {
+  const res = await handleFetch<StorageResponse>(
+    `/occupant/${id}/document/family-card`,
+  )
+
+  return res
+}
+
+export async function uploadFamilyCard(
+  id: string,
+  body: FormData,
+): Promise<[StorageResponse, FetchError]> {
+  const res = await handleFetch<StorageResponse>(
+    `/occupant/${id}/document/family-card`,
+    {
+      method: "POST",
+      body: body,
+      endpointProtected: true,
     },
   )
 

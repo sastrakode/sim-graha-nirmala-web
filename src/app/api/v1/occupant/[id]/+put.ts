@@ -30,8 +30,10 @@ export const PUT = defineHandler(
     let houseBelongToSomeone = await db().query.Occupant.findFirst({
       where: eq(Occupant.houseId, param.house_id),
     })
-    if (houseBelongToSomeone)
+
+    if (houseBelongToSomeone && houseBelongToSomeone.id !== params.id) {
       return sendErrors(409, errorDefinition.house_taken)
+    }
 
     if (param.email) {
       let occupantExists = await db().query.Occupant.findFirst({
@@ -44,7 +46,9 @@ export const PUT = defineHandler(
     let phoneExists = await db().query.Occupant.findFirst({
       where: eq(Occupant.phone, param.phone),
     })
-    if (phoneExists) return sendErrors(409, errorDefinition.phone_registered)
+
+    if (phoneExists && phoneExists.id !== params.id)
+      return sendErrors(409, errorDefinition.phone_registered)
 
     let occupant = await db().query.Occupant.findFirst({
       where: eq(Occupant.id, params.id),
