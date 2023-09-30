@@ -3,7 +3,10 @@ import { AnnouncementResponse } from "@/server/models/responses/announcement"
 import { StaffResponse } from "@/server/models/responses/staff"
 import { AnnouncementCategoryResponse } from "@/server/models/responses/announcement-category"
 import { HouseResponse } from "@/server/models/responses/house"
-import { OccupantResponse } from "@/server/models/responses/occupant"
+import {
+  GetAllOccupantsResponse,
+  OccupantResponse,
+} from "@/server/models/responses/occupant"
 import { TransactionResponse } from "@/server/models/responses/transaction"
 import { BillingResponse } from "@/server/models/responses/billing"
 import { TInsertPayment, TPayment } from "@/server/db/schema"
@@ -173,9 +176,9 @@ export async function getOccupant(
 }
 
 export async function getOccupants(): Promise<
-  [OccupantResponse[], FetchError]
+  [GetAllOccupantsResponse[], FetchError]
 > {
-  const res = await handleFetch<OccupantResponse[]>(`/occupant`, {
+  const res = await handleFetch<GetAllOccupantsResponse[]>(`/occupant`, {
     endpointProtected: true,
   })
   return res

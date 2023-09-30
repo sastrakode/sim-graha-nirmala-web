@@ -10,13 +10,16 @@ import {
 } from "@/components/ui/table"
 import { role } from "@/lib/constants"
 import { HouseResponse } from "@/server/models/responses/house"
-import { OccupantResponse } from "@/server/models/responses/occupant"
+import {
+  GetAllOccupantsResponse,
+  OccupantResponse,
+} from "@/server/models/responses/occupant"
 
 export default function OccupantTable({
   occupants,
   houses,
 }: {
-  occupants: OccupantResponse[]
+  occupants: GetAllOccupantsResponse[]
   houses: HouseResponse[]
 }) {
   return (
@@ -29,6 +32,7 @@ export default function OccupantTable({
           <TableHead>No. Telp</TableHead>
           <TableHead>Email</TableHead>
           <TableHead>Tipe</TableHead>
+          <TableHead>Kartu Keluarga</TableHead>
           <TableHead>Aksi</TableHead>
         </TableRow>
       </TableHeader>
@@ -45,15 +49,21 @@ export default function OccupantTable({
               <TableCell>{occupant.email ?? "-"}</TableCell>
               <TableCell>{role[occupant.role]}</TableCell>
               <TableCell>
-                <Button className="mr-1" variant="outline" size="sm" asChild>
-                  <a
-                    href={`/occupant/${occupant.id}/family-card`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Lihat Dokumen
-                  </a>
-                </Button>
+                {occupant.is_family_card_uploaded ? (
+                  <Button className="mr-1" variant="outline" size="sm" asChild>
+                    <a
+                      href={`/occupant/${occupant.id}/family-card`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Lihat Dokumen
+                    </a>
+                  </Button>
+                ) : (
+                  "-"
+                )}
+              </TableCell>
+              <TableCell>
                 <Button className="mr-1" variant="outline" size="sm" asChild>
                   <a href={`/admin/account/occupant/${occupant.id}/family`}>
                     Lihat Keluarga
