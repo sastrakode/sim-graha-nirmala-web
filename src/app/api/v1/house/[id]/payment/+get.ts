@@ -18,8 +18,9 @@ export const GET = defineHandler(
     const billings = await db().query.Billing.findMany({
       where: eq(Billing.houseId, house.id),
     })
-
-    if (!billings) return sendErrors(404, errorDefinition.billing_not_found)
+    if (!billings || billings.length <= 0) {
+      return sendData(200, [])
+    }
 
     const payments: TPayment[] = await db().query.Payment.findMany({
       where: inArray(
