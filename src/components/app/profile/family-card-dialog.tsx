@@ -57,7 +57,7 @@ export default function FamilyCardDialog({
     const formData = new FormData()
     formData.append("file", data.familyCard[0])
 
-    const [storage, errors] = await uploadFamilyCard(occupantId, formData)
+    const [_storage, errors] = await uploadFamilyCard(occupantId, formData)
 
     if (errors) {
       catchError(errors)

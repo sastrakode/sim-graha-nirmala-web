@@ -8,12 +8,16 @@ const pageName: { [key: string]: string } = {
   "/app/bill": "Tagihan",
   "/app/profile": "Profil",
   "/app/profile/family": "Daftar Keluarga",
+  "/app/profile/family/add": "Tambah Keluarga",
+  "/app/profile/family-card": "Kartu Keluarga",
 
   "/admin/account": "Kelola Akun",
   "/admin/account/staff/add": "Tambah Staf",
   "/admin/account/staff/edit": "Edit Staf",
   "/admin/account/occupant/add": "Tambah Penghuni",
   "/admin/account/occupant/edit": "Tambah Staf",
+  "/admin/account/occupant/family": "Kelola Keluarga Penghuni",
+  "/admin/account/occupant/family/add": "Tambah Anggota Keluarga Penghuni",
 
   "/admin/house": "Kelola Rumah",
   "/admin/house/add": "Tambah Rumah",

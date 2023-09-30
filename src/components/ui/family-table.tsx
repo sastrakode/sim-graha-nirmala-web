@@ -13,6 +13,7 @@ import { FamilyResponse } from "@/server/models/responses/family"
 
 export default function FamilyTable({ family }: { family: FamilyResponse[] }) {
   // export default function FamilyTable() {
+  console.log(family)
   return (
     <Table>
       <TableHeader>
@@ -37,19 +38,25 @@ export default function FamilyTable({ family }: { family: FamilyResponse[] }) {
         {family.length > 0 ? (
           family.map((familyMember, idx) => (
             <TableRow key={familyMember.id}>
-              <TableCell>{idx}</TableCell>
-              <TableCell>{familyMember.name}</TableCell>
-              <TableCell>{familyMember.identity_number}</TableCell>
-              <TableCell>{familyMember.gender}</TableCell>
-              <TableCell>{familyMember.birthplace}</TableCell>
-              <TableCell>{dateFormat(familyMember.birthday)}</TableCell>
-              <TableCell>{familyMember.religion}</TableCell>
-              <TableCell>{familyMember.education}</TableCell>
-              <TableCell>{familyMember.job_type}</TableCell>
-              <TableCell>{familyMember.marital_status}</TableCell>
-              <TableCell>{familyMember.relationship_status}</TableCell>
-              <TableCell>{familyMember.father_name}</TableCell>
-              <TableCell>{familyMember.mother_name}</TableCell>
+              <TableCell>{idx + 1}</TableCell>
+              <TableCell>{familyMember.name.toUpperCase()}</TableCell>
+              <TableCell>
+                {familyMember.identity_number.toUpperCase()}
+              </TableCell>
+              <TableCell>{familyMember.gender.toUpperCase()}</TableCell>
+              <TableCell>{familyMember.birthplace.toUpperCase()}</TableCell>
+              <TableCell>
+                {dateFormat(new Date(familyMember.birthday))}
+              </TableCell>
+              <TableCell>{familyMember.religion.toUpperCase()}</TableCell>
+              <TableCell>{familyMember.education?.toUpperCase()}</TableCell>
+              <TableCell>{familyMember.job_type?.toUpperCase()}</TableCell>
+              <TableCell>{familyMember.marital_status.toUpperCase()}</TableCell>
+              <TableCell>
+                {familyMember.relationship_status.toUpperCase()}
+              </TableCell>
+              <TableCell>{familyMember.father_name.toUpperCase()}</TableCell>
+              <TableCell>{familyMember.mother_name.toUpperCase()}</TableCell>
             </TableRow>
           ))
         ) : (

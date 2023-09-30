@@ -4,7 +4,7 @@ import Icons from "@/components/ui/icons"
 import { getFamily } from "@/lib/api"
 import { notFound } from "next/navigation"
 
-export default async function FamilyPage({
+export default async function AdminFamilyPage({
   params,
 }: {
   params: { occupantId: string }
@@ -18,7 +18,7 @@ export default async function FamilyPage({
   return (
     <div className="m-6">
       <Button asChild>
-        <a href={`/app/profile/${params.occupantId}/family/add`}>
+        <a href={`/admin/account/occupant/${params.occupantId}/family/add`}>
           <Icons.Plus size={20} className="mr-1" />
           Tambah Anggota Keluarga
         </a>

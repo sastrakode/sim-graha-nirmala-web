@@ -48,8 +48,6 @@ async function handleFetch<T>(
 
     const resJson = await res.json()
 
-    console.log("ocan", resJson)
-
     if (!res.ok) {
       if (res.status >= 500) throw new Error(`${resJson.errors[0].message}`)
       else if (res.status === 404) return [null as T, resJson.errors]
@@ -351,14 +349,18 @@ export async function getFamily(
   return res
 }
 
-export async function postFamilyMember(body: {}): Promise<
-  [FamilyResponse, FetchError]
-> {
-  const res = await handleFetch<FamilyResponse>(`/family`, {
-    method: "POST",
-    body: JSON.stringify(body),
-    endpointProtected: true,
-  })
+export async function postFamilyMember(
+  occupantId: string,
+  body: {},
+): Promise<[FamilyResponse, FetchError]> {
+  const res = await handleFetch<FamilyResponse>(
+    `/occupant/${occupantId}/family`,
+    {
+      method: "POST",
+      body: JSON.stringify(body),
+      endpointProtected: true,
+    },
+  )
 
   return res
 }

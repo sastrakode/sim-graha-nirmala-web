@@ -37,8 +37,10 @@ import { FamilyResponse } from "@/server/models/responses/family"
 const formSchema = familySchema
 
 export function AddFamilyForm({
+  occupantId,
   familyMember,
 }: {
+  occupantId: string
   familyMember?: FamilyResponse
 }) {
   const router = useRouter()
@@ -47,7 +49,7 @@ export function AddFamilyForm({
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: familySchema.parse(defaultValues),
+    defaultValues: defaultValues && familySchema.parse(defaultValues),
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -65,7 +67,7 @@ export function AddFamilyForm({
       //   return
       // }
     } else {
-      const [_, errors] = await postFamilyMember(values)
+      const [_, errors] = await postFamilyMember(occupantId, values)
 
       if (errors) {
         errors.forEach((error) => {
@@ -82,7 +84,7 @@ export function AddFamilyForm({
     }
 
     router.refresh()
-    router.replace("/admin/house")
+    router.replace(`/app/profile/${occupantId}/family`)
   }
 
   return (
@@ -122,7 +124,7 @@ export function AddFamilyForm({
               <FormLabel>Jenis Kelamin</FormLabel>
               <Select
                 onValueChange={field.onChange}
-                defaultValue={genderTypes[0]}
+                defaultValue={defaultValues?.gender}
               >
                 <FormControl>
                   <SelectTrigger>
@@ -175,7 +177,7 @@ export function AddFamilyForm({
               <FormLabel>Agama</FormLabel>
               <Select
                 onValueChange={field.onChange}
-                defaultValue={religionTypes[0]}
+                defaultValue={defaultValues?.religion}
               >
                 <FormControl>
                   <SelectTrigger>
@@ -212,7 +214,7 @@ export function AddFamilyForm({
           name="job_type"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Jenis Pekerjaa</FormLabel>
+              <FormLabel>Jenis Pekerjaan</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -228,7 +230,7 @@ export function AddFamilyForm({
               <FormLabel>Status Perkawinan</FormLabel>
               <Select
                 onValueChange={field.onChange}
-                defaultValue={maritalStatusTypes[0]}
+                defaultValue={defaultValues?.marital_status}
               >
                 <FormControl>
                   <SelectTrigger>
@@ -255,7 +257,7 @@ export function AddFamilyForm({
               <FormLabel>Status Hubungan Dalam Keluarga</FormLabel>
               <Select
                 onValueChange={field.onChange}
-                defaultValue={relationshipStatusTypes[0]}
+                defaultValue={defaultValues?.relationship_status}
               >
                 <FormControl>
                   <SelectTrigger>

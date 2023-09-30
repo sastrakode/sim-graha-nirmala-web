@@ -62,10 +62,9 @@ export const editStaffFormSchema = z.object({
 })
 
 export const familySchema = z.object({
-  occupant_id: z.number().nonnegative(),
   name: z.string().nonempty("Name harus diisi"),
   identity_number: z.string().nonempty("No. Identitas harus diisi"),
-  birthday: z.date(),
+  birthday: z.string().nonempty("Tanggal Lahir harus diisi"),
   gender: z.enum(genderTypes),
   birthplace: z.string().nonempty("Tempat lahir harus diisi"),
   religion: z.enum(religionTypes),

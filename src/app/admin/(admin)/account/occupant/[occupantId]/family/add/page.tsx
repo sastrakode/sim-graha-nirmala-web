@@ -1,6 +1,6 @@
 import { AddFamilyForm } from "@/components/ui/add-family-form"
 
-export default function AddFamilyPage({
+export default function AdminAddFamilyPage({
   params,
 }: {
   params: { occupantId: string }

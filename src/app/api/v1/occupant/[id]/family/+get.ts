@@ -1,6 +1,7 @@
 import { errorDefinition } from "@/lib/constants"
 import { db } from "@/server/db"
 import { Family, Occupant } from "@/server/db/schema"
+import { toFamilyResponse } from "@/server/models/responses/family"
 import { useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
 import { sendData, sendErrors } from "@/server/web/response"
@@ -19,6 +20,9 @@ export const GET = defineHandler(
       where: eq(Family.occupantId, params.id),
     })
 
-    return sendData(200, families)
+    return sendData(
+      200,
+      families.map((family) => toFamilyResponse(family)),
+    )
   },
 )

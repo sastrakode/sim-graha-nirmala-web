@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head />
-      <body className={`${inter.className} mb-[92px] lg:mb-0`}>
+      <body className={`${inter.className}`}>
         {children}
         <Toaster />
       </body>

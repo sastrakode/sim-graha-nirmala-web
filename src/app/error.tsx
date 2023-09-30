@@ -17,6 +17,7 @@ export default function Error({
     <html>
       <body>
         <h2>Terjadi masalah!</h2>
+        <p>{error.message}</p>
         <button onClick={() => reset()}>Coba lagi</button>
       </body>
     </html>

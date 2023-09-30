@@ -45,11 +45,20 @@ export default function OccupantTable({
               <TableCell>{occupant.email ?? "-"}</TableCell>
               <TableCell>{role[occupant.role]}</TableCell>
               <TableCell>
-                <a href={`/admin/account/occupant/family-card/${occupant.id}`}>
-                  <Button className="mr-1" variant="outline" size="sm">
-                    Lihat KK
-                  </Button>
-                </a>
+                <Button className="mr-1" variant="outline" size="sm" asChild>
+                  <a
+                    href={`/occupant/${occupant.id}/family-card`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Lihat Dokumen
+                  </a>
+                </Button>
+                <Button className="mr-1" variant="outline" size="sm" asChild>
+                  <a href={`/admin/account/occupant/${occupant.id}/family`}>
+                    Lihat Keluarga
+                  </a>
+                </Button>
                 <a href={`/admin/account/occupant/edit/${occupant.id}`}>
                   <Button className="mr-1" variant="outline" size="sm">
                     Edit

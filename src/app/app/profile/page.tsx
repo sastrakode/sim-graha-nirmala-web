@@ -8,6 +8,7 @@ import { notFound } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { getHouse } from "@/lib/api"
 import { role } from "@/lib/constants"
+
 import FamilyCardDialog from "@/components/app/profile/family-card-dialog"
 
 export const metadata: Metadata = {
@@ -72,7 +73,7 @@ export default async function ProfilePage() {
                 <MailIcon />
                 <p>Email</p>
               </div>
-              <p className="text-gray-500">{house.owner?.email}</p>
+              <p className="text-gray-500">{house.owner?.email || "-"}</p>
             </div>
             <div className="flex justify-between">
               <div className="flex gap-4">
@@ -86,7 +87,15 @@ export default async function ProfilePage() {
                 <Phone />
                 <p>Kartu Keluarga</p>
               </div>
-              <p className="text-gray-500">{house.owner?.phone}</p>
+              <Button variant="link" size="sm" asChild>
+                <a
+                  href={`/occupant/${userId}/family-card`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Lihat Dokumen
+                </a>
+              </Button>
             </div>
           </div>
         </div>

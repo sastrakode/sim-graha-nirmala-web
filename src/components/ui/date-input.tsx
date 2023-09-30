@@ -3,8 +3,8 @@
 import React, { useEffect, useRef } from "react"
 
 interface DateInputProps {
-  value?: Date
-  onChange: (date: Date) => void
+  value?: string
+  onChange: (date: string) => void
 }
 
 interface DateParts {
@@ -67,7 +67,9 @@ const DateInput: React.FC<DateInputProps> = ({ value, onChange }) => {
 
       // only call onChange when the entry is valid
       if (isValid) {
-        onChange(new Date(newDate.year, newDate.month - 1, newDate.day))
+        onChange(
+          new Date(newDate.year, newDate.month - 1, newDate.day).toISOString(),
+        )
       }
     }
 
@@ -143,7 +145,9 @@ const DateInput: React.FC<DateInputProps> = ({ value, onChange }) => {
         }
 
         setDate(newDate)
-        onChange(new Date(newDate.year, newDate.month - 1, newDate.day))
+        onChange(
+          new Date(newDate.year, newDate.month - 1, newDate.day).toISOString(),
+        )
       } else if (e.key === "ArrowDown") {
         e.preventDefault()
         let newDate = { ...date }
@@ -174,7 +178,9 @@ const DateInput: React.FC<DateInputProps> = ({ value, onChange }) => {
         }
 
         setDate(newDate)
-        onChange(new Date(newDate.year, newDate.month - 1, newDate.day))
+        onChange(
+          new Date(newDate.year, newDate.month - 1, newDate.day).toISOString(),
+        )
       }
 
       if (e.key === "ArrowRight") {
