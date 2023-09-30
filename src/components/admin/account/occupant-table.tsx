@@ -50,7 +50,7 @@ export default function OccupantTable({
               <TableCell>{role[occupant.role]}</TableCell>
               <TableCell>
                 {occupant.is_family_card_uploaded ? (
-                  <Button className="mr-1" variant="outline" size="sm" asChild>
+                  <Button className="mr-1" variant="link" size="sm" asChild>
                     <a
                       href={`/occupant/${occupant.id}/family-card`}
                       target="_blank"
