@@ -1,11 +1,12 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { Button } from "./button"
+import { FC } from "react"
 
+import { Button, ButtonProps } from "./button"
 import { logout } from "@/lib/api"
 
-export default function LogoutButton({ ...props }) {
+export const LogoutButton: FC<ButtonProps> = ({ ...props }) => {
   const router = useRouter()
 
   const handleLogout = async () => {
@@ -20,3 +21,5 @@ export default function LogoutButton({ ...props }) {
     </Button>
   )
 }
+
+export default LogoutButton
