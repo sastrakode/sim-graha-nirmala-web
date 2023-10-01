@@ -4,7 +4,7 @@ import path from "path"
 import { Storage, TInsertStorage, TStorage } from "../db/schema"
 import { db } from "../db"
 
-const storageDirectory = "./storage/data"
+const storageDirectory = "./data/storage"
 
 function setupDirectory() {
   if (!fs.existsSync(storageDirectory)) {

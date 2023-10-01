@@ -16,7 +16,6 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/drizzle ./drizzle
-COPY --from=builder /app/.env ./.env
 
 RUN apk update --no-cache && \
     apk add --no-cache \
