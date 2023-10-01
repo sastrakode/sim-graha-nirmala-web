@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button, LoadingButton } from "@/components/ui/button"
 import { deleteAnnouncement, deleteHouse, deleteOccupant } from "@/lib/api"
-import { catchError } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
@@ -62,13 +61,10 @@ export default function DeleteAlertDialog({
         case "family":
           break
       }
+    } finally {
       setLoading(false)
       setOpen(false)
       router.refresh()
-    } catch (error) {
-      setLoading(false)
-      setOpen(false)
-      catchError(error)
     }
   }
 

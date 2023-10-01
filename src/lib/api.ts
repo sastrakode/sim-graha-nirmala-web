@@ -16,6 +16,8 @@ import { TInsertPayment, TPayment } from "@/server/db/schema"
 import { CashflowResponse } from "@/server/models/responses/cashflow"
 import { FamilyResponse } from "@/server/models/responses/family"
 import { StorageResponse } from "@/server/models/responses/storage"
+import { errServer } from "@/server/constants/error"
+import { catchError } from "./utils"
 
 const isServer = typeof window === "undefined"
 const baseURL = isServer ? "http://127.0.0.1:3000/api/v1" : "/api/v1"
@@ -55,14 +57,18 @@ async function handleFetch<T>(
     const resJson = await res.json()
 
     if (!res.ok) {
-      if (res.status >= 500) throw new Error(`${resJson.errors[0].message}`)
+      if (res.status >= 500 || !resJson.errors[0].field)
+        throw new Error(`${resJson.errors[0].message}`)
       else if (res.status >= 400) return [null as T, resJson.errors]
 
-      throw new Error("Something went wrong")
+      throw new Error(errServer)
     }
 
     return [resJson.data, null]
   } catch (error) {
+    if (!isServer) {
+      catchError(error)
+    }
     throw error
   }
 }
@@ -93,7 +99,8 @@ async function handleFetchNoContent(
       throw new Error(resJson.errors[0].message)
     }
   } catch (error) {
-    throw new Error("Something went wrong")
+    catchError(error)
+    throw new Error(errServer)
   }
 }
 

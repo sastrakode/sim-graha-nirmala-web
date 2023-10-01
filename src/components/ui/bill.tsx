@@ -30,19 +30,20 @@ export function BillListItem({
 
   const handlePay = async () => {
     if (occupantId) {
-      const [_, err] = await payBillCash(bill.id, {
+      const [_, _err] = await payBillCash(bill.id, {
         occupant_id: occupantId,
       })
 
-      if (err) {
-        catchError(new Error("Pembayaran gagal"))
-      } else {
-        toast.success("Pembayaran berhasil")
-      }
+      toast.success("Pembayaran berhasil")
     } else {
-      const [payment, err] = await payBill(bill.id)
+      const [payment, _err] = await payBill(bill.id)
+
       if (payment.redirectUrl) {
         window.open(payment.redirectUrl)
+      } else {
+        catchError(
+          new Error("Tautan pembayaran gagal dibuka, silahkan coba bayar lagi"),
+        )
       }
     }
 

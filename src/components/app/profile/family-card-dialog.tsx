@@ -10,7 +10,6 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Button, LoadingButton } from "@/components/ui/button"
-import { catchError } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import Icons from "@/components/ui/icons"
@@ -57,12 +56,7 @@ export default function FamilyCardDialog({
     const formData = new FormData()
     formData.append("file", data.familyCard[0])
 
-    const [_storage, errors] = await uploadFamilyCard(occupantId, formData)
-
-    if (errors) {
-      catchError(errors)
-      return
-    }
+    const [_storage, _errors] = await uploadFamilyCard(occupantId, formData)
 
     toast.success("Kartu Keluarga berhasil diunggah")
     setOpen(false)

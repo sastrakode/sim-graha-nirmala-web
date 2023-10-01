@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge"
 import * as z from "zod"
 import { toast } from "sonner"
 import { Role, RoleType } from "@/server/security/auth"
+import { errServer } from "@/server/constants/error"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -107,25 +108,10 @@ export function catchError(err: unknown) {
     const errors = err.issues.map((issue) => {
       return issue.message
     })
-    toast.error(errors.join("\n"), {
-      action: {
-        label: "Muat ulang",
-        onClick: () => window.location.reload(),
-      },
-    })
+    return toast.error(errors.join("\n"))
   } else if (err instanceof Error) {
-    toast.error(err.message, {
-      action: {
-        label: "Muat ulang",
-        onClick: () => window.location.reload(),
-      },
-    })
+    return toast.error(err.message)
   } else {
-    toast.error("Something went wrong, please try again later.", {
-      action: {
-        label: "Muat ulang",
-        onClick: () => window.location.reload(),
-      },
-    })
+    return toast.error(errServer)
   }
 }

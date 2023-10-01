@@ -10,7 +10,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Button, LoadingButton } from "@/components/ui/button"
-import { capitalizeSentence, catchError } from "@/lib/utils"
+import { capitalizeSentence } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import Icons from "./icons"
@@ -38,8 +38,6 @@ export default function AddAnnoucementCategoryAlertDialog() {
       if (err) {
         return toast.error(err[0].message)
       }
-    } catch (error) {
-      return catchError(error)
     } finally {
       setLoading(false)
     }
