@@ -45,7 +45,6 @@ export function middleware(req: NextRequest) {
   }
 
   if (req.nextUrl.pathname.startsWith("/admin")) {
-    let response: NextResponse
     const token = req.cookies.get("token")?.value
 
     if (token) {
