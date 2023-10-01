@@ -25,7 +25,7 @@ export default async function ProfilePage() {
   const [house, _houseErr] = await getHouse(houseId)
 
   if (!house) {
-    notFound()
+    throw new Error("Terjadi Kesalahan, coba bersihkan cookies pada browser")
   }
 
   return (
@@ -95,7 +95,6 @@ export default async function ProfilePage() {
                   <a
                     href={`/occupant/${sub}/family-card`}
                     target="_blank"
-                    rel="noopener noreferrer"
                     className="text-secondary text-sm hover:underline"
                   >
                     Lihat Dokumen
@@ -172,7 +171,6 @@ export default async function ProfilePage() {
                   <a
                     href={`/occupant/${sub}/family-card`}
                     target="_blank"
-                    rel="noopener noreferrer"
                     className="text-secondary text-sm hover:underline"
                   >
                     Lihat Dokumen

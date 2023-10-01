@@ -30,8 +30,11 @@ export function middleware(req: NextRequest) {
 
   if (req.nextUrl.pathname.startsWith("/app")) {
     const token = req.cookies.get("token")?.value
+    const houseId = req.cookies.get("houseId")?.value
 
-    if (token) {
+    const response = NextResponse.redirect(new URL("/login", req.url))
+
+    if (token && houseId) {
       try {
         const { role_type } = parseJwt(token)
         if (role_type === "occupant") return NextResponse.next()
@@ -44,9 +47,13 @@ export function middleware(req: NextRequest) {
         response.cookies.delete("token")
         return response
       }
+    } else {
+      req.cookies.getAll().forEach((cookie) => {
+        response.cookies.delete(cookie.name)
+      })
     }
 
-    return NextResponse.redirect(new URL("/login", req.url))
+    return response
   }
 
   if (req.nextUrl.pathname.startsWith("/admin")) {
