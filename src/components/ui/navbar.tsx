@@ -2,6 +2,8 @@
 
 import { useParams, usePathname } from "next/navigation"
 
+import LogoutDialog from "./logout-dialog"
+
 const pageName: { [key: string]: string } = {
   "/app/dashboard": "Dashboard",
   "/app/transaction": "Transaksi",
@@ -62,6 +64,8 @@ const Navbar = () => {
       <h4 className="text-primary">
         {pageName[getRouteWithoutParams(currentRoute, params)]}
       </h4>
+
+      <LogoutDialog className="lg:hidden" />
     </nav>
   )
 }

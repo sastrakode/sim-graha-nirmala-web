@@ -1,11 +1,12 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import Icons from "./icons"
-import LogoutButton from "./logout-button"
-import NavItem from "./nav-item"
 
 import { adminRouteNames } from "@/lib/constants"
+
+import Icons from "./icons"
+import NavItem from "./nav-item"
+import LogoutDialog from "./logout-dialog"
 
 const AdminSidebar = () => {
   const currentRoute = usePathname()
@@ -51,7 +52,7 @@ const AdminSidebar = () => {
         </NavItem>
       </div>
 
-      <LogoutButton className="w-full" />
+      <LogoutDialog className="w-full" />
     </aside>
   )
 }

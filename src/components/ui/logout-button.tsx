@@ -1,24 +1,36 @@
 "use client"
 
-import { useRouter } from "next/navigation"
-import { FC } from "react"
+import { usePathname, useRouter } from "next/navigation"
+import { FC, useState } from "react"
 
-import { Button, ButtonProps } from "./button"
+import { ButtonProps, LoadingButton } from "./button"
 import { logout } from "@/lib/api"
 
 export const LogoutButton: FC<ButtonProps> = ({ ...props }) => {
   const router = useRouter()
+  const isAdmin = usePathname().includes("admin")
+  const [loading, setLoading] = useState(false)
 
   const handleLogout = async () => {
-    await logout()
-    router.replace("/login")
-    router.refresh()
+    try {
+      setLoading(true)
+      await logout()
+      isAdmin ? router.replace("/admin/login") : router.replace("/login")
+      router.refresh()
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
-    <Button variant={"destructive"} onClick={handleLogout} {...props}>
+    <LoadingButton
+      loading={loading}
+      variant={"destructive"}
+      onClick={handleLogout}
+      {...props}
+    >
       Keluar
-    </Button>
+    </LoadingButton>
   )
 }
 
