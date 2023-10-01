@@ -4,7 +4,7 @@ import { Billing, House, Payment, TPayment } from "@/server/db/schema"
 import { useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
 import { sendData, sendErrors } from "@/server/web/response"
-import { desc, eq, inArray } from "drizzle-orm"
+import { and, desc, eq, inArray, ne } from "drizzle-orm"
 
 export const GET = defineHandler(
   async (req, { params }: { params: { id: number } }) => {
@@ -23,9 +23,12 @@ export const GET = defineHandler(
     }
 
     const payments: TPayment[] = await db().query.Payment.findMany({
-      where: inArray(
-        Payment.billingId,
-        billings.map((billing) => billing.id),
+      where: and(
+        inArray(
+          Payment.billingId,
+          billings.map((billing) => billing.id),
+        ),
+        ne(Payment.status, "pending"),
       ),
       orderBy: desc(Payment.createdAt),
     })
