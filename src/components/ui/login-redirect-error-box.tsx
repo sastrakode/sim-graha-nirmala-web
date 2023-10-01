@@ -21,6 +21,6 @@ export default function LoginRedirectErrorBox() {
       </div>
     )
   } else {
-    return false
+    return null
   }
 }
