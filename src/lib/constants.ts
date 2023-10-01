@@ -13,7 +13,7 @@ export const adminRouteNames = {
   bill: "/admin/bill",
 }
 
-export const role: { [key: string]: string } = {
+export const roleValue: { [key: string]: string } = {
   owner: "Pemilik",
   renter: "Penyewa",
   admin: "Admin",

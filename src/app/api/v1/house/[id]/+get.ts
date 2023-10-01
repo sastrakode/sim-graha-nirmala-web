@@ -1,15 +1,14 @@
 import { errorDefinition } from "@/lib/constants"
 import { db } from "@/server/db"
 import { House, Occupant } from "@/server/db/schema"
-import { HouseResponse, toHouseResponse } from "@/server/models/responses/house"
+import {
+  HouseResponse,
+  HouseResponseWithFamilyCard,
+  toHouseResponse,
+} from "@/server/models/responses/house"
 import { defineHandler } from "@/server/web/handler"
 import { sendData, sendErrors } from "@/server/web/response"
 import { and, eq } from "drizzle-orm"
-
-type Response = HouseResponse & {
-  is_owner_family_card_uploaded: boolean
-  is_renter_family_card_uploaded: boolean
-}
 
 export const GET = defineHandler(
   async (_, { params }: { params: { id: number } }) => {
@@ -32,7 +31,7 @@ export const GET = defineHandler(
       },
     })
 
-    const response: Response = {
+    const response: HouseResponseWithFamilyCard = {
       ...toHouseResponse(house, {
         owner: owner,
         renter: renter,

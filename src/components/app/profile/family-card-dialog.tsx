@@ -74,7 +74,7 @@ export default function FamilyCardDialog({
       <AlertDialogTrigger asChild>
         <Button variant="outline" size="sm">
           <Icons.Plus size={14} className="mr-1" />
-          Upload Kartu Keluarga
+          Unggah Kartu Keluarga
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
@@ -86,9 +86,13 @@ export default function FamilyCardDialog({
                 className={errors.familyCard && "text-destructive"}
                 htmlFor="categoryName"
               >
-                File Kartu Keluarga
+                File Kartu Keluarga (format file: .jpeg/.png/.jpg)
               </Label>
-              <Input type="file" {...register("familyCard")} />
+              <Input
+                type="file"
+                accept=".png,.jpeg,.jpg"
+                {...register("familyCard")}
+              />
               {errors.familyCard && (
                 <p className={`text-sm font-medium text-destructive`}>
                   {errors.familyCard.message}

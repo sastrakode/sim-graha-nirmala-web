@@ -8,12 +8,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { role } from "@/lib/constants"
+import { roleValue } from "@/lib/constants"
 import { HouseResponse } from "@/server/models/responses/house"
-import {
-  GetAllOccupantsResponse,
-  OccupantResponse,
-} from "@/server/models/responses/occupant"
+import { GetAllOccupantsResponse } from "@/server/models/responses/occupant"
 
 export default function OccupantTable({
   occupants,
@@ -47,7 +44,7 @@ export default function OccupantTable({
               </TableCell>
               <TableCell>{occupant.phone ?? "-"}</TableCell>
               <TableCell>{occupant.email ?? "-"}</TableCell>
-              <TableCell>{role[occupant.role]}</TableCell>
+              <TableCell>{roleValue[occupant.role]}</TableCell>
               <TableCell>
                 {occupant.is_family_card_uploaded ? (
                   <Button className="mr-1" variant="link" size="sm" asChild>

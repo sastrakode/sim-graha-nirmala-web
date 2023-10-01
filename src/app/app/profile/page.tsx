@@ -1,4 +1,4 @@
-import { MailIcon, Phone } from "lucide-react"
+import { MailIcon, Phone, FileTextIcon } from "lucide-react"
 import { Metadata } from "next"
 import { cookies } from "next/headers"
 import Image from "next/image"
@@ -6,10 +6,11 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
-import { getHouse } from "@/lib/api"
-import { role } from "@/lib/constants"
-
 import FamilyCardDialog from "@/components/app/profile/family-card-dialog"
+
+import { getHouse } from "@/lib/api"
+import { roleValue } from "@/lib/constants"
+import { parseJwt } from "@/lib/utils"
 
 export const metadata: Metadata = {
   title: "Profil - SIMGN",
@@ -17,7 +18,9 @@ export const metadata: Metadata = {
 
 export default async function ProfilePage() {
   const houseId = cookies().get("houseId")?.value || "-1"
-  const userId = cookies().get("userId")?.value || "-1"
+  const token = cookies().get("token")?.value || ""
+
+  const { sub, role } = parseJwt(token)
 
   const [house, _houseErr] = await getHouse(houseId)
 
@@ -42,13 +45,13 @@ export default async function ProfilePage() {
               <p className="text-lg text-primary font-bold">
                 {house.owner?.name}
               </p>
-              <p className="text-gray-400">{role["owner"]}</p>
+              <p className="text-gray-400">{roleValue["owner"]}</p>
               <p className="text-gray-400">{house.address}</p>
             </div>
           </div>
-          {userId === house.owner?.id.toString() && (
+          {role === "owner" && (
             <Button asChild>
-              <Link href={`/app/profile/${userId}/family`}>
+              <Link href={`/app/profile/${sub}/family`}>
                 Lihat Daftar Keluarga
               </Link>
             </Button>
@@ -57,12 +60,12 @@ export default async function ProfilePage() {
         <div className="bg-white rounded-3xl mt-6 p-4">
           <div className="flex justify-between items-end">
             <p className="text-primary font-semibold">Informasi Kontak</p>
-            {userId === house.owner?.id.toString() && (
+            {role === "owner" && (
               <div className="flex gap-2">
                 <Button variant="outline" size="sm">
                   Ubah
                 </Button>
-                <FamilyCardDialog occupantId={userId} />
+                <FamilyCardDialog occupantId={sub} />
               </div>
             )}
           </div>
@@ -82,21 +85,26 @@ export default async function ProfilePage() {
               </div>
               <p className="text-gray-500">{house.owner?.phone}</p>
             </div>
-            <div className="flex justify-between">
-              <div className="flex gap-4">
-                <Phone />
-                <p>Kartu Keluarga</p>
+            {role === "owner" && (
+              <div className="flex justify-between">
+                <div className="flex gap-4">
+                  <FileTextIcon />
+                  <p>Kartu Keluarga</p>
+                </div>
+                {house.is_owner_family_card_uploaded ? (
+                  <a
+                    href={`/occupant/${sub}/family-card`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-secondary text-sm hover:underline"
+                  >
+                    Lihat Dokumen
+                  </a>
+                ) : (
+                  <p>Belum diunggah</p>
+                )}
               </div>
-              <Button variant="link" size="sm" asChild>
-                <a
-                  href={`/occupant/${userId}/family-card`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Lihat Dokumen
-                </a>
-              </Button>
-            </div>
+            )}
           </div>
         </div>
       </div>
@@ -116,11 +124,11 @@ export default async function ProfilePage() {
               <p className="text-lg text-primary font-bold">
                 {house.renter?.name}
               </p>
-              <p className="text-gray-400">{role["renter"]}</p>
+              <p className="text-gray-400">{roleValue["renter"]}</p>
               <p className="text-gray-400">{house.address}</p>
             </div>
           </div>
-          {userId === house.renter?.id.toString() && (
+          {role === "renter" && (
             <Button asChild>
               <Link href="/app/profile/family">Lihat Daftar Keluarga</Link>
             </Button>
@@ -129,12 +137,12 @@ export default async function ProfilePage() {
         <div className="bg-white rounded-3xl mt-6 p-4">
           <div className="flex justify-between items-end">
             <p className="text-primary font-semibold">Informasi Kontak</p>
-            {userId === house.renter?.id.toString() && (
+            {role === "renter" && (
               <div className="flex gap-2">
                 <Button variant="outline" size="sm">
                   Ubah
                 </Button>
-                <FamilyCardDialog occupantId={userId} />
+                <FamilyCardDialog occupantId={sub} />
               </div>
             )}
           </div>
@@ -154,6 +162,26 @@ export default async function ProfilePage() {
               </div>
               <p className="text-gray-500">{house.renter?.phone}</p>
             </div>
+            {role === "renter" && (
+              <div className="flex justify-between">
+                <div className="flex gap-4">
+                  <FileTextIcon />
+                  <p>Kartu Keluarga</p>
+                </div>
+                {house.is_renter_family_card_uploaded ? (
+                  <a
+                    href={`/occupant/${sub}/family-card`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-secondary text-sm hover:underline"
+                  >
+                    Lihat Dokumen
+                  </a>
+                ) : (
+                  <p>Belum diunggah</p>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

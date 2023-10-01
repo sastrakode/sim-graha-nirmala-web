@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
+
 import { parseJwt } from "./lib/utils"
 
 export function middleware(req: NextRequest) {
@@ -18,8 +19,9 @@ export function middleware(req: NextRequest) {
         else if (role_type === "staff")
           return NextResponse.redirect(new URL("/admin", req.url))
       } catch (error) {
-        req.cookies.delete(token)
-        return NextResponse.next()
+        const response = NextResponse.next()
+        response.cookies.delete("token")
+        return response
       }
     }
 
@@ -36,8 +38,11 @@ export function middleware(req: NextRequest) {
         else if (role_type === "staff")
           return NextResponse.redirect(new URL("/admin", req.url))
       } catch (error) {
-        req.cookies.delete(token)
-        return NextResponse.redirect(new URL("/login", req.url))
+        const response = NextResponse.redirect(
+          new URL("/login?cause=invalid_session", req.url),
+        )
+        response.cookies.delete("token")
+        return response
       }
     }
 
@@ -54,12 +59,15 @@ export function middleware(req: NextRequest) {
         else if (role_type === "occupant")
           return NextResponse.redirect(new URL("/app/dashboard", req.url))
       } catch (error) {
-        req.cookies.delete(token)
-        return NextResponse.redirect(new URL("/admin/login", req.url))
+        const response = NextResponse.redirect(new URL("/admin/login", req.url))
+        response.cookies.delete("token")
+        return response
       }
     }
 
-    return NextResponse.redirect(new URL("/admin/login", req.url))
+    return NextResponse.redirect(
+      new URL("/admin/login?cause=invalid_session", req.url),
+    )
   }
 }
 

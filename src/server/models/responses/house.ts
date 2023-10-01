@@ -11,6 +11,11 @@ export type HouseResponse = {
   renter: OccupantResponse | null
 }
 
+export type HouseResponseWithFamilyCard = HouseResponse & {
+  is_owner_family_card_uploaded: boolean
+  is_renter_family_card_uploaded: boolean
+}
+
 export function toHouseResponse(
   house?: THouse,
   relations?: {

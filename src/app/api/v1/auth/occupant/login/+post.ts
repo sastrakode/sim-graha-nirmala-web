@@ -56,7 +56,6 @@ export const POST = defineHandler(async (req) => {
     sameSite: "lax",
     maxAge: 60 * 60 * 24 * 2,
   })
-  data.cookies.set("userId", occupant.id.toString())
   data.cookies.set("houseId", occupant.houseId.toString())
   return data
 })

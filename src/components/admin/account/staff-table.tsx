@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { role } from "@/lib/constants"
+import { roleValue } from "@/lib/constants"
 import { StaffResponse } from "@/server/models/responses/staff"
 
 export default function StaffTable({ staffs }: { staffs: StaffResponse[] }) {
@@ -32,7 +32,7 @@ export default function StaffTable({ staffs }: { staffs: StaffResponse[] }) {
               <TableCell>{staff.name}</TableCell>
               <TableCell>{staff.phone}</TableCell>
               <TableCell>{staff.email ?? "-"}</TableCell>
-              <TableCell>{role[staff.role]}</TableCell>
+              <TableCell>{roleValue[staff.role]}</TableCell>
               <TableCell>
                 <a href={`/admin/account/staff/edit/${staff.id}`}>
                   <Button className="mr-1" variant="outline" size="sm">

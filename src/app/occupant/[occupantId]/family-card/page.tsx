@@ -1,30 +1,15 @@
-"use client"
+import { Metadata } from "next"
 
-import Image from "next/image"
-import { useEffect, useState } from "react"
+import FamilyCardImage from "@/components/app/profile/family-card-image"
+
+export const metadata: Metadata = {
+  title: "Kartu Keluarga - SIMGN",
+}
 
 export default function FamilyCardPage({
   params,
 }: {
   params: { occupantId: string }
 }) {
-  const [error, setError] = useState(false)
-
-  useEffect(() => {
-    if (error) {
-      throw new Error("Gagal memuat gambar")
-    }
-  }, [error])
-
-  return (
-    <Image
-      alt="Kartu Keluarga"
-      fill={true}
-      objectFit="contain"
-      src={`/api/v1/occupant/${params.occupantId}/document/family-card`}
-      onError={() => {
-        setError(true)
-      }}
-    />
-  )
+  return <FamilyCardImage occupantId={params.occupantId} />
 }

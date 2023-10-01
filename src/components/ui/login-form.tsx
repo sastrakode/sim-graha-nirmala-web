@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { FetchError, occupantLogin, staffLogin } from "@/lib/api"
 import { OccupantLogin, StaffLogin } from "@/lib/model"
+import useClientError from "@/lib/useClientError"
 
 const formSchema = z.object({
   phone: z.string().min(1, "No. Telepon harus diisi"),
@@ -27,6 +28,8 @@ type LoginRole = "occupant" | "staff"
 
 export default function LoginForm({ role }: { role: LoginRole }) {
   const router = useRouter()
+  const [throwErr] = useClientError()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -36,32 +39,36 @@ export default function LoginForm({ role }: { role: LoginRole }) {
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    let result: [OccupantLogin | StaffLogin, FetchError]
-    if (role === "occupant") {
-      result = await occupantLogin(values)
-    } else {
-      result = await staffLogin(values)
-    }
+    try {
+      let result: [OccupantLogin | StaffLogin, FetchError]
+      if (role === "occupant") {
+        result = await occupantLogin(values)
+      } else {
+        result = await staffLogin(values)
+      }
 
-    const [res, errors] = result
+      const [res, errors] = result
 
-    if (errors) {
-      errors.forEach((error) => {
-        if (error.field) {
-          form.setError(error.field as any, {
-            type: "server",
-            message: error.message,
-          })
-        }
-      })
+      if (errors) {
+        errors.forEach((error) => {
+          if (error.field) {
+            form.setError(error.field as any, {
+              type: "server",
+              message: error.message,
+            })
+          }
+        })
 
-      return
-    }
+        return
+      }
 
-    if ("occupant" in res) {
-      router.replace("/app/dashboard")
-    } else {
-      router.replace("/admin")
+      if ("occupant" in res) {
+        router.replace("/app/dashboard")
+      } else {
+        router.replace("/admin")
+      }
+    } catch (error) {
+      throwErr(error)
     }
   }
 

@@ -2,7 +2,10 @@ import { OccupantLogin, StaffLogin } from "./model"
 import { AnnouncementResponse } from "@/server/models/responses/announcement"
 import { StaffResponse } from "@/server/models/responses/staff"
 import { AnnouncementCategoryResponse } from "@/server/models/responses/announcement-category"
-import { HouseResponse } from "@/server/models/responses/house"
+import {
+  HouseResponse,
+  HouseResponseWithFamilyCard,
+} from "@/server/models/responses/house"
 import {
   GetAllOccupantsResponse,
   OccupantResponse,
@@ -53,7 +56,7 @@ async function handleFetch<T>(
 
     if (!res.ok) {
       if (res.status >= 500) throw new Error(`${resJson.errors[0].message}`)
-      else if (res.status === 404) return [null as T, resJson.errors]
+      else if (res.status >= 400) return [null as T, resJson.errors]
 
       throw new Error("Something went wrong")
     }
@@ -119,8 +122,8 @@ export async function logout(): Promise<void> {
 
 export async function getHouse(
   id: string,
-): Promise<[HouseResponse, FetchError]> {
-  const res = await handleFetch<HouseResponse>(`/house/${id}`)
+): Promise<[HouseResponseWithFamilyCard, FetchError]> {
+  const res = await handleFetch<HouseResponseWithFamilyCard>(`/house/${id}`)
   return res
 }
 
