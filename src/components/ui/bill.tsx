@@ -39,7 +39,7 @@ export function BillListItem({
       const [payment, _err] = await payBill(bill.id)
 
       if (payment.redirectUrl) {
-        window.open(payment.redirectUrl)
+        window.open(payment.redirectUrl, "_blank")
       } else {
         catchError(
           new Error("Tautan pembayaran gagal dibuka, silahkan coba bayar lagi"),
