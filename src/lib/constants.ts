@@ -75,7 +75,7 @@ export const errorDefinition: {
     message: "Rumah sudah diisi",
   },
   email_registered: {
-    field: "phone",
+    field: "email",
     message: "Email sudah terdaftar",
   },
   phone_registered: {
