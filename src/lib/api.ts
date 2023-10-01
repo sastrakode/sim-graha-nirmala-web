@@ -60,8 +60,7 @@ async function handleFetch<T>(
 
     return [resJson.data, null]
   } catch (error) {
-    console.error(error)
-    throw new Error("Something went wrong")
+    throw error
   }
 }
 

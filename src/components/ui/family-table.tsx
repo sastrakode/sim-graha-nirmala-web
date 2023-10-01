@@ -12,8 +12,6 @@ import { dateFormat } from "@/lib/utils"
 import { FamilyResponse } from "@/server/models/responses/family"
 
 export default function FamilyTable({ family }: { family: FamilyResponse[] }) {
-  // export default function FamilyTable() {
-  console.log(family)
   return (
     <Table>
       <TableHeader>
