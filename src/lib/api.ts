@@ -57,7 +57,7 @@ async function handleFetch<T>(
     const resJson = await res.json()
 
     if (!res.ok) {
-      if (res.status >= 500 || !resJson.errors[0].field)
+      if (res.status >= 500 || (!resJson.errors[0].field && res.status !== 404))
         throw new Error(`${resJson.errors[0].message}`)
       else if (res.status >= 400) return [null as T, resJson.errors]
 
