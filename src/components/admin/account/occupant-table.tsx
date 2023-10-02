@@ -51,7 +51,6 @@ export default function OccupantTable({
                     <a
                       href={`/occupant/${occupant.id}/family-card`}
                       target="_blank"
-                      rel="noopener noreferrer"
                     >
                       Lihat Dokumen
                     </a>
