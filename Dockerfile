@@ -21,11 +21,7 @@ RUN apk update --no-cache && \
     apk add --no-cache \
     ca-certificates \
     bash \
-    tzdata \
     curl \
     postgresql15-client
-
-ENV TZ=Asia/Jakarta
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 ENTRYPOINT ["/app/node_modules/.bin/next", "start"]
