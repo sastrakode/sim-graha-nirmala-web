@@ -45,7 +45,7 @@ function getConnection() {
       console.log("database setup success")
     })
     .catch((err) => {
-      console.log("database setup failed:", err)
+      console.error("database setup failed:", err)
     })
     .finally(() => {
       console.log("database setup complete")
