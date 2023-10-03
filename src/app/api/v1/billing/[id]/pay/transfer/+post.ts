@@ -5,7 +5,7 @@ import { getCurrentOccupant, useAuth } from "@/server/security/auth"
 import { defineHandler } from "@/server/web/handler"
 import { sendData, sendErrors } from "@/server/web/response"
 import { format } from "date-fns"
-import { and, eq, gte } from "drizzle-orm"
+import { and, eq, gte, sql } from "drizzle-orm"
 
 export const POST = defineHandler(
   async (req, { params }: { params: { id: number } }) => {
@@ -20,16 +20,16 @@ export const POST = defineHandler(
       return sendErrors(423, { message: "Billing already paid" })
     }
 
-    const now = new Date()
     const pendingPayment = await db().query.Payment.findFirst({
       where: and(
         eq(Payment.billingId, billing.id),
         eq(Payment.status, "pending"),
-        gte(Payment.expiredAt, now),
+        gte(Payment.expiredAt, sql`now()`),
       ),
     })
     if (pendingPayment) return sendData(200, pendingPayment)
 
+    const now = new Date()
     const orderId = generateOrderId()
     const expiredAt = new Date(now.getTime() + 24 * 60 * 60 * 1000)
 
