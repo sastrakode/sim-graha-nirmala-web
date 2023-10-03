@@ -21,7 +21,8 @@ export const POST = defineHandler(
       return sendErrors(423, { message: "Billing already paid" })
     }
 
-    const now = toLocalTime(new Date())
+    const nowUtc = new Date()
+    const now = toLocalTime(nowUtc)
     const pendingPayment = await db().query.Payment.findFirst({
       where: and(
         eq(Payment.billingId, billing.id),
@@ -50,7 +51,7 @@ export const POST = defineHandler(
         finish: "https://demo.midtrans.com",
       },
       expiry: {
-        start_time: format(now, "yyyy-MM-dd HH:mm:ss +0700"),
+        start_time: format(nowUtc, "yyyy-MM-dd HH:mm:ss +0700"),
         unit: "hours",
         duration: 24,
       },
