@@ -1,4 +1,5 @@
 import { errorDefinition } from "@/lib/constants"
+import { toLocalTime } from "@/lib/utils"
 import { db } from "@/server/db"
 import { House } from "@/server/db/schema"
 import { toHouseResponse } from "@/server/models/responses/house"
@@ -32,7 +33,7 @@ export const PUT = defineHandler(
 
     house.code = param.code
     house.address = param.address
-    house.updatedAt = new Date()
+    house.updatedAt = toLocalTime(new Date())
 
     await db().update(House).set(house).where(eq(House.id, params.id))
     return sendData(200, toHouseResponse(house))

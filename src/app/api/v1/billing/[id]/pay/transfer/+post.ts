@@ -1,3 +1,4 @@
+import { toLocalTime } from "@/lib/utils"
 import { db } from "@/server/db"
 import { Billing, Payment, TInsertPayment } from "@/server/db/schema"
 import { generateOrderId, snap } from "@/server/providers/midtrans"
@@ -20,7 +21,7 @@ export const POST = defineHandler(
       return sendErrors(423, { message: "Billing already paid" })
     }
 
-    const now = new Date()
+    const now = toLocalTime(new Date())
     const pendingPayment = await db().query.Payment.findFirst({
       where: and(
         eq(Payment.billingId, billing.id),

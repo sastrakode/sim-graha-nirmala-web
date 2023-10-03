@@ -115,3 +115,10 @@ export function catchError(err: unknown) {
     return toast.error(errServer)
   }
 }
+
+export function toLocalTime(time: Date) {
+  const d = new Date(time)
+  const offset = new Date().getTimezoneOffset() * 60000
+  if (offset < 0) return new Date(d.getTime() - offset)
+  else return new Date(d.getTime() + offset)
+}
