@@ -20,13 +20,6 @@ type Config = {
     clientKey: string
     serverKey: string
   }
-  minio: {
-    host: string
-    port: number
-    accessKey: string
-    secretKey: string
-    bucket: string
-  }
 }
 
 const e = process.env
@@ -46,12 +39,5 @@ export const config: Config = {
   midtrans: {
     clientKey: e.MIDTRANS_CLIENT_KEY!,
     serverKey: e.MIDTRANS_SERVER_KEY!,
-  },
-  minio: {
-    host: e.MINIO_HOST!,
-    port: parseInt(e.MINIO_PORT!),
-    accessKey: e.MINIO_ACCESS_KEY!,
-    secretKey: e.MINIO_SECRET_KEY!,
-    bucket: e.MINIO_BUCKET!,
   },
 }

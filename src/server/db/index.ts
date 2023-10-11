@@ -1,16 +1,14 @@
 import os from "os"
 import { PostgresJsDatabase, drizzle } from "drizzle-orm/postgres-js"
 import { migrate } from "drizzle-orm/postgres-js/migrator"
-import postgres, { Sql } from "postgres"
+import postgres from "postgres"
 import * as schema from "./schema"
 import { config } from "../config"
 import { seed } from "./seed"
+import { singleton } from "../utils/singleton"
 
 const maxOpenConnections = 2 * os.cpus().length
 const maxLifetimeConnections = 30 * 60
-
-let pool: Sql
-let connection: PostgresJsDatabase<typeof schema>
 
 async function setupDb(conn: PostgresJsDatabase<typeof schema>) {
   await migrate(conn, {
@@ -20,9 +18,8 @@ async function setupDb(conn: PostgresJsDatabase<typeof schema>) {
   await seed(conn)
 }
 
-function getPool() {
-  if (pool) return pool
-  pool = postgres({
+function getConnection() {
+  const pool = postgres({
     host: config.db.host,
     port: config.db.port,
     user: config.db.user,
@@ -34,12 +31,7 @@ function getPool() {
     idle_timeout: maxLifetimeConnections,
   })
 
-  return pool
-}
-
-function getConnection() {
-  if (connection) return connection
-  connection = drizzle(getPool(), { logger: true, schema: schema })
+  const connection = drizzle(pool, { logger: true, schema: schema })
   setupDb(connection)
     .then(() => {
       console.log("database setup success")
@@ -55,8 +47,5 @@ function getConnection() {
 }
 
 export function db() {
-  if (process.env.NODE_ENV === "production") return getConnection()
-
-  if (!global._DB_CONNECTION) global._DB_CONNECTION = getConnection()
-  return global._DB_CONNECTION
+  return singleton("db", getConnection)
 }
