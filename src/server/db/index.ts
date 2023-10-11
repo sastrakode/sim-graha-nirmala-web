@@ -7,9 +7,6 @@ import { config } from "../config"
 import { seed } from "./seed"
 import { singleton } from "../utils/singleton"
 
-const maxOpenConnections = 2 * os.cpus().length
-const maxLifetimeConnections = 30 * 60
-
 async function setupDb(conn: PostgresJsDatabase<typeof schema>) {
   await migrate(conn, {
     migrationsFolder: "./drizzle",
@@ -19,6 +16,9 @@ async function setupDb(conn: PostgresJsDatabase<typeof schema>) {
 }
 
 function getConnection() {
+  const maxOpenConnections = 2 * os.cpus().length
+  const maxLifetimeConnections = 30 * 60
+
   const pool = postgres({
     host: config.db.host,
     port: config.db.port,
