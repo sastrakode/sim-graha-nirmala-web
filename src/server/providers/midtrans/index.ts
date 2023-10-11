@@ -2,9 +2,7 @@
 import midtransClient from "midtrans-client"
 import crypto from "crypto"
 import { config } from "@/server/config"
-
-let coreClient: any
-let snapClient: any
+import { singleton } from "@/server/utils/singleton"
 
 const clientConfig = {
   isProduction: false,
@@ -13,17 +11,11 @@ const clientConfig = {
 }
 
 export function core() {
-  if (coreClient) return coreClient
-
-  coreClient = new midtransClient.Core(clientConfig)
-  return coreClient
+  return singleton("midtrans_core", () => new midtransClient.Core(clientConfig))
 }
 
 export function snap() {
-  if (snapClient) return snapClient
-
-  snapClient = new midtransClient.Snap(clientConfig)
-  return snapClient
+  return singleton("midtrans_snap", () => new midtransClient.Snap(clientConfig))
 }
 
 export function generateOrderId() {
