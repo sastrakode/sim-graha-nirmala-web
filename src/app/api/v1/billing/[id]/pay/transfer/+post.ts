@@ -9,7 +9,9 @@ import { and, eq, gte, sql } from "drizzle-orm"
 
 export const POST = defineHandler(
   async (req, { params }: { params: { id: number } }) => {
-    useAuth(req, "owner", "renter")
+    useAuth(req, {
+      occupant: true,
+    })
     const occupant = await getCurrentOccupant(req)
 
     const billing = await db().query.Billing.findFirst({

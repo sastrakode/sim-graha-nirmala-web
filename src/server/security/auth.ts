@@ -7,23 +7,30 @@ import { NextRequest } from "next/server"
 
 const claimSubHeader = "x-claim-sub"
 
-export type Role =
-  | "admin"
-  | "secretary"
-  | "treasurer"
-  | "security_guard"
-  | "owner"
-  | "renter"
-
 export type RoleType = "staff" | "occupant"
 
-export function useAuth(req: NextRequest, ...roles: Role[]) {
-  const token = getToken(req)
-  const claim = verifyToken(token)
-  req.headers.set(claimSubHeader, claim.sub)
+export type StaffRole = "admin" | "secretary" | "treasurer" | "security_guard"
+export type OccupantRole = "owner" | "renter"
 
-  if (roles.length === 0) return
-  for (const role of roles) if (claim.role === role) return
+export type Role = StaffRole | OccupantRole
+
+export function useAuth(
+  req: NextRequest,
+  allowedRoles?: {
+    staff?: StaffRole[] | true
+    occupant?: OccupantRole[] | true
+  },
+) {
+  const { sub, role_type, role } = verifyToken(getToken(req))
+  req.headers.set(claimSubHeader, sub)
+  if (!allowedRoles) return
+
+  const allowedClaimRoles = allowedRoles[role_type]
+  if (allowedClaimRoles === true) return
+
+  for (const allowedClaimRole of allowedClaimRoles ?? []) {
+    if (role === allowedClaimRole) return
+  }
 
   throwUnauthorized()
 }

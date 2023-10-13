@@ -20,7 +20,9 @@ const Param = z.object({
 })
 
 export const POST = defineHandler(async (req) => {
-  useAuth(req, "admin")
+  useAuth(req, {
+    staff: ["admin"],
+  })
   const param = await bindJson(req, Param)
 
   const isHouseExists = await db().query.House.findFirst({

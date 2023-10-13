@@ -17,9 +17,10 @@ const Param = z.object({
 
 export const PUT = defineHandler(
   async (req, { params }: { params: { id: number } }) => {
-    useAuth(req, "admin", "treasurer")
+    useAuth(req, {
+      staff: ["admin", "treasurer"],
+    })
     const param = await bindJson(req, Param)
-    const staff = await getCurrentStaff(req)
 
     let cashflow = await db().query.Cashflow.findFirst({
       where: eq(Cashflow.id, params.id),

@@ -9,7 +9,10 @@ import { eq } from "drizzle-orm"
 
 export const GET = defineHandler(
   async (req, { params }: { params: { id: number } }) => {
-    useAuth(req, "admin", "secretary")
+    useAuth(req, {
+      staff: ["admin", "secretary"],
+    })
+
     let announcement = await db().query.Announcement.findFirst({
       where: eq(Announcement.id, params.id),
     })

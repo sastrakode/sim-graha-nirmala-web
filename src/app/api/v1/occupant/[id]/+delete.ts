@@ -8,7 +8,9 @@ import { eq } from "drizzle-orm"
 
 export const DELETE = defineHandler(
   async (req, { params }: { params: { id: number } }) => {
-    useAuth(req, "admin")
+    useAuth(req, {
+      staff: ["admin"],
+    })
 
     let occupant = await db().query.Occupant.findFirst({
       where: eq(Occupant.id, params.id),

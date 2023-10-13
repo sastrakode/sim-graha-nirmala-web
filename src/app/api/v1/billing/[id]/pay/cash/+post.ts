@@ -13,7 +13,9 @@ const Param = z.object({
 
 export const POST = defineHandler(
   async (req, { params }: { params: { id: number } }) => {
-    useAuth(req, "admin", "treasurer")
+    useAuth(req, {
+      staff: ["admin", "treasurer"],
+    })
     const param = await bindJson(req, Param)
 
     let billing = await db().query.Billing.findFirst({

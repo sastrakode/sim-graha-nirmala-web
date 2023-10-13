@@ -18,7 +18,10 @@ const Param = z.object({
 
 export const PUT = defineHandler(
   async (req, { params }: { params: { id: number } }) => {
-    useAuth(req, "admin", "owner", "renter")
+    useAuth(req, {
+      staff: ["admin"],
+      occupant: true,
+    })
 
     let param = await bindJson(req, Param)
 

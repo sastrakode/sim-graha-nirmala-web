@@ -13,8 +13,12 @@ const Param = familySchema
 
 export const POST = defineHandler(
   async (req, { params }: { params: { id: number } }) => {
-    useAuth(req, "admin", "secretary", "owner", "renter")
+    useAuth(req, {
+      staff: ["admin", "secretary"],
+      occupant: true,
+    })
     const param = await bindJson(req, Param)
+
     const occupant = await db().query.Occupant.findFirst({
       where: eq(Occupant.id, params.id),
     })

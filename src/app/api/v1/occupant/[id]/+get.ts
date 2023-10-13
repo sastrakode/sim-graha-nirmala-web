@@ -9,8 +9,12 @@ import { eq } from "drizzle-orm"
 
 export const GET = defineHandler(
   async (req, { params }: { params: { id: number } }) => {
-    useAuth(req, "admin", "owner", "renter")
-    let occupant = await db().query.Occupant.findFirst({
+    useAuth(req, {
+      staff: ["admin"],
+      occupant: true,
+    })
+
+    const occupant = await db().query.Occupant.findFirst({
       where: eq(Occupant.id, params.id),
     })
     if (!occupant) sendErrors(404, errorDefinition.occupant_not_found)

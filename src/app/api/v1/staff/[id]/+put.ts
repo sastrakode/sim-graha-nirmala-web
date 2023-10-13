@@ -18,7 +18,9 @@ const Param = z.object({
 
 export const PUT = defineHandler(
   async (req, { params }: { params: { id: number } }) => {
-    useAuth(req, "admin")
+    useAuth(req, {
+      staff: ["admin"],
+    })
     const param = await bindJson(req, Param)
 
     if (param.email) {

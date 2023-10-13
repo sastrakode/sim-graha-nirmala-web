@@ -7,7 +7,9 @@ import { sql } from "drizzle-orm"
 type Response = string[]
 
 export const GET = defineHandler(async (req) => {
-  useAuth(req, "admin")
+  useAuth(req, {
+    staff: ["admin"],
+  })
 
   const roles = await db().execute(
     sql`SELECT unnest(enum_range(NULL::staff_role)) AS staff_role`,

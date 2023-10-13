@@ -1,12 +1,19 @@
 import jwt from "jsonwebtoken"
 import { config } from "../config"
-import { Role, RoleType, throwUnauthorized } from "./auth"
+import {
+  OccupantRole,
+  Role,
+  RoleType,
+  StaffRole,
+  throwUnauthorized,
+} from "./auth"
 import { NextRequest } from "next/server"
 
 type Claim = {
   sub: string
   exp: number
-  role: Role
+  role: StaffRole | OccupantRole
+  role_type: RoleType
 }
 
 export function generateToken(claim: {

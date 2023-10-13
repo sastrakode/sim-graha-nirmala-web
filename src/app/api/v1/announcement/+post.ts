@@ -14,7 +14,9 @@ const Param = z.object({
 })
 
 export const POST = defineHandler(async (req) => {
-  useAuth(req, "admin", "secretary")
+  useAuth(req, {
+    staff: ["admin", "secretary"],
+  })
   const param = await bindJson(req, Param)
 
   const staff = await getCurrentStaff(req)

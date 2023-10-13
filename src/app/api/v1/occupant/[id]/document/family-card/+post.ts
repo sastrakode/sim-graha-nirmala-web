@@ -17,7 +17,10 @@ export const config = {
 
 export const POST = defineHandler(
   async (req, { params }: { params: { id: number } }) => {
-    useAuth(req, "owner", "renter")
+    useAuth(req, {
+      occupant: true,
+    })
+
     const occupant = await getCurrentOccupant(req)
     if (occupant.id != params.id) {
       throwUnauthorized()
